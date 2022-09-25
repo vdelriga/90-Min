@@ -31,11 +31,13 @@
       "size" : "40x40"
     },
     {
+      "filename" : "90MIN_120X120.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
+      "filename" : "90MIN_180X180.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
@@ -71,16 +73,19 @@
       "size" : "40x40"
     },
     {
+      "filename" : "ICONO90MIN_152X152.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "76x76"
     },
     {
+      "filename" : "ICONO90MIN_167X167.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "83.5x83.5"
     },
     {
+      "filename" : "90MIN_1024X1024.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"

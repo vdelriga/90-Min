@@ -1,0 +1,554 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FA24409528D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA24409428D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift */; };
+		FA24409728D5907D0031A6C9 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA24409628D5907D0031A6C9 /* Home.swift */; };
+		FA24409928D5907E0031A6C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA24409828D5907E0031A6C9 /* Assets.xcassets */; };
+		FA24409C28D5907E0031A6C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA24409B28D5907E0031A6C9 /* Preview Assets.xcassets */; };
+		FA2440A328D591410031A6C9 /* Partidos.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2440A228D591410031A6C9 /* Partidos.swift */; };
+		FA3FD58A28DD162A00E68D9D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA47CBAA28DB5905009F1A2C /* WidgetKit.framework */; };
+		FA3FD58B28DD162A00E68D9D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */; };
+		FA3FD58E28DD162A00E68D9D /* NoventaMin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD58D28DD162A00E68D9D /* NoventaMin.swift */; };
+		FA3FD59028DD162B00E68D9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA3FD58F28DD162B00E68D9D /* Assets.xcassets */; };
+		FA3FD59428DD162B00E68D9D /* NoventaMinExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FA3FD58928DD162A00E68D9D /* NoventaMinExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FA3FD59928DD167400E68D9D /* LiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD59828DD167400E68D9D /* LiveActivity.swift */; };
+		FA3FD59A28DD197C00E68D9D /* LiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD59828DD167400E68D9D /* LiveActivity.swift */; };
+		FA656A9728DA4B86007E6194 /* Standings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA656A9628DA4B86007E6194 /* Standings.swift */; };
+		FAC661BC28D75E2B009CA154 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC661BB28D75E2B009CA154 /* Observer.swift */; };
+		FACEFF4F28DA1E3E00912472 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACEFF4E28DA1E3E00912472 /* MainView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FA3FD59228DD162B00E68D9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA24408928D5907D0031A6C9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA3FD58828DD162A00E68D9D;
+			remoteInfo = NoventaMinExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FA47CBB728DB5906009F1A2C /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FA3FD59428DD162B00E68D9D /* NoventaMinExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FA24409128D5907D0031A6C9 /* 90 Min.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "90 Min.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA24409428D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minuto_y_ResultadoApp.swift; sourceTree = "<group>"; };
+		FA24409628D5907D0031A6C9 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		FA24409828D5907E0031A6C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FA24409B28D5907E0031A6C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FA2440A228D591410031A6C9 /* Partidos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Partidos.swift; sourceTree = "<group>"; };
+		FA3FD58928DD162A00E68D9D /* NoventaMinExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NoventaMinExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA3FD58D28DD162A00E68D9D /* NoventaMin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoventaMin.swift; sourceTree = "<group>"; };
+		FA3FD58F28DD162B00E68D9D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FA3FD59128DD162B00E68D9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA3FD59828DD167400E68D9D /* LiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivity.swift; sourceTree = "<group>"; };
+		FA47CBAA28DB5905009F1A2C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		FA656A9628DA4B86007E6194 /* Standings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standings.swift; sourceTree = "<group>"; };
+		FAC661BB28D75E2B009CA154 /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
+		FACDF5BD28DD083F0052D31D /* -0-Minutos-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "-0-Minutos-Info.plist"; sourceTree = "<group>"; };
+		FACEFF4E28DA1E3E00912472 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FA24408E28D5907D0031A6C9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA3FD58628DD162A00E68D9D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA3FD58B28DD162A00E68D9D /* SwiftUI.framework in Frameworks */,
+				FA3FD58A28DD162A00E68D9D /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FA24408828D5907D0031A6C9 = {
+			isa = PBXGroup;
+			children = (
+				FACDF5BD28DD083F0052D31D /* -0-Minutos-Info.plist */,
+				FA24409328D5907D0031A6C9 /* Minuto y Resultado */,
+				FA3FD58C28DD162A00E68D9D /* NoventaMin */,
+				FA47CBA928DB5905009F1A2C /* Frameworks */,
+				FA24409228D5907D0031A6C9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FA24409228D5907D0031A6C9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA24409128D5907D0031A6C9 /* 90 Min.app */,
+				FA3FD58928DD162A00E68D9D /* NoventaMinExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FA24409328D5907D0031A6C9 /* Minuto y Resultado */ = {
+			isa = PBXGroup;
+			children = (
+				FACEFF4E28DA1E3E00912472 /* MainView.swift */,
+				FA656A9628DA4B86007E6194 /* Standings.swift */,
+				FAC661BB28D75E2B009CA154 /* Observer.swift */,
+				FA24409428D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift */,
+				FA24409628D5907D0031A6C9 /* Home.swift */,
+				FA2440A228D591410031A6C9 /* Partidos.swift */,
+				FA24409828D5907E0031A6C9 /* Assets.xcassets */,
+				FA24409A28D5907E0031A6C9 /* Preview Content */,
+			);
+			path = "Minuto y Resultado";
+			sourceTree = "<group>";
+		};
+		FA24409A28D5907E0031A6C9 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				FA24409B28D5907E0031A6C9 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		FA3FD58C28DD162A00E68D9D /* NoventaMin */ = {
+			isa = PBXGroup;
+			children = (
+				FA3FD58D28DD162A00E68D9D /* NoventaMin.swift */,
+				FA3FD59828DD167400E68D9D /* LiveActivity.swift */,
+				FA3FD58F28DD162B00E68D9D /* Assets.xcassets */,
+				FA3FD59128DD162B00E68D9D /* Info.plist */,
+			);
+			path = NoventaMin;
+			sourceTree = "<group>";
+		};
+		FA47CBA928DB5905009F1A2C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FA47CBAA28DB5905009F1A2C /* WidgetKit.framework */,
+				FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FA24409028D5907D0031A6C9 /* 90 Min */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA24409F28D5907E0031A6C9 /* Build configuration list for PBXNativeTarget "90 Min" */;
+			buildPhases = (
+				FA24408D28D5907D0031A6C9 /* Sources */,
+				FA24408E28D5907D0031A6C9 /* Frameworks */,
+				FA24408F28D5907D0031A6C9 /* Resources */,
+				FA47CBB728DB5906009F1A2C /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FA3FD59328DD162B00E68D9D /* PBXTargetDependency */,
+			);
+			name = "90 Min";
+			productName = "Minuto y Resultado";
+			productReference = FA24409128D5907D0031A6C9 /* 90 Min.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FA3FD58828DD162A00E68D9D /* NoventaMinExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA3FD59528DD162B00E68D9D /* Build configuration list for PBXNativeTarget "NoventaMinExtension" */;
+			buildPhases = (
+				FA3FD58528DD162A00E68D9D /* Sources */,
+				FA3FD58628DD162A00E68D9D /* Frameworks */,
+				FA3FD58728DD162A00E68D9D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NoventaMinExtension;
+			productName = NoventaMinExtension;
+			productReference = FA3FD58928DD162A00E68D9D /* NoventaMinExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FA24408928D5907D0031A6C9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1410;
+				LastUpgradeCheck = 1340;
+				TargetAttributes = {
+					FA24409028D5907D0031A6C9 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+					FA3FD58828DD162A00E68D9D = {
+						CreatedOnToolsVersion = 14.1;
+					};
+				};
+			};
+			buildConfigurationList = FA24408C28D5907D0031A6C9 /* Build configuration list for PBXProject "90 Min" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FA24408828D5907D0031A6C9;
+			productRefGroup = FA24409228D5907D0031A6C9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FA24409028D5907D0031A6C9 /* 90 Min */,
+				FA3FD58828DD162A00E68D9D /* NoventaMinExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FA24408F28D5907D0031A6C9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA24409C28D5907E0031A6C9 /* Preview Assets.xcassets in Resources */,
+				FA24409928D5907E0031A6C9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA3FD58728DD162A00E68D9D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA3FD59028DD162B00E68D9D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FA24408D28D5907D0031A6C9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA24409728D5907D0031A6C9 /* Home.swift in Sources */,
+				FAC661BC28D75E2B009CA154 /* Observer.swift in Sources */,
+				FA2440A328D591410031A6C9 /* Partidos.swift in Sources */,
+				FA24409528D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift in Sources */,
+				FA3FD59928DD167400E68D9D /* LiveActivity.swift in Sources */,
+				FACEFF4F28DA1E3E00912472 /* MainView.swift in Sources */,
+				FA656A9728DA4B86007E6194 /* Standings.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FA3FD58528DD162A00E68D9D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA3FD59A28DD197C00E68D9D /* LiveActivity.swift in Sources */,
+				FA3FD58E28DD162A00E68D9D /* NoventaMin.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FA3FD59328DD162B00E68D9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA3FD58828DD162A00E68D9D /* NoventaMinExtension */;
+			targetProxy = FA3FD59228DD162B00E68D9D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		FA24409D28D5907E0031A6C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FA24409E28D5907E0031A6C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FA2440A028D5907E0031A6C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Minuto y Resultado/Preview Content\"";
+				DEVELOPMENT_TEAM = RFCT5Z4GWL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "-0-Minutos-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FA2440A128D5907E0031A6C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Minuto y Resultado/Preview Content\"";
+				DEVELOPMENT_TEAM = RFCT5Z4GWL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "-0-Minutos-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FA3FD59628DD162B00E68D9D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RFCT5Z4GWL;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoventaMin/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NoventaMin;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado.NoventaMin";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FA3FD59728DD162B00E68D9D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RFCT5Z4GWL;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NoventaMin/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NoventaMin;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado.NoventaMin";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FA24408C28D5907D0031A6C9 /* Build configuration list for PBXProject "90 Min" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA24409D28D5907E0031A6C9 /* Debug */,
+				FA24409E28D5907E0031A6C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA24409F28D5907E0031A6C9 /* Build configuration list for PBXNativeTarget "90 Min" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA2440A028D5907E0031A6C9 /* Debug */,
+				FA2440A128D5907E0031A6C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA3FD59528DD162B00E68D9D /* Build configuration list for PBXNativeTarget "NoventaMinExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA3FD59628DD162B00E68D9D /* Debug */,
+				FA3FD59728DD162B00E68D9D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FA24408928D5907D0031A6C9 /* Project object */;
+}
