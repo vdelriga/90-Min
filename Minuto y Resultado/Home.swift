@@ -75,55 +75,59 @@ struct Home: View {
                     .resizable()
                     .frame(width: 350, height: 350)
                     .blur(radius:8)
-                List(matches, id: \.id) { item in
-                    VStack(alignment: .leading) {
-                        HStack{
-                            VStack(alignment: .center,spacing:4){
-                                Image(String(item.homeTeam.id))
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
-                                
-                                Text(item.homeTeam.shortName)
-                                    .font(.headline)
-                                    .lineLimit(2)
-                                
-                            }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-                            Spacer()
-                            VStack{
-                                Text(getMatchDate(stringDate: item.utcDate))
-                                    .font(.caption)
-                                Text(getMatchTime(stringDate: item.utcDate))
-                                    .font(.caption)
-                                Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
-                                    .font(.largeTitle)
-                                Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
-                                    .font(.caption)
+                if #available(iOS 15.0, *) {
+                    List(matches, id: \.id) { item in
+                        VStack(alignment: .leading) {
+                            HStack{
+                                VStack(alignment: .center,spacing:4){
+                                    Image(String(item.homeTeam.id))
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
                                     
+                                    Text(item.homeTeam.shortName)
+                                        .font(.headline)
+                                        .lineLimit(2)
+                                    
+                                }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                Spacer()
+                                VStack{
+                                    Text(getMatchDate(stringDate: item.utcDate))
+                                        .font(.caption)
+                                    Text(getMatchTime(stringDate: item.utcDate))
+                                        .font(.caption)
+                                    Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
+                                        .font(.largeTitle)
+                                    Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
+                                        .font(.caption)
+                                    
+                                }
+                                Spacer()
+                                VStack{
+                                    Image(String(item.awayTeam.id))
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                                    
+                                    Text(item.awayTeam.shortName)
+                                        .font(.headline)
+                                        .lineLimit(2)
+                                }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
                             }
-                            Spacer()
-                            VStack{
-                                Image(String(item.awayTeam.id))
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
-                                
-                                Text(item.awayTeam.shortName)
-                                    .font(.headline)
-                                    .lineLimit(2)
-                            }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
                         }
                     }
-                }
-                .padding(.bottom)
-                .refreshable{
-                    await loadData()
-                }.onReceive(self.observer.$enteredForeground) { _ in
-                    Task {
-                        await getCurrentMatchday()
+                    .padding(.bottom)
+                    .refreshable{
+                        await loadData()
+                    }.onReceive(self.observer.$enteredForeground) { _ in
+                        Task {
+                            await getCurrentMatchday()
+                        }
                     }
+                    .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                } else {
+                    // Fallback on earlier versions
                 }
-                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
                 
             }
         }
@@ -256,7 +260,7 @@ struct Home: View {
     func startActivityFake(){
         if #available(iOS 16.1, *) {
             if !existActivity(id:matches[activityCounter].id){
-                let initialContentState = MatchAttributes.ContentState(status: matches[activityCounter].status, scoreHomeFullTime: 0, scoreAwayFullTime: 0)
+                let initialContentState = MatchAttributes.ContentState(status: "IN_PLAY", scoreHomeFullTime: 0, scoreAwayFullTime: 0)
                 let activityAttributes = MatchAttributes(id: matches[activityCounter].id, utcDate: matches[activityCounter].utcDate, matchday: matches[activityCounter].matchday, idHome: matches[activityCounter].homeTeam.id, nameHome: matches[activityCounter].homeTeam.name, shortNameHome: matches[activityCounter].homeTeam.shortName, tlaHome: matches[activityCounter].homeTeam.tla, crestHome: matches[activityCounter].homeTeam.crest, idAway: matches[activityCounter].awayTeam.id, nameAway: matches[activityCounter].awayTeam.name, shortNameAway: matches[activityCounter].awayTeam.shortName, tlaAway: matches[activityCounter].awayTeam.tla, crestAway: matches[activityCounter].awayTeam.crest)
                 Task{
                     do{
