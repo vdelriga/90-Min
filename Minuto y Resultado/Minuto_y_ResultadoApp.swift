@@ -97,6 +97,9 @@ extension AppDelegate: MessagingDelegate {
 
       let deviceToken:[String: String] = ["token": fcmToken ?? ""]
         print("Device token: ", deviceToken) // This token can be used for testing notifications on FCM
+        Messaging.messaging().subscribe(toTopic: "90Min") { error in
+          print("Subscribed to 90Min")
+        }
         
     }
 }
@@ -170,7 +173,19 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         if #available(iOS 16.1, *) {
             if let strMatchId = userInfo["matchId"] as? String, let matchId = Int(strMatchId),let strHomeScore = userInfo["homeScore"] as? String, let homeScore = Int(strHomeScore),let strAwayScore = userInfo["awayScore"] as? String, let awayScore = Int(strAwayScore) ,let status = userInfo["status"] as? String{
                     if let activity = getActivityLive(matchId: Int(matchId)){
-                        updateLiveActivity(activity: activity, homeScore: homeScore, awayScore:awayScore,status:status)
+                        var halfHomeScore: Int?
+                        var halfAwayScore: Int?
+                        if let halfHomeScoreStr = userInfo["halfHomeScore"] as? String{
+                             halfHomeScore = Int(halfHomeScoreStr)
+                        }
+                        if let halfAwayScoreStr = userInfo["halfAwayScore"] as? String{
+                             halfAwayScore = Int(halfAwayScoreStr)
+                        }
+                        if status == "IN_PLAY" || status == "PAUSED"{
+                            updateLiveActivity(activity: activity, homeScore: homeScore, awayScore:awayScore,status:status,halfHomeScore: halfHomeScore,halfAwayScore: halfAwayScore)
+                        }else if status == "FINISHED"{
+                            endLiveActivity(activity: activity, homeScore: homeScore, awayScore:awayScore,status:status,halfHomeScore: halfHomeScore,halfAwayScore: halfAwayScore)
+                        }
                     }
             }
         }
@@ -178,10 +193,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
     @available(iOS 16.1, *)
-    func updateLiveActivity(activity:MatchActivity, homeScore: Int, awayScore: Int, status: String) {
+    func updateLiveActivity(activity:MatchActivity, homeScore: Int, awayScore: Int, status: String,halfHomeScore:Int?, halfAwayScore:Int?) {
         Task{
-            let updateMatch = MatchAttributes.ContentState(status: status, scoreHomeFullTime: homeScore, scoreAwayFullTime: awayScore)
+            let updateMatch = MatchAttributes.ContentState(status: status, scoreHomeHalfTime: halfHomeScore, scoreAwayHalfTime: halfAwayScore, scoreHomeFullTime: homeScore, scoreAwayFullTime: awayScore)
             await activity.matchActivity.update(using: updateMatch, alertConfiguration: nil)
+        }
+    }
+    
+    @available(iOS 16.1, *)
+    func endLiveActivity(activity:MatchActivity, homeScore: Int, awayScore: Int, status: String,halfHomeScore:Int?,halfAwayScore:Int?) {
+        Task{
+            let updateMatch = MatchAttributes.ContentState(status: status, scoreHomeHalfTime: halfHomeScore, scoreAwayHalfTime: halfAwayScore, scoreHomeFullTime: homeScore, scoreAwayFullTime: awayScore)
+            await activity.matchActivity.end(using: updateMatch,dismissalPolicy: .default)
         }
     }
 

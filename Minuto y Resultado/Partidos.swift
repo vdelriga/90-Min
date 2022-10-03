@@ -12,6 +12,28 @@ struct Matches: Codable {
     var matches: [Match]
 }
 
+struct Standing: Codable {
+    var standings: [StandingType]
+}
+
+struct StandingType:Codable{
+    var type: String
+    var table: [Position]
+}
+
+struct Position:Codable{
+        var position: Int
+        var team: Team
+        var playedGames: Int
+        var won: Int
+        var draw:Int
+        var lost:Int
+        var points:Int
+        var goalsFor:Int
+        var goalsAgainst:Int
+        var goalDifference:Int
+}
+
 struct Team:Codable {
     var id: Int
     var name: String

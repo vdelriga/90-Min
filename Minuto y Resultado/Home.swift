@@ -8,36 +8,20 @@
 import SwiftUI
 import UIKit
 import ActivityKit
-import BackgroundTasks
-
+import AlertToast
 
 struct Home: View {
     @State private var matches = [Match]()
     @State private var jornada = ""
     @ObservedObject var observer = Observer()
     @State var activityCounter = 0
+    @State private var showToast = false
+    @State private var result = false
     var body: some View {
         VStack{
             Image("logo")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-            HStack{
-                Button {
-                    startActivityFake()
-                }
-            label:{
-                Text("Abrir Activity")
-                    .foregroundColor(.red)
-            }
-                Spacer()
-                Button {
-                    killActivitiesFake()
-                }label:{
-                    Text("Cerrar Activity")
-                        .foregroundColor(.red)
-                }
-                
-        }
             HStack{
                 Button {
                     let newMatchday = (Int(jornada) ?? 1) - 1
@@ -114,7 +98,12 @@ struct Home: View {
                                         .lineLimit(2)
                                 }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
                             }
+                        }.onTapGesture{
+                            result = startActivity(match: item)
+                            showToast.toggle()
                         }
+                    }.toast(isPresenting:$showToast){
+                        AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "Partido añadido a tu pantalla de inicio.":"El partido ya ha finalizado o ya se ha programado.")
                     }
                     .padding(.bottom)
                     .refreshable{
@@ -216,7 +205,7 @@ struct Home: View {
     @available(iOS 16.1, *)
     func existActivity(id: Int) -> Bool{
         for activity in ActivityManager.matchActivities {
-            if activity.id == id{
+            if activity.id == id && activity.matchActivity.activityState == .active{
                 return true
             }
                 
@@ -236,10 +225,10 @@ struct Home: View {
         }
     }
     
-    func startActivity(match: Match){
+    func startActivity(match: Match)->Bool{
         if #available(iOS 16.1, *) {
-            if !existActivity(id:match.id){
-                let initialContentState = MatchAttributes.ContentState(status: match.status, scoreHomeFullTime: 0, scoreAwayFullTime: 0)
+            if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"){
+                let initialContentState = MatchAttributes.ContentState(status: match.status, scoreHomeFullTime: match.score.fullTime.home, scoreAwayFullTime: match.score.fullTime.away)
                 let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday, idHome: match.homeTeam.id, nameHome: match.homeTeam.name, shortNameHome: match.homeTeam.shortName, tlaHome: match.homeTeam.tla, crestHome: match.homeTeam.crest, idAway: match.awayTeam.id, nameAway: match.awayTeam.name, shortNameAway: match.awayTeam.shortName, tlaAway: match.awayTeam.tla, crestAway: match.awayTeam.crest)
                 Task{
                     do{
@@ -252,8 +241,12 @@ struct Home: View {
                             ActivityManager.matchActivities.append(activity)
                     }
                 }
+                return true
+            }else{
+                return false
             }
         }
+        return false
         
     }
     
@@ -284,7 +277,7 @@ struct Home: View {
     func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:Match)->String{
         switch status {
         case "IN_PLAY":
-            startActivity(match: match)
+           // startActivity(match: match)
             if halfTime.home == nil{
                     return "1ª PARTE"
                 }else
@@ -292,7 +285,9 @@ struct Home: View {
                     return "2ª PARTE"
                 }
             
-        case "PAUSED" :  return "DESCANSO"
+        case "PAUSED" :
+          //  startActivity(match: match)
+            return "DESCANSO"
         case "FINISHED":  return "FINALIZADO"
         default: return ""
             

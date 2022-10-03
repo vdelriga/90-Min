@@ -23,6 +23,7 @@
 		FA512D0528E22EAC00EDE1A6 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = FA512D0428E22EAC00EDE1A6 /* FirebaseMessaging */; };
 		FA512D0B28E2324600EDE1A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA512D0A28E2324600EDE1A6 /* GoogleService-Info.plist */; };
 		FA656A9728DA4B86007E6194 /* Standings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA656A9628DA4B86007E6194 /* Standings.swift */; };
+		FA90171228E838CA0028597F /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = FA90171128E838CA0028597F /* AlertToast */; };
 		FAC661BC28D75E2B009CA154 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC661BB28D75E2B009CA154 /* Observer.swift */; };
 		FACEFF4F28DA1E3E00912472 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACEFF4E28DA1E3E00912472 /* MainView.swift */; };
 /* End PBXBuildFile section */
@@ -78,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA90171228E838CA0028597F /* AlertToast in Frameworks */,
 				FA512D0528E22EAC00EDE1A6 /* FirebaseMessaging in Frameworks */,
 				FA512D0328E22EAC00EDE1A6 /* FirebaseAnalytics in Frameworks */,
 			);
@@ -181,6 +183,7 @@
 			packageProductDependencies = (
 				FA512D0228E22EAC00EDE1A6 /* FirebaseAnalytics */,
 				FA512D0428E22EAC00EDE1A6 /* FirebaseMessaging */,
+				FA90171128E838CA0028597F /* AlertToast */,
 			);
 			productName = "Minuto y Resultado";
 			productReference = FA24409128D5907D0031A6C9 /* 90 Min.app */;
@@ -232,6 +235,7 @@
 			mainGroup = FA24408828D5907D0031A6C9;
 			packageReferences = (
 				FA512D0128E22EAC00EDE1A6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				FA90171028E838CA0028597F /* XCRemoteSwiftPackageReference "AlertToast" */,
 			);
 			productRefGroup = FA24409228D5907D0031A6C9 /* Products */;
 			projectDirPath = "";
@@ -427,6 +431,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "-0-Minutos-Info.plist";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -441,6 +446,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -461,6 +469,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "-0-Minutos-Info.plist";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -475,6 +484,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -494,6 +506,7 @@
 				INFOPLIST_FILE = NoventaMin/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NoventaMin;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -501,7 +514,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado.NoventaMin";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado.WidgetExt";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -523,6 +536,7 @@
 				INFOPLIST_FILE = NoventaMin/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = NoventaMin;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -530,7 +544,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado.NoventaMin";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado.WidgetExt";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -580,6 +594,14 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		FA90171028E838CA0028597F /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -592,6 +614,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA512D0128E22EAC00EDE1A6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		FA90171128E838CA0028597F /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA90171028E838CA0028597F /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
