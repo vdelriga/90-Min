@@ -13,13 +13,26 @@ struct MainView: View {
                     
                     Home()
                         .tabItem {
-                            Label("En directo", systemImage: "soccerball")
+                            Image("laliga")
+                            Text("Directo")
                             
                         }
                     Standings()
                         .tabItem {
                             Label("Clasificación",systemImage:"trophy")
                         }
+                    HomeChampions()
+                        .tabItem {
+                            Image("UEFA")
+                            Text("Directo")
+                                
+                        }
+                    StandingsCL()
+                        .tabItem {
+                            Image("CL_TROPHY")
+                            Text("Clasificación")
+                        }
+                    
                 }.accentColor(/*@START_MENU_TOKEN@*/.red/*@END_MENU_TOKEN@*/)
             }
     

@@ -16,6 +16,13 @@ struct Standing: Codable {
     var standings: [StandingType]
 }
 
+struct StandingCL: Codable {
+    var standings: [StandingGroup]
+}
+struct StandingGroup:Codable{
+    var group: String
+    var table: [Position]
+}
 struct StandingType:Codable{
     var type: String
     var table: [Position]

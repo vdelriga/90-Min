@@ -12,28 +12,37 @@ import AlertToast
 
 struct Home: View {
     @State private var matches = [Match]()
+    @State private var matchesSeason = [Match]()
     @State private var jornada = ""
+    @State private var currentMatchday = 0
     @ObservedObject var observer = Observer()
     @State var activityCounter = 0
     @State private var showToast = false
     @State private var result = false
+    let maxMatchDay = 38
     var body: some View {
         VStack{
             Image("logo")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
             HStack{
-                Button {
-                    let newMatchday = (Int(jornada) ?? 1) - 1
-                    jornada = String(newMatchday)
-                    Task{
-                        await loadData()
+                if (Int(jornada) ?? 0 > 1){
+                    Button {
+                        let newMatchday = (Int(jornada) ?? 1) - 1
+                        jornada = String(newMatchday)
+                        if jornada == String(currentMatchday){
+                            Task{
+                                await loadData()
+                            }
+                        }else{
+                            loadMatchDay(matchday: Int(jornada) ?? 0)
+                        }
+                    }label:{
+                        Image(systemName:"chevron.backward")
+                            .foregroundColor(.red)
                     }
-                }label:{
-                    Image(systemName:"chevron.backward")
-                        .foregroundColor(.red)
+                    .padding(.leading)
                 }
-                .padding(.leading)
                 Spacer()
                 if !jornada.isEmpty {
                     Text("Jornada:" + jornada)
@@ -41,17 +50,23 @@ struct Home: View {
                         .foregroundColor(.red)
                 }
                 Spacer()
-                Button{
-                    let newMatchday = (Int(jornada) ?? 1) + 1
-                    jornada = String(newMatchday)
-                    Task{
-                        await loadData()
+                if (Int(jornada) ?? 0 < maxMatchDay){
+                    Button{
+                        let newMatchday = (Int(jornada) ?? 1) + 1
+                        jornada = String(newMatchday)
+                        if jornada == String(currentMatchday){
+                            Task{
+                                await loadData()
+                            }
+                        }else{
+                            loadMatchDay(matchday: Int(jornada) ?? 0)
+                        }
+                    }label:{
+                        Image(systemName:"chevron.right")
+                            .foregroundColor(.red)
                     }
-                }label:{
-                    Image(systemName:"chevron.right")
-                        .foregroundColor(.red)
+                    .padding(.trailing)
                 }
-                .padding(.trailing)
                 
             }
             ZStack{
@@ -111,6 +126,7 @@ struct Home: View {
                     }.onReceive(self.observer.$enteredForeground) { _ in
                         Task {
                             await getCurrentMatchday()
+                            await loadDataSeason()
                         }
                     }
                     .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
@@ -156,6 +172,36 @@ struct Home: View {
     }
     
     
+    func loadMatchDay(matchday: Int){
+        self.matches.removeAll()
+        for match in matchesSeason{
+            if match.matchday == matchday{
+                matches.append(match)
+            }
+        }
+    }
+    
+    func loadDataSeason() async {
+        guard let url = URL(string: "https://api.football-data.org/v4/competitions/PD/matches")
+        else {
+            print("Invalid URL")
+            return
+            }
+        var request = URLRequest(url: url)
+        request.setValue("b0212e6976094d3aa404ec2c3b6705be", forHTTPHeaderField: "X-Auth-Token")
+        do {
+            let (data, _) = try await URLSession.shared.data(for:request)
+
+            if let decodedResponse =
+                try? JSONDecoder().decode(Matches.self, from: data){
+                matchesSeason = decodedResponse.matches
+               
+            }
+        } catch let jsonError as NSError {
+            print("JSON decode failed: \(jsonError.localizedDescription)")
+        }
+    }
+    
     func loadData() async {
         guard let url = URL(string: "https://api.football-data.org/v4/competitions/PD/matches?matchday=" + jornada)
         else {
@@ -170,7 +216,6 @@ struct Home: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(Matches.self, from: data){
                 matches = decodedResponse.matches
-               
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
@@ -191,6 +236,7 @@ struct Home: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(Session.self, from: data){
                 jornada = String(decodedResponse.currentSeason.currentMatchday)
+                currentMatchday = decodedResponse.currentSeason.currentMatchday
                 Task {
                     await loadData()
                 }

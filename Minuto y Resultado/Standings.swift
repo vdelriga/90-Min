@@ -19,11 +19,6 @@ struct Standings: View {
             Image("logo")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-            ZStack{
-                Image("PD")
-                    .resizable()
-                    .frame(width: 350, height: 350)
-                    .blur(radius:8)
                 VStack(alignment: .leading){
                     if #available(iOS 15.0, *) {
                         Picker("Favorite Color", selection: $selectedStandingType, content: {
@@ -90,7 +85,6 @@ struct Standings: View {
                     }
                 }
             }
-        }
     }
     
     
