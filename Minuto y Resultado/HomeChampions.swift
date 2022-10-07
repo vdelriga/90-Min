@@ -133,6 +133,7 @@ struct HomeChampions: View {
                 } else {
                     // Fallback on earlier versions
                 }
+                SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-3940256099942544/2934735716")
                 
             }
         }

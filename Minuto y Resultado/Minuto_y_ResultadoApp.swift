@@ -10,10 +10,27 @@ import BackgroundTasks
 import Firebase
 import UserNotifications
 import ActivityKit
+import GoogleMobileAds
+import AppTrackingTransparency
+import AdSupport
 
 
 @main
 struct Minuto_y_ResultadoApp: App {
+    init() {
+            requestTrackingAuthorization()
+            if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
+                
+            } else {
+                ATTrackingManager.requestTrackingAuthorization { status in
+                    //Whether or not user has opted in initialize GADMobileAds here it will handle the rest
+                                                                
+                    GADMobileAds.sharedInstance().start(completionHandler: nil)
+                    GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [ "848f85f72c86be719d8e32dde3c18f7a" ]
+
+                }
+            }
+        }
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var phase
 
@@ -137,6 +154,27 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
   }
 }
 
+func requestTrackingAuthorization(){
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+        ATTrackingManager.requestTrackingAuthorization { status in
+            DispatchQueue.main.async {
+                switch status {
+                case .authorized:
+                    // Authorized
+                    let idfa = ASIdentifierManager.shared().advertisingIdentifier
+                    print("El identificador idfa: \(idfa.uuidString)")
+                case .denied,
+                        .notDetermined,
+                        .restricted:
+                    break
+                @unknown default:
+                    break
+                }
+            }
+        }
+    })
+}
+
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     let gcmMessageIDKey = "gcm.message_id"
@@ -161,6 +199,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         }
 
         application.registerForRemoteNotifications()
+       // GADMobileAds.sharedInstance().start(completionHandler: nil)
         return true
     }
     

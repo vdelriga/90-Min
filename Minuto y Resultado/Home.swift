@@ -70,6 +70,7 @@ struct Home: View {
                 
             }
             ZStack{
+                
                 Image("PD")
                     .resizable()
                     .frame(width: 350, height: 350)
@@ -133,6 +134,7 @@ struct Home: View {
                 } else {
                     // Fallback on earlier versions
                 }
+                SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-3940256099942544/2934735716")
                 
             }
         }

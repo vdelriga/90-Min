@@ -9,36 +9,35 @@ import SwiftUI
 import UserNotifications
 struct MainView: View {
     var body: some View {
-                TabView {
-                    
-                    Home()
-                        .tabItem {
-                            Image("laliga")
-                            Text("Directo")
-                            
-                        }
-                    Standings()
-                        .tabItem {
-                            Label("Clasificación",systemImage:"trophy")
-                        }
-                    HomeChampions()
-                        .tabItem {
-                            Image("UEFA")
-                            Text("Directo")
-                                
-                        }
-                    StandingsCL()
-                        .tabItem {
-                            Image("CL_TROPHY")
-                            Text("Clasificación")
-                        }
-                    
-                }.accentColor(/*@START_MENU_TOKEN@*/.red/*@END_MENU_TOKEN@*/)
-            }
-    
-    
-    
+        ZStack{
+           
+            TabView {
+                Home()
+                    .tabItem {
+                        Image("laliga")
+                        Text("Directo")
+                        
+                    }
+                Standings()
+                    .tabItem {
+                        Label("Clasificación",systemImage:"trophy")
+                    }
+                HomeChampions()
+                    .tabItem {
+                        Image("UEFA")
+                        Text("Directo")
+                        
+                    }
+                StandingsCL()
+                    .tabItem {
+                        Image("CL_TROPHY")
+                        Text("Clasificación")
+                    }
+                
+            }.accentColor(/*@START_MENU_TOKEN@*/.red/*@END_MENU_TOKEN@*/)
         }
+    }
+}
         
         struct SwiftUIView_Previews: PreviewProvider {
             static var previews: some View {
