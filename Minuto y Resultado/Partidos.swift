@@ -50,7 +50,7 @@ struct Team:Codable {
     
 }
 
-struct Session:Codable {
+struct Season:Codable {
     var currentSeason:CurrentSeason
     
 }
@@ -80,6 +80,7 @@ struct Score: Codable{
     var fullTime: childScore
     var halfTime: childScore
 }
+
 
 
 

@@ -6,37 +6,22 @@
 //
 
 import SwiftUI
-import BackgroundTasks
 import Firebase
 import UserNotifications
 import ActivityKit
-import GoogleMobileAds
-import AppTrackingTransparency
-import AdSupport
-
+import FirebaseFirestore
+import FirebaseCore
 
 @main
 struct Minuto_y_ResultadoApp: App {
-    init() {
-            requestTrackingAuthorization()
-            if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
-                
-            } else {
-                ATTrackingManager.requestTrackingAuthorization { status in
-                    //Whether or not user has opted in initialize GADMobileAds here it will handle the rest
-                                                                
-                    GADMobileAds.sharedInstance().start(completionHandler: nil)
-                    GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [ "848f85f72c86be719d8e32dde3c18f7a" ]
-
-                }
-            }
-        }
+    @StateObject var firestoreManager = FirestoreManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var phase
 
     var body: some Scene {
         WindowGroup {
-                MainView()
+            MainView()
+                .environmentObject(firestoreManager)
         }
     }
 
@@ -153,16 +138,15 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
     completionHandler()
   }
 }
-
+/*
 func requestTrackingAuthorization(){
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
         ATTrackingManager.requestTrackingAuthorization { status in
             DispatchQueue.main.async {
                 switch status {
                 case .authorized:
-                    // Authorized
                     let idfa = ASIdentifierManager.shared().advertisingIdentifier
                     print("El identificador idfa: \(idfa.uuidString)")
+                    GADMobileAds.sharedInstance().start(completionHandler: nil)
                 case .denied,
                         .notDetermined,
                         .restricted:
@@ -172,18 +156,15 @@ func requestTrackingAuthorization(){
                 }
             }
         }
-    })
 }
-
-
+*/
 class AppDelegate: NSObject, UIApplicationDelegate {
     let gcmMessageIDKey = "gcm.message_id"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
-
+        let db = Firestore.firestore()
         Messaging.messaging().delegate = self
-
         if #available(iOS 10.0, *) {
           // For iOS 10 display notification (sent via APNS)
           UNUserNotificationCenter.current().delegate = self
@@ -197,9 +178,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
           UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
           application.registerUserNotificationSettings(settings)
         }
-
         application.registerForRemoteNotifications()
-       // GADMobileAds.sharedInstance().start(completionHandler: nil)
         return true
     }
     
@@ -230,6 +209,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         }
         completionHandler(.newData)
     }
+    
 
     @available(iOS 16.1, *)
     func updateLiveActivity(activity:MatchActivity, homeScore: Int, awayScore: Int, status: String,halfHomeScore:Int?, halfAwayScore:Int?) {

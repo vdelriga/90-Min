@@ -10,7 +10,10 @@ import UIKit
 import ActivityKit
 import AlertToast
 
+
+
 struct Home: View {
+    @EnvironmentObject var firestoreManager: FirestoreManager
     @State private var matches = [Match]()
     @State private var matchesSeason = [Match]()
     @State private var jornada = ""
@@ -21,126 +24,132 @@ struct Home: View {
     @State private var result = false
     let maxMatchDay = 38
     var body: some View {
-        VStack{
-            Image("logo")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-            HStack{
-                if (Int(jornada) ?? 0 > 1){
-                    Button {
-                        let newMatchday = (Int(jornada) ?? 1) - 1
-                        jornada = String(newMatchday)
-                        if jornada == String(currentMatchday){
-                            Task{
-                                await loadData()
-                            }
-                        }else{
-                            loadMatchDay(matchday: Int(jornada) ?? 0)
-                        }
-                    }label:{
-                        Image(systemName:"chevron.backward")
-                            .foregroundColor(.red)
-                    }
-                    .padding(.leading)
-                }
-                Spacer()
-                if !jornada.isEmpty {
-                    Text("Jornada:" + jornada)
-                        .font(.headline)
-                        .foregroundColor(.red)
-                }
-                Spacer()
-                if (Int(jornada) ?? 0 < maxMatchDay){
-                    Button{
-                        let newMatchday = (Int(jornada) ?? 1) + 1
-                        jornada = String(newMatchday)
-                        if jornada == String(currentMatchday){
-                            Task{
-                                await loadData()
-                            }
-                        }else{
-                            loadMatchDay(matchday: Int(jornada) ?? 0)
-                        }
-                    }label:{
-                        Image(systemName:"chevron.right")
-                            .foregroundColor(.red)
-                    }
-                    .padding(.trailing)
-                }
-                
-            }
-            ZStack{
-                
-                Image("PD")
+        ZStack{
+            VStack{
+                Image("logo")
                     .resizable()
-                    .frame(width: 350, height: 350)
-                    .blur(radius:8)
-                if #available(iOS 15.0, *) {
-                    List(matches, id: \.id) { item in
-                        VStack(alignment: .leading) {
-                            HStack{
-                                VStack(alignment: .center,spacing:4){
-                                    Image(String(item.homeTeam.id))
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
-                                    
-                                    Text(item.homeTeam.shortName)
-                                        .font(.headline)
-                                        .lineLimit(2)
-                                    
-                                }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-                                Spacer()
-                                VStack{
-                                    Text(getMatchDate(stringDate: item.utcDate))
-                                        .font(.caption)
-                                    Text(getMatchTime(stringDate: item.utcDate))
-                                        .font(.caption)
-                                    Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
-                                        .font(.largeTitle)
-                                    Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
-                                        .font(.caption)
-                                    
-                                }
-                                Spacer()
-                                VStack{
-                                    Image(String(item.awayTeam.id))
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
-                                    
-                                    Text(item.awayTeam.shortName)
-                                        .font(.headline)
-                                        .lineLimit(2)
-                                }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-                            }
-                        }.onTapGesture{
-                            result = startActivity(match: item)
-                            showToast.toggle()
-                        }
-                    }.toast(isPresenting:$showToast){
-                        AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "Partido añadido a tu pantalla de inicio.":"El partido ya ha finalizado o ya se ha programado.")
-                    }
-                    .padding(.bottom)
-                    .refreshable{
-                        await loadData()
-                    }.onReceive(self.observer.$enteredForeground) { _ in
-                        Task {
-                            await getCurrentMatchday()
-                            await loadDataSeason()
-                        }
-                    }
-                    .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                } else {
-                    // Fallback on earlier versions
-                }
-                SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-3940256099942544/2934735716")
+                    .aspectRatio(contentMode: .fit)
                 
+                HStack{
+                    if (Int(jornada) ?? 0 > 1){
+                        Button {
+                            let newMatchday = (Int(jornada) ?? 1) - 1
+                            jornada = String(newMatchday)
+                            if jornada == String(currentMatchday){
+                                Task{
+                                    await loadData()
+                                }
+                            }else{
+                                loadMatchDay(matchday: Int(jornada) ?? 0)
+                            }
+                        }label:{
+                            Image(systemName:"chevron.backward")
+                                .foregroundColor(.red)
+                        }
+                        .padding(.leading)
+                    }
+                    Spacer()
+                    if !jornada.isEmpty {
+                        Text("Jornada:" + jornada)
+                            .font(.headline)
+                            .foregroundColor(.red)
+                    }
+                    Spacer()
+                    if (Int(jornada) ?? 0 < maxMatchDay){
+                        Button{
+                            let newMatchday = (Int(jornada) ?? 1) + 1
+                            jornada = String(newMatchday)
+                            if jornada == String(currentMatchday){
+                                Task{
+                                    await loadData()
+                                }
+                            }else{
+                                loadMatchDay(matchday: Int(jornada) ?? 0)
+                            }
+                        }label:{
+                            Image(systemName:"chevron.right")
+                                .foregroundColor(.red)
+                        }
+                        .padding(.trailing)
+                    }
+                    
+                }
+                ZStack{
+                    
+                    Image("PD")
+                        .resizable()
+                        .frame(width: 350, height: 350)
+                        .blur(radius:8)
+                    if #available(iOS 15.0, *) {
+                        List(matches, id: \.id) { item in
+                            VStack(alignment: .leading) {
+                                HStack{
+                                    VStack(alignment: .center,spacing:4){
+                                        Image(String(item.homeTeam.id))
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                                        
+                                        Text(item.homeTeam.shortName)
+                                            .font(.headline)
+                                            .lineLimit(2)
+                                        
+                                    }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                    Spacer()
+                                    VStack{
+                                        Text(getMatchDate(stringDate: item.utcDate))
+                                            .font(.caption)
+                                        Text(getMatchTime(stringDate: item.utcDate))
+                                            .font(.caption)
+                                        Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
+                                            .font(.largeTitle)
+                                        Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
+                                            .font(.caption)
+                                        
+                                    }
+                                    Spacer()
+                                    VStack{
+                                        Image(String(item.awayTeam.id))
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                                        
+                                        Text(item.awayTeam.shortName)
+                                            .font(.headline)
+                                            .lineLimit(2)
+                                    }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                }
+                            }.onTapGesture{
+                                result = startActivity(match: item)
+                                showToast.toggle()
+                            }
+                        }.toast(isPresenting:$showToast){
+                            AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "Partido añadido a tu pantalla de inicio.":"El partido ya ha finalizado o ya se ha programado.")
+                        }
+                        .padding(.bottom)
+                        .refreshable{
+                            await loadData()
+                        }.onReceive(self.observer.$enteredForeground) { _ in
+                            Task {
+                                await getCurrentMatchday()
+                                await loadDataSeason()
+                            }
+                        }
+                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                    } else {
+                        // Fallback on earlier versions
+                    }
+                    
+                    
+                }
             }
+            SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-3940256099942544/2934735716")
+
         }
 
     }
-    
+    func placeOrder() { }
+    func adjustOrder() { }
     
     func getMatchTime(stringDate: String)->String{
         let dateFormatter = DateFormatter()
@@ -236,9 +245,10 @@ struct Home: View {
             let (data, _) = try await URLSession.shared.data(for:request)
 
             if let decodedResponse =
-                try? JSONDecoder().decode(Session.self, from: data){
+                try? JSONDecoder().decode(Season.self, from: data){
                 jornada = String(decodedResponse.currentSeason.currentMatchday)
                 currentMatchday = decodedResponse.currentSeason.currentMatchday
+                firestoreManager.addSeasonLaLiga(decodedResponse.currentSeason)
                 Task {
                     await loadData()
                 }
@@ -248,7 +258,6 @@ struct Home: View {
             print("JSON decode failed: \(jsonError.localizedDescription)")
         }
     }
-    
     
     @available(iOS 16.1, *)
     func existActivity(id: Int) -> Bool{
@@ -365,7 +374,8 @@ func getPart(halfTime: childScore, fullTime: childScore,status:String)->String{
 
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
-            Home()
+        Home()
+            .environmentObject(FirestoreManager())
        
     }
 }

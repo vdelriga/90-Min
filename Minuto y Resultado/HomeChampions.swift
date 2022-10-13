@@ -234,7 +234,7 @@ struct HomeChampions: View {
             let (data, _) = try await URLSession.shared.data(for:request)
 
             if let decodedResponse =
-                try? JSONDecoder().decode(Session.self, from: data){
+                try? JSONDecoder().decode(Season.self, from: data){
                 currentMatchday = decodedResponse.currentSeason.currentMatchday
                 jornada = String(decodedResponse.currentSeason.currentMatchday)
                 Task {

@@ -15,6 +15,9 @@
 		FA24409928D5907E0031A6C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA24409828D5907E0031A6C9 /* Assets.xcassets */; };
 		FA24409C28D5907E0031A6C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA24409B28D5907E0031A6C9 /* Preview Assets.xcassets */; };
 		FA2440A328D591410031A6C9 /* Partidos.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2440A228D591410031A6C9 /* Partidos.swift */; };
+		FA29923D28F89E31008A3DEE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FA29923C28F89E31008A3DEE /* FirebaseFirestore */; };
+		FA29923F28F8AB18008A3DEE /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29923E28F8AB12008A3DEE /* Database.swift */; };
+		FA29924428F8AF5D008A3DEE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FA29924328F8AF5D008A3DEE /* FirebaseFirestoreSwift */; };
 		FA3FD58A28DD162A00E68D9D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA47CBAA28DB5905009F1A2C /* WidgetKit.framework */; };
 		FA3FD58B28DD162A00E68D9D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */; };
 		FA3FD58E28DD162A00E68D9D /* NoventaMin.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD58D28DD162A00E68D9D /* NoventaMin.swift */; };
@@ -24,11 +27,12 @@
 		FA3FD59A28DD197C00E68D9D /* LiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FD59828DD167400E68D9D /* LiveActivity.swift */; };
 		FA512D0328E22EAC00EDE1A6 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FA512D0228E22EAC00EDE1A6 /* FirebaseAnalytics */; };
 		FA512D0528E22EAC00EDE1A6 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = FA512D0428E22EAC00EDE1A6 /* FirebaseMessaging */; };
-		FA512D0B28E2324600EDE1A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA512D0A28E2324600EDE1A6 /* GoogleService-Info.plist */; };
 		FA656A9728DA4B86007E6194 /* Standings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA656A9628DA4B86007E6194 /* Standings.swift */; };
+		FA8C183828F19D600097CC58 /* GDPRConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8C183728F19D600097CC58 /* GDPRConsent.swift */; };
 		FA90171228E838CA0028597F /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = FA90171128E838CA0028597F /* AlertToast */; };
 		FA9BDBC528F0324B008D3C0A /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BDBC128F02C1F008D3C0A /* Banner.swift */; };
 		FA9BDBC628F0324D008D3C0A /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BDBC328F02E29008D3C0A /* BannerView.swift */; };
+		FA9BDBC828F2DA63008D3C0A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FA9BDBC728F2DA63008D3C0A /* GoogleService-Info.plist */; };
 		FAC661BC28D75E2B009CA154 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC661BB28D75E2B009CA154 /* Observer.swift */; };
 		FACEFF4F28DA1E3E00912472 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACEFF4E28DA1E3E00912472 /* MainView.swift */; };
 /* End PBXBuildFile section */
@@ -66,6 +70,7 @@
 		FA24409828D5907E0031A6C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA24409B28D5907E0031A6C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FA2440A228D591410031A6C9 /* Partidos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Partidos.swift; sourceTree = "<group>"; };
+		FA29923E28F8AB12008A3DEE /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		FA3FD58928DD162A00E68D9D /* NoventaMinExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NoventaMinExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA3FD58D28DD162A00E68D9D /* NoventaMin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoventaMin.swift; sourceTree = "<group>"; };
 		FA3FD58F28DD162B00E68D9D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -73,11 +78,12 @@
 		FA3FD59828DD167400E68D9D /* LiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivity.swift; sourceTree = "<group>"; };
 		FA47CBAA28DB5905009F1A2C /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		FA512D0A28E2324600EDE1A6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FA512D0C28E2326600EDE1A6 /* 90 Min.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "90 Min.entitlements"; sourceTree = "<group>"; };
 		FA656A9628DA4B86007E6194 /* Standings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standings.swift; sourceTree = "<group>"; };
+		FA8C183728F19D600097CC58 /* GDPRConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPRConsent.swift; sourceTree = "<group>"; };
 		FA9BDBC128F02C1F008D3C0A /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		FA9BDBC328F02E29008D3C0A /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
+		FA9BDBC728F2DA63008D3C0A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FAC661BB28D75E2B009CA154 /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		FACDF5BD28DD083F0052D31D /* -0-Minutos-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "-0-Minutos-Info.plist"; sourceTree = "<group>"; };
 		FACEFF4E28DA1E3E00912472 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -91,7 +97,9 @@
 				FA159DA328F01FF200E319BE /* GoogleMobileAds in Frameworks */,
 				FA90171228E838CA0028597F /* AlertToast in Frameworks */,
 				FA512D0528E22EAC00EDE1A6 /* FirebaseMessaging in Frameworks */,
+				FA29923D28F89E31008A3DEE /* FirebaseFirestore in Frameworks */,
 				FA512D0328E22EAC00EDE1A6 /* FirebaseAnalytics in Frameworks */,
+				FA29924428F8AF5D008A3DEE /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,8 +139,10 @@
 		FA24409328D5907D0031A6C9 /* Minuto y Resultado */ = {
 			isa = PBXGroup;
 			children = (
-				FA512D0A28E2324600EDE1A6 /* GoogleService-Info.plist */,
+				FA9BDBC728F2DA63008D3C0A /* GoogleService-Info.plist */,
+				FA29923E28F8AB12008A3DEE /* Database.swift */,
 				FA9BDBC128F02C1F008D3C0A /* Banner.swift */,
+				FA8C183728F19D600097CC58 /* GDPRConsent.swift */,
 				FA9BDBC328F02E29008D3C0A /* BannerView.swift */,
 				FACEFF4E28DA1E3E00912472 /* MainView.swift */,
 				FA656A9628DA4B86007E6194 /* Standings.swift */,
@@ -199,6 +209,8 @@
 				FA512D0428E22EAC00EDE1A6 /* FirebaseMessaging */,
 				FA90171128E838CA0028597F /* AlertToast */,
 				FA159DA228F01FF200E319BE /* GoogleMobileAds */,
+				FA29923C28F89E31008A3DEE /* FirebaseFirestore */,
+				FA29924328F8AF5D008A3DEE /* FirebaseFirestoreSwift */,
 			);
 			productName = "Minuto y Resultado";
 			productReference = FA24409128D5907D0031A6C9 /* 90 Min.app */;
@@ -269,8 +281,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA24409C28D5907E0031A6C9 /* Preview Assets.xcassets in Resources */,
+				FA9BDBC828F2DA63008D3C0A /* GoogleService-Info.plist in Resources */,
 				FA24409928D5907E0031A6C9 /* Assets.xcassets in Resources */,
-				FA512D0B28E2324600EDE1A6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +304,7 @@
 				FA19DB8028EF69B7001B63C2 /* StandingsCL.swift in Sources */,
 				FA24409728D5907D0031A6C9 /* Home.swift in Sources */,
 				FA1C4DAF28ECDBFB00CB7175 /* HomeChampions.swift in Sources */,
+				FA8C183828F19D600097CC58 /* GDPRConsent.swift in Sources */,
 				FAC661BC28D75E2B009CA154 /* Observer.swift in Sources */,
 				FA2440A328D591410031A6C9 /* Partidos.swift in Sources */,
 				FA24409528D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift in Sources */,
@@ -299,6 +312,7 @@
 				FA9BDBC528F0324B008D3C0A /* Banner.swift in Sources */,
 				FA9BDBC628F0324D008D3C0A /* BannerView.swift in Sources */,
 				FACEFF4F28DA1E3E00912472 /* MainView.swift in Sources */,
+				FA29923F28F8AB18008A3DEE /* Database.swift in Sources */,
 				FA656A9728DA4B86007E6194 /* Standings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -452,6 +466,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "-0-Minutos-Info.plist";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Utilizamos el identificador de publicidad para adaptar la publicidad a tus gustos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -464,6 +479,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -490,6 +506,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "-0-Minutos-Info.plist";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Utilizamos el identificador de publicidad para adaptar la publicidad a tus gustos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -502,6 +519,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -637,6 +655,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FA159DA128F01FF200E319BE /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
 			productName = GoogleMobileAds;
+		};
+		FA29923C28F89E31008A3DEE /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA512D0128E22EAC00EDE1A6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		FA29924328F8AF5D008A3DEE /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA512D0128E22EAC00EDE1A6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
 		};
 		FA512D0228E22EAC00EDE1A6 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
