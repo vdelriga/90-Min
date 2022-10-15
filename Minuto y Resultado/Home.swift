@@ -10,7 +10,15 @@ import UIKit
 import ActivityKit
 import AlertToast
 
+extension Date {
+    func localDate() -> Date {
+        let nowUTC = Date()
+        let timeZoneOffset = Double(TimeZone.current.secondsFromGMT(for: nowUTC))
+        guard let localDate = Calendar.current.date(byAdding: .second, value: Int(timeZoneOffset), to: nowUTC) else {return Date()}
 
+        return localDate
+    }
+}
 
 struct Home: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
@@ -131,8 +139,8 @@ struct Home: View {
                             await loadData()
                         }.onReceive(self.observer.$enteredForeground) { _ in
                             Task {
-                                await getCurrentMatchday()
-                                await loadDataSeason()
+                                getCurrentMatchdayDatabase()
+                                getSeasonMatches()
                             }
                         }
                         .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
@@ -145,6 +153,35 @@ struct Home: View {
             }
             SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-3940256099942544/2934735716")
 
+        }.onReceive(firestoreManager.$currentMatchday) { matchday in
+            if(matchday != 0){
+                let now = Date().localDate()
+                //se añade la fecha de expiración en segundos(6h)
+                let expiredTime = firestoreManager.matchdayTimestamp.addingTimeInterval(21600)
+                if now  < expiredTime {
+                    jornada = String(matchday)
+                    currentMatchday = matchday
+                    Task{
+                        await loadData()
+                    }
+                }else{
+                    Task{
+                        await getCurrentMatchday()
+                    }
+                }
+            }
+        }
+        .onReceive(firestoreManager.$seasonMatches) { matches in
+                let now = Date().localDate()
+                //se añade la fecha de expiración en segundos(6h)
+                let expiredTime = firestoreManager.seasonMatchesTimestamp.addingTimeInterval(21600)
+                if now  < expiredTime {
+                    matchesSeason = matches.matches
+                }else{
+                    Task{
+                        await loadDataSeason()
+                    }
+                }
         }
 
     }
@@ -206,7 +243,7 @@ struct Home: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(Matches.self, from: data){
                 matchesSeason = decodedResponse.matches
-               
+                firestoreManager.updateSeasonMatches(decodedResponse)
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
@@ -232,6 +269,15 @@ struct Home: View {
             print("JSON decode failed: \(jsonError.localizedDescription)")
         }
     }
+    func getCurrentMatchdayDatabase(){
+        firestoreManager.getSeason()
+
+    }
+    
+    func getSeasonMatches(){
+        firestoreManager.getSeasonMatches()
+
+    }
     
     func getCurrentMatchday() async {
         guard let url = URL(string: "https://api.football-data.org/v4/competitions/PD")
@@ -248,7 +294,7 @@ struct Home: View {
                 try? JSONDecoder().decode(Season.self, from: data){
                 jornada = String(decodedResponse.currentSeason.currentMatchday)
                 currentMatchday = decodedResponse.currentSeason.currentMatchday
-                firestoreManager.addSeasonLaLiga(decodedResponse.currentSeason)
+                firestoreManager.updateSeasonLaLiga(decodedResponse.currentSeason)
                 Task {
                     await loadData()
                 }

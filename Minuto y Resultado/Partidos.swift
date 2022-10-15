@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct Matches: Codable {
     var matches: [Match]
