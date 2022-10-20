@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Standings: View {
+    @EnvironmentObject var firestoreManager: FirestoreManager
     @State private var standings = [StandingType]()
     @State private var table = [Position]()
     @State private var selectedStandingType = 0
@@ -28,7 +29,8 @@ struct Standings: View {
                         }).pickerStyle(SegmentedPickerStyle())
                             .onChange(of: selectedStandingType) { newValue in
                                 Task{
-                                    await loadDataStandings(type: newValue)
+                                    //await loadDataStandings(type: newValue)
+                                    getStandings()
                                 }
                             }
                         
@@ -75,16 +77,37 @@ struct Standings: View {
                             }
                         }.listStyle(.plain)
                         .refreshable{
-                            await loadDataStandings(type: selectedStandingType)
+                            getStandings()
                         }
                         .onReceive(self.observer.$enteredForeground) { _ in
                             Task {
-                                await loadDataStandings(type: selectedStandingType)
+                                //await loadDataStandings(type: selectedStandingType)
+                                getStandings()
                             }
                         }.opacity(0.8)
                     }
+                }.onReceive(firestoreManager.$standings) { standingsFirestore in
+                    if standingsFirestore.standings.count > 0 {
+                        let now = Date.now
+                        //se añade la fecha de expiración en segundos(30s)
+                        let expiredTime = firestoreManager.standingsTimestamp.addingTimeInterval(30)
+                        if now  < expiredTime {
+                            print("Información de clasificación cacheada")
+                            standings = standingsFirestore.standings
+                            table = standings[selectedStandingType].table
+                        }else{
+                            Task{
+                                await loadDataStandings(type: selectedStandingType)
+                            }
+                        }
+                    }
                 }
+
             }
+    }
+    
+    func getStandings(){
+        firestoreManager.getStandings()
     }
     
     
@@ -103,6 +126,8 @@ struct Standings: View {
                 try? JSONDecoder().decode(Standing.self, from: data){
                 standings = decodedResponse.standings
                 table = standings[type].table
+                firestoreManager.addStandings(decodedResponse)
+                firestoreManager.updateStandings()
                 
             }
         } catch let jsonError as NSError {

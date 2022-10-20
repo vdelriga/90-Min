@@ -11,6 +11,7 @@ import ActivityKit
 import AlertToast
 
 struct HomeChampions: View {
+    @EnvironmentObject var firestoreManager: FirestoreManager
     @State private var matches = [Match]()
     @State private var matchesSeason = [Match]()
     @State private var jornada = ""
@@ -32,7 +33,8 @@ struct HomeChampions: View {
                         jornada = String(newMatchday)
                         if jornada == String(currentMatchday){
                             Task{
-                                await loadData()
+                                //await loadData()
+                                getMatchdayMatchesCL()
                             }
                         }else{
                             loadMatchDay(matchday: Int(jornada) ?? 0)
@@ -56,7 +58,7 @@ struct HomeChampions: View {
                         jornada = String(newMatchday)
                         if jornada == String(currentMatchday){
                             Task{
-                                await loadData()
+                                getMatchdayMatchesCL()
                             }
                         }else{
                             loadMatchDay(matchday: Int(jornada) ?? 0)
@@ -122,11 +124,11 @@ struct HomeChampions: View {
                     }
                     .padding(.bottom)
                     .refreshable{
-                        await loadData()
+                        getMatchdayMatchesCL()
                     }.onReceive(self.observer.$enteredForeground) { _ in
                         Task {
-                            await getCurrentMatchday()
-                            await loadDataSeason()
+                            getCurrentMatchdayDatabase()
+                            getSeasonCLMatches()
                         }
                     }
                     .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
@@ -135,9 +137,62 @@ struct HomeChampions: View {
                 }
                 SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-3940256099942544/2934735716")
                 
+            }.onReceive(firestoreManager.$currentCLMatchday) { matchday in
+                if(matchday != 0){
+                    let now = Date.now
+                    //se añade la fecha de expiración en segundos(6h)
+                    let expiredTime = firestoreManager.matchdayCLTimestamp.addingTimeInterval(21600)
+                    if now  < expiredTime {
+                        jornada = String(matchday)
+                        currentMatchday = matchday
+                        getMatchdayMatchesCL()
+                    }else{
+                        Task{
+                            await getCurrentMatchday()
+                        }
+                    }
+                }
+            }.onReceive(firestoreManager.$seasonCLMatches) { matches in
+                let now = Date.now
+                    //se añade la fecha de expiración en segundos(6h)
+                    let expiredTime = firestoreManager.seasonCLMatchesTimestamp.addingTimeInterval(21600)
+                    if now  < expiredTime {
+                        matchesSeason = matches.matches
+                    }else{
+                        Task{
+                            await loadDataSeason()
+                        }
+                    }
+            }.onReceive(firestoreManager.$matchdayMatchesCL) { matchdayMatches in
+                if matchdayMatches.matches.count > 0 {
+                    let now = Date.now
+                    //se añade la fecha de expiración en segundos(6h)
+                    let expiredTime = firestoreManager.matchdayMatchesCLTimestamp.addingTimeInterval(10)
+                    if now  < expiredTime {
+                        print("Información de partidos cacheada")
+                        matches = matchdayMatches.matches
+                    }else{
+                        Task{
+                            await loadData()
+                        }
+                    }
+                }
             }
+            
         }
 
+    }
+    func getMatchdayMatchesCL(){
+        firestoreManager.getMatchdayMatchesCL()
+    }
+    
+    func getCurrentMatchdayDatabase(){
+        firestoreManager.getSeasonCL()
+
+    }
+    
+    func getSeasonCLMatches(){
+        firestoreManager.getSeasonCLMatches()
     }
     
     
@@ -187,6 +242,8 @@ struct HomeChampions: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(Matches.self, from: data){
                 matches = decodedResponse.matches
+                firestoreManager.addMatchdayMatchesCL(decodedResponse)
+                firestoreManager.updateMatchdayMatchesCL()
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
@@ -206,6 +263,8 @@ struct HomeChampions: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(Matches.self, from: data){
                 matchesSeason = decodedResponse.matches
+                firestoreManager.addSeasonCLMatches(decodedResponse)
+                firestoreManager.updateSeasonCLMatches()
                
             }
         } catch let jsonError as NSError {
@@ -237,6 +296,8 @@ struct HomeChampions: View {
                 try? JSONDecoder().decode(Season.self, from: data){
                 currentMatchday = decodedResponse.currentSeason.currentMatchday
                 jornada = String(decodedResponse.currentSeason.currentMatchday)
+                firestoreManager.addSeasonCL(decodedResponse.currentSeason)
+                firestoreManager.updateSeasonCL()
                 Task {
                     await loadData()
                 }

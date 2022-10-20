@@ -45,7 +45,7 @@ struct Home: View {
                             jornada = String(newMatchday)
                             if jornada == String(currentMatchday){
                                 Task{
-                                    await loadData()
+                                    getMatchdayMatches()
                                 }
                             }else{
                                 loadMatchDay(matchday: Int(jornada) ?? 0)
@@ -68,9 +68,7 @@ struct Home: View {
                             let newMatchday = (Int(jornada) ?? 1) + 1
                             jornada = String(newMatchday)
                             if jornada == String(currentMatchday){
-                                Task{
-                                    await loadData()
-                                }
+                                getMatchdayMatches()
                             }else{
                                 loadMatchDay(matchday: Int(jornada) ?? 0)
                             }
@@ -136,7 +134,7 @@ struct Home: View {
                         }
                         .padding(.bottom)
                         .refreshable{
-                            await loadData()
+                            getMatchdayMatches()
                         }.onReceive(self.observer.$enteredForeground) { _ in
                             Task {
                                 getCurrentMatchdayDatabase()
@@ -155,15 +153,13 @@ struct Home: View {
 
         }.onReceive(firestoreManager.$currentMatchday) { matchday in
             if(matchday != 0){
-                let now = Date().localDate()
+                let now = Date.now
                 //se añade la fecha de expiración en segundos(6h)
                 let expiredTime = firestoreManager.matchdayTimestamp.addingTimeInterval(21600)
                 if now  < expiredTime {
                     jornada = String(matchday)
                     currentMatchday = matchday
-                    Task{
-                        await loadData()
-                    }
+                    getMatchdayMatches()
                 }else{
                     Task{
                         await getCurrentMatchday()
@@ -172,7 +168,7 @@ struct Home: View {
             }
         }
         .onReceive(firestoreManager.$seasonMatches) { matches in
-                let now = Date().localDate()
+            let now = Date.now
                 //se añade la fecha de expiración en segundos(6h)
                 let expiredTime = firestoreManager.seasonMatchesTimestamp.addingTimeInterval(21600)
                 if now  < expiredTime {
@@ -182,6 +178,21 @@ struct Home: View {
                         await loadDataSeason()
                     }
                 }
+        }
+        .onReceive(firestoreManager.$matchdayMatches) { matchdayMatches in
+            if matchdayMatches.matches.count > 0 {
+                let now = Date.now
+                //se añade la fecha de expiración en segundos(6h)
+                let expiredTime = firestoreManager.matchdayMatchesTimestamp.addingTimeInterval(10)
+                if now  < expiredTime {
+                    print("Información de partidos cacheada")
+                    matches = matchdayMatches.matches
+                }else{
+                    Task{
+                        await loadData()
+                    }
+                }
+            }
         }
 
     }
@@ -243,7 +254,8 @@ struct Home: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(Matches.self, from: data){
                 matchesSeason = decodedResponse.matches
-                firestoreManager.updateSeasonMatches(decodedResponse)
+                firestoreManager.addSeasonMatches(decodedResponse)
+                firestoreManager.updateSeasonMatches()
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
@@ -257,6 +269,7 @@ struct Home: View {
             return
             }
         var request = URLRequest(url: url)
+        print(url)
         request.setValue("b0212e6976094d3aa404ec2c3b6705be", forHTTPHeaderField: "X-Auth-Token")
         do {
             let (data, _) = try await URLSession.shared.data(for:request)
@@ -264,6 +277,8 @@ struct Home: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(Matches.self, from: data){
                 matches = decodedResponse.matches
+                firestoreManager.addMatchdayMatches(decodedResponse)
+                firestoreManager.updateMatchdayMatches()
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
@@ -277,6 +292,10 @@ struct Home: View {
     func getSeasonMatches(){
         firestoreManager.getSeasonMatches()
 
+    }
+    
+    func getMatchdayMatches(){
+        firestoreManager.getMatchdayMatches()
     }
     
     func getCurrentMatchday() async {
@@ -294,9 +313,10 @@ struct Home: View {
                 try? JSONDecoder().decode(Season.self, from: data){
                 jornada = String(decodedResponse.currentSeason.currentMatchday)
                 currentMatchday = decodedResponse.currentSeason.currentMatchday
-                firestoreManager.updateSeasonLaLiga(decodedResponse.currentSeason)
+                firestoreManager.addSeasonLaLiga(decodedResponse.currentSeason)
+                firestoreManager.updateSeasonLaLiga()
                 Task {
-                    await loadData()
+                    getMatchdayMatches()
                 }
                 
             }

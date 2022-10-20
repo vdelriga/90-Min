@@ -4,6 +4,7 @@ import SwiftUI
 
 struct StandingsCL: View {
     @State private var standings = [StandingGroup]()
+    @EnvironmentObject var firestoreManager: FirestoreManager
     @ObservedObject var observer = Observer()
     
     
@@ -59,14 +60,29 @@ struct StandingsCL: View {
                             }
                         }.listStyle(.plain)
                             .refreshable{
-                                await loadDataStandings()
+                                getStandingsCL()
                             }
                             .onReceive(self.observer.$enteredForeground) { _ in
                                 Task {
-                                    await loadDataStandings()
+                                    getStandingsCL()
+                                    
                                 }
                             }
                             .opacity(0.8)
+                    }
+                }
+            }.onReceive(firestoreManager.$standingsCL) { standingsCLFirestore in
+                if standingsCLFirestore.standings.count > 0 {
+                    let now = Date.now
+                    //se añade la fecha de expiración en segundos(30s)
+                    let expiredTime = firestoreManager.standingsCLTimestamp.addingTimeInterval(30)
+                    if now  < expiredTime {
+                        print("Información de clasificación cacheada")
+                        standings = standingsCLFirestore.standings
+                    }else{
+                        Task{
+                            await loadDataStandings()
+                        }
                     }
                 }
             }
@@ -102,13 +118,23 @@ struct StandingsCL: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(StandingCL.self, from: data){
                 standings = decodedResponse.standings
+                firestoreManager.addStandingsCL(decodedResponse)
+                firestoreManager.updateStandingsCL()
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
         }
     }
+    
+    
+    func getStandingsCL(){
+        firestoreManager.getStandingsCL()
+    }
+
 
 }
+
+
 struct headerTableCL: View {
   let group:String
   var body: some View {
