@@ -10,6 +10,11 @@ import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+struct Token: Codable {
+    var token: String
+}
+
+
 struct Matches: Codable {
     var matches: [Match]
 }

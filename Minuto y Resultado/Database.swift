@@ -32,6 +32,15 @@ class FirestoreManager: ObservableObject {
     @Published var matchdayMatchesCLTimestamp: Date = Date.now
     @Published var matchdayMatchesCL:Matches = Matches(matches:[])
     
+    //función que almacena los tokens de las Live activities
+    func addMatchToken(matchId: Int, token:Token) {
+        do {
+            // 6
+            _ = try store.collection(String(matchId)).document(token.token).setData(from: token)
+        } catch {
+            fatalError("Unable to add card: \(error.localizedDescription).")
+        }
+    }
     
     
     

@@ -9,6 +9,7 @@ import SwiftUI
 import UIKit
 import ActivityKit
 import AlertToast
+import Firebase
 
 struct HomeChampions: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
@@ -135,7 +136,7 @@ struct HomeChampions: View {
                 } else {
                     // Fallback on earlier versions
                 }
-                SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-3940256099942544/2934735716")
+                SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-4851885141099304/9005939785")
                 
             }.onReceive(firestoreManager.$currentCLMatchday) { matchday in
                 if(matchday != 0){
@@ -311,8 +312,8 @@ struct HomeChampions: View {
     
     @available(iOS 16.1, *)
     func existActivity(id: Int) -> Bool{
-        for activity in ActivityManager.matchActivities {
-            if activity.id == id && activity.matchActivity.activityState == .active{
+        for activity in Activity<MatchAttributes>.activities {
+            if activity.attributes.id == id && activity.activityState == .active{
                 return true
             }
                 
@@ -320,17 +321,6 @@ struct HomeChampions: View {
         return false
     }
     
-    func killActivitiesFake(){
-        if #available(iOS 16.1, *) {
-            let finalMatchStatus = MatchAttributes.ContentState(status: "FINISHED", scoreHomeFullTime: 0, scoreAwayFullTime: 0)
-            Task {
-                for activity in ActivityManager.matchActivities {
-                    await activity.matchActivity.end(using:finalMatchStatus, dismissalPolicy: .default)
-                }
-                print("Se paran todas las actividades")
-            }
-        }
-    }
     
     func startActivity(match: Match)->Bool{
         if #available(iOS 16.1, *) {
@@ -344,8 +334,10 @@ struct HomeChampions: View {
                               return
                             }
 
-                            let activity = MatchActivity(matchAct: try Activity.request(attributes:activityAttributes,contentState: initialContentState), idActivity: match.id)
-                            ActivityManager.matchActivities.append(activity)
+                        let _ =  try Activity.request(attributes:activityAttributes,contentState: initialContentState)
+                         Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
+                             print("Subscribed to Match: \(match.id)")
+                         }
                     }
                 }
                 return true
@@ -357,30 +349,7 @@ struct HomeChampions: View {
         
     }
     
-    func startActivityFake(){
-        if #available(iOS 16.1, *) {
-            if !existActivity(id:matches[activityCounter].id){
-                let initialContentState = MatchAttributes.ContentState(status: "IN_PLAY", scoreHomeFullTime: 0, scoreAwayFullTime: 0)
-                let activityAttributes = MatchAttributes(id: matches[activityCounter].id, utcDate: matches[activityCounter].utcDate, matchday: matches[activityCounter].matchday, idHome: matches[activityCounter].homeTeam.id, nameHome: matches[activityCounter].homeTeam.name, shortNameHome: matches[activityCounter].homeTeam.shortName, tlaHome: matches[activityCounter].homeTeam.tla, crestHome: matches[activityCounter].homeTeam.crest, idAway: matches[activityCounter].awayTeam.id, nameAway: matches[activityCounter].awayTeam.name, shortNameAway: matches[activityCounter].awayTeam.shortName, tlaAway: matches[activityCounter].awayTeam.tla, crestAway: matches[activityCounter].awayTeam.crest)
-                Task{
-                    do{
-                        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-                              print("Activities are not enabled!")
-                              return
-                            }
-
-                            let activity = MatchActivity(matchAct: try Activity.request(attributes:activityAttributes,contentState: initialContentState), idActivity: matches[0].id)
-                            ActivityManager.matchActivities.append(activity)
-                        
-                            
-                    }
-                    print("Comienza el partido")
-                }
-                activityCounter += 1
-            }
-        }
-        
-    }
+    
     func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:Match)->String{
         switch status {
         case "IN_PLAY":
