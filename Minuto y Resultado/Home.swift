@@ -140,6 +140,7 @@ struct Home: View {
                             Task {
                                 getCurrentMatchdayDatabase()
                                 getSeasonMatches()
+                               // await loadDataSeason()
                             }
                         }
                         .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
@@ -150,7 +151,7 @@ struct Home: View {
                     
                 }
             }
-            SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-4851885141099304/9005939785")
+            SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
 
         }.onReceive(firestoreManager.$currentMatchday) { matchday in
             if(matchday != 0){
@@ -343,20 +344,18 @@ struct Home: View {
             if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"){
                 let initialContentState = MatchAttributes.ContentState(status: match.status, scoreHomeFullTime: match.score.fullTime.home, scoreAwayFullTime: match.score.fullTime.away)
                 let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday, idHome: match.homeTeam.id, nameHome: match.homeTeam.name, shortNameHome: match.homeTeam.shortName, tlaHome: match.homeTeam.tla, crestHome: match.homeTeam.crest, idAway: match.awayTeam.id, nameAway: match.awayTeam.name, shortNameAway: match.awayTeam.shortName, tlaAway: match.awayTeam.tla, crestAway: match.awayTeam.crest)
-                Task{
+                if ActivityAuthorizationInfo().areActivitiesEnabled {
                     do{
-                        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-                              print("Activities are not enabled!")
-                              return
-                            }
-
-                           let _ =  try Activity.request(attributes:activityAttributes,contentState: initialContentState)
-                            Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
-                                print("Subscribed to Match: \(match.id)")
-                            }
-
+                        let act =  try Activity<MatchAttributes>.request(attributes:activityAttributes,contentState: initialContentState)
+                        print("Actividad en estado: \(act.activityState)")
+                    }catch (let error){
+                        print("Error creando la actividad en directo \(error.localizedDescription)")
+                    }
+                    Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
+                        print("Subscribed to Match: \(match.id)")
                     }
                 }
+                
                 return true
             }else{
                 return false
@@ -370,7 +369,6 @@ struct Home: View {
     func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:Match)->String{
         switch status {
         case "IN_PLAY":
-           // startActivity(match: match)
             if halfTime.home == nil{
                     return "1ª PARTE"
                 }else
@@ -379,7 +377,6 @@ struct Home: View {
                 }
             
         case "PAUSED" :
-          //  startActivity(match: match)
             return "DESCANSO"
         case "FINISHED":  return "FINALIZADO"
         default: return ""

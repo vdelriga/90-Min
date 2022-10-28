@@ -136,7 +136,7 @@ struct HomeChampions: View {
                 } else {
                     // Fallback on earlier versions
                 }
-                SwiftUIBannerAd(adPosition: .bottom, adUnitId: "ca-app-pub-4851885141099304/9005939785")
+                SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
                 
             }.onReceive(firestoreManager.$currentCLMatchday) { matchday in
                 if(matchday != 0){
@@ -353,7 +353,6 @@ struct HomeChampions: View {
     func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:Match)->String{
         switch status {
         case "IN_PLAY":
-           // startActivity(match: match)
             if halfTime.home == nil{
                     return "1ª PARTE"
                 }else
@@ -362,7 +361,6 @@ struct HomeChampions: View {
                 }
             
         case "PAUSED" :
-          //  startActivity(match: match)
             return "DESCANSO"
         case "FINISHED":  return "FINALIZADO"
         default: return ""

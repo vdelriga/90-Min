@@ -8,7 +8,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "EDC7D6CF-3A9E-47DC-B6EA-B2AAB211F735"
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NoventaMin/NoventaMin.swift"
@@ -23,33 +23,65 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "984F27C6-92E8-4F27-A8AC-B8E5D9E913BD"
+            uuid = "5983B5B5-276D-4D0E-87E2-9477113C7CF8"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NoventaMin/NoventaMin.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
             landmarkName = "body"
             landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "5983B5B5-276D-4D0E-87E2-9477113C7CF8 - eb567c6bb42345e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NoventaMinExtension.NoventaMin.body.getter : some"
+                  moduleName = "NoventaMinExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/victormanueldelriogarcia/Documents/Minuto%20y%20Resultado/NoventaMin/NoventaMin.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "181"
+                  endingLineNumber = "181"
+                  offsetFromSymbolStart = "36">
+               </Location>
+               <Location
+                  uuid = "5983B5B5-276D-4D0E-87E2-9477113C7CF8 - 403a60c757fe9afd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (WidgetKit.ActivityViewContext&lt;NoventaMinExtension.MatchAttributes&gt;) -&gt; NoventaMinExtension.LockScreenLiveActivityView in NoventaMinExtension.NoventaMin.body.getter : some"
+                  moduleName = "NoventaMinExtension"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/victormanueldelriogarcia/Documents/Minuto%20y%20Resultado/NoventaMin/NoventaMin.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "182"
+                  endingLineNumber = "182"
+                  offsetFromSymbolStart = "372">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B2E06DD1-9069-4CF3-B081-3B6480965310"
+            uuid = "4643E75B-3B6D-45B3-9A33-2F56703A32B3"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Minuto y Resultado/Minuto_y_ResultadoApp.swift"
+            filePath = "NoventaMin/NoventaMin.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "userNotificationCenter(_:didReceive:withCompletionHandler:)"
-            landmarkType = "7">
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

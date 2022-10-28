@@ -14,6 +14,7 @@ import FirebaseCore
 
 @main
 struct Minuto_y_ResultadoApp: App {
+    
     @StateObject var firestoreManager = FirestoreManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var phase
@@ -27,11 +28,19 @@ struct Minuto_y_ResultadoApp: App {
 
 }
 
+struct Constants{
+    //Banner de Test
+    //public static let BannerId = "ca-app-pub-3940256099942544/2934735716"
+    //Banner de Prod
+    public static let BannerId = "ca-app-pub-4851885141099304/9005939785"
+}
+
+/*
 struct ActivityMatches{
     static var liveMatches = [Match]()
     static var counter: Int = 0
 }
-
+*/
 
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
