@@ -165,8 +165,12 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 if let data = data{
-                    let timestamp = data["lastUpdated"] as! Timestamp
-                    self.matchdayMatchesTimestamp = timestamp.dateValue()
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.matchdayMatchesTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.matchdayMatchesTimestamp = Calendar.current.date(byAdding: .second, value: -11, to: now)!
+                    }
                 }
                 do{
                     self.matchdayMatches = try document.data(as: Matches.self)

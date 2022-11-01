@@ -327,17 +327,20 @@ struct HomeChampions: View {
             if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"){
                 let initialContentState = MatchAttributes.ContentState(status: match.status, scoreHomeFullTime: match.score.fullTime.home, scoreAwayFullTime: match.score.fullTime.away)
                 let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday, idHome: match.homeTeam.id, nameHome: match.homeTeam.name, shortNameHome: match.homeTeam.shortName, tlaHome: match.homeTeam.tla, crestHome: match.homeTeam.crest, idAway: match.awayTeam.id, nameAway: match.awayTeam.name, shortNameAway: match.awayTeam.shortName, tlaAway: match.awayTeam.tla, crestAway: match.awayTeam.crest)
-                Task{
+                if ActivityAuthorizationInfo().areActivitiesEnabled {
                     do{
-                        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-                              print("Activities are not enabled!")
-                              return
-                            }
-
-                        let _ =  try Activity.request(attributes:activityAttributes,contentState: initialContentState)
-                         Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
-                             print("Subscribed to Match: \(match.id)")
-                         }
+                        let act =  try Activity<MatchAttributes>.request(attributes:activityAttributes,contentState: initialContentState,pushType: .token)
+                        Task {
+                              for await data in act.pushTokenUpdates {
+                                 let myToken = data.map {String(format: "%02x", $0)}.joined()
+                                  firestoreManager.addMatchToken(matchId: match.id, token: Token(token: myToken))
+                              }
+                           }
+                    }catch (let error){
+                        print("Error creando la actividad en directo \(error.localizedDescription)")
+                    }
+                    Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
+                        print("Subscribed to Match: \(match.id)")
                     }
                 }
                 return true

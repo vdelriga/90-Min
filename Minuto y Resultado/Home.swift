@@ -346,8 +346,13 @@ struct Home: View {
                 let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday, idHome: match.homeTeam.id, nameHome: match.homeTeam.name, shortNameHome: match.homeTeam.shortName, tlaHome: match.homeTeam.tla, crestHome: match.homeTeam.crest, idAway: match.awayTeam.id, nameAway: match.awayTeam.name, shortNameAway: match.awayTeam.shortName, tlaAway: match.awayTeam.tla, crestAway: match.awayTeam.crest)
                 if ActivityAuthorizationInfo().areActivitiesEnabled {
                     do{
-                        let act =  try Activity<MatchAttributes>.request(attributes:activityAttributes,contentState: initialContentState)
-                        print("Actividad en estado: \(act.activityState)")
+                        let act =  try Activity<MatchAttributes>.request(attributes:activityAttributes,contentState: initialContentState,pushType: .token)
+                        Task {
+                              for await data in act.pushTokenUpdates {
+                                 let myToken = data.map {String(format: "%02x", $0)}.joined()
+                                  firestoreManager.addMatchToken(matchId: match.id, token: Token(token: myToken))
+                              }
+                           }
                     }catch (let error){
                         print("Error creando la actividad en directo \(error.localizedDescription)")
                     }

@@ -121,10 +121,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         // Perform background operation
         if #available(iOS 16.1, *) {
-            if let strMatchId = userInfo["matchId"] as? String, let matchId = Int(strMatchId),let strHomeScore = userInfo["homeScore"] as? String, let homeScore = Int(strHomeScore),let strAwayScore = userInfo["awayScore"] as? String, let awayScore = Int(strAwayScore) ,let status = userInfo["status"] as? String{
+            if let contentState = userInfo["content-state"] as? Activity<MatchAttributes>.ContentState{
+                print("Nueva push")
+            }else
+            {
+                if let strMatchId = userInfo["matchId"] as? String, let matchId = Int(strMatchId),let strHomeScore = userInfo["homeScore"] as? String, let homeScore = Int(strHomeScore),let strAwayScore = userInfo["awayScore"] as? String, let awayScore = Int(strAwayScore) ,let status = userInfo["status"] as? String{
                     updateLiveActivity(matchId: matchId, userInfo: userInfo, status: status, awayScore: awayScore, homeScore: homeScore)
                 }
             }
+        }
         completionHandler(.newData)
     }
     
