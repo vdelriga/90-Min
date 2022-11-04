@@ -59,7 +59,7 @@ struct Home: View {
                     }
                     Spacer()
                     if !jornada.isEmpty {
-                        Text("Jornada:" + jornada)
+                        Text(NSLocalizedString("matchDayText",comment:"") + jornada)
                             .font(.headline)
                             .foregroundColor(.red)
                     }
@@ -131,7 +131,7 @@ struct Home: View {
                                 showToast.toggle()
                             }
                         }.toast(isPresenting:$showToast){
-                            AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "Partido añadido a tu pantalla de inicio.":"El partido ya ha finalizado o ya se ha programado.")
+                            AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "addingMatchtoLockScreenOK":"addingMatchtoLockScreenKO")
                         }
                         .padding(.bottom)
                         .refreshable{
@@ -356,9 +356,9 @@ struct Home: View {
                     }catch (let error){
                         print("Error creando la actividad en directo \(error.localizedDescription)")
                     }
-                    Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
+                    /*Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
                         print("Subscribed to Match: \(match.id)")
-                    }
+                    }*/
                 }
                 
                 return true
@@ -375,15 +375,15 @@ struct Home: View {
         switch status {
         case "IN_PLAY":
             if halfTime.home == nil{
-                    return "1ª PARTE"
+                return NSLocalizedString("firstHalfKey",comment:"")
                 }else
                 {
-                    return "2ª PARTE"
+                    return NSLocalizedString("secondHalfKey",comment:"")
                 }
             
         case "PAUSED" :
-            return "DESCANSO"
-        case "FINISHED":  return "FINALIZADO"
+            return NSLocalizedString("pausedKey",comment:"")
+        case "FINISHED":  return NSLocalizedString("finishedKey",comment:"")
         default: return ""
             
         }
@@ -395,14 +395,14 @@ func getPart(halfTime: childScore, fullTime: childScore,status:String)->String{
     switch status {
     case "IN_PLAY":
         if halfTime.home == nil{
-                return "1ª PARTE"
+                return NSLocalizedString("firstHalfKey", comment: "")
             }else
             {
-                return "2ª PARTE"
+                return "secondHalfKey"
             }
         
-    case "PAUSED" :  return "DESCANSO"
-    case "FINISHED":  return "FINALIZADO"
+    case "PAUSED" :  return NSLocalizedString("pausedKey",comment:"")
+    case "FINISHED":  return NSLocalizedString("finishedKey",comment:"")
     default: return ""
         
     }

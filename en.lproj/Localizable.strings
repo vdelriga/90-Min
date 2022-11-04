@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  90 Min
+
+  Created by Victor Manuel Del Rio Garcia on 4/11/22.
+  
+*/
+"addingMatchtoLockScreenOK" = "Match was added to your home screen.";
+"addingMatchtoLockScreenKO" = "An error has occurred.";
+"liveItem" ="Live";
+"standingsItem" = "Standings";
+"matchDayText" = "Matchday:";
+"pausedKey" = "PAUSED";
+"finishedKey" = "FINISHED";
+"firstHalfKey" = "1ST HALF";
+"secondHalfKey" = "2ND HALF";
+"privacyPolicyKey" = "Privacy Policy";
+"privacySettingsKey" = "Privacy Settings";
+"totalKey" = "Total";
+"homeKey" = "Home Matches";
+"awayKey" = "Away Matches";
+

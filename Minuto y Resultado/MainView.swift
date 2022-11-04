@@ -15,7 +15,7 @@ struct MainView: View {
             Menu{
                 Link(destination: URL(string: "https://vmdelrio.wixsite.com/90-min/pol%C3%ADtica-de-privacidad")!) {
                     Image(systemName: "eye")
-                    Text("Política de Privacidad")
+                    Text("privacyPolicyKey")
                 }
                 
                 Button(action: {
@@ -23,7 +23,7 @@ struct MainView: View {
                     reset.toggle()
                 }, label: {
                     Image(systemName: "arrow.triangle.2.circlepath")
-                    Text("Ajustes Privacidad")
+                    Text("privacySettingsKey")
                 })
                 
             }label: {
@@ -37,23 +37,24 @@ struct MainView: View {
                     Home()
                         .tabItem {
                             Image("laliga")
-                            Text("Directo")
+                            Text(NSLocalizedString("liveItem", comment:""))
                             
                         }
                     Standings()
                         .tabItem {
-                            Label("Clasificación",systemImage:"trophy")
+                            Image(systemName: "trophy")
+                            Text(NSLocalizedString("standingsItem",comment:""))
                         }
                     HomeChampions()
                         .tabItem {
                             Image("UEFA")
-                            Text("Directo")
+                            Text(NSLocalizedString("liveItem", comment:""))
                             
                         }
                     StandingsCL()
                         .tabItem {
                             Image("CL_TROPHY")
-                            Text("Clasificación")
+                            Text(NSLocalizedString("standingsItem",comment:""))
                         }
                     
                 }.accentColor(/*@START_MENU_TOKEN@*/.red/*@END_MENU_TOKEN@*/)

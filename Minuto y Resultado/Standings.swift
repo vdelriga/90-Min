@@ -23,9 +23,9 @@ struct Standings: View {
                 VStack(alignment: .leading){
                     if #available(iOS 15.0, *) {
                         Picker("Favorite Color", selection: $selectedStandingType, content: {
-                            Text("Total").tag(0)
-                            Text("En casa").tag(1)
-                            Text("Fuera de casa").tag(2)
+                            Text("totalKey").tag(0)
+                            Text("homeKey").tag(1)
+                            Text("awayKey").tag(2)
                         }).pickerStyle(SegmentedPickerStyle())
                             .onChange(of: selectedStandingType) { newValue in
                                 Task{

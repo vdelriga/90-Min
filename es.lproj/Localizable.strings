@@ -1,0 +1,19 @@
+/* 
+  Localizable.strings
+  90 Min
+  Created by Victor Manuel Del Rio Garcia on 4/11/22
+*/
+"addingMatchtoLockScreenOK" = "Partido añadido a tu pantalla de inicio.";
+"addingMatchtoLockScreenKO" = "No se ha podido añadir el partido.";
+"liveItem" = "Directo";
+"standingsItem" = "Clasificación";
+"matchDayText" = "Jornada:";
+"pausedKey" = "DESCANSO";
+"finishedKey" = "FINALIZADO";
+"firstHalfKey" = "1ª PARTE";
+"secondHalfKey" = "2ª PARTE";
+"privacyPolicyKey" = "Política de Privacidad";
+"privacySettingsKey" = "Ajustes de Privacidad";
+"totalKey" = "Total";
+"homeKey" = "En casa";
+"awayKey" = "Fuera de casa";
