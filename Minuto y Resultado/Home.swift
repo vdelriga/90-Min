@@ -31,146 +31,154 @@ struct Home: View {
     @State var activityCounter = 0
     @State private var showToast = false
     @State private var result = false
+    @State private var focus = 0
     let maxMatchDay = 38
     var body: some View {
-        ZStack{
-            VStack{
-                Image("logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                
-                HStack{
-                    if (Int(jornada) ?? 0 > 1){
-                        Button {
-                            let newMatchday = (Int(jornada) ?? 1) - 1
-                            jornada = String(newMatchday)
-                            if jornada == String(currentMatchday){
-                                Task{
-                                    getMatchdayMatches()
-                                }
-                            }else{
-                                loadMatchDay(matchday: Int(jornada) ?? 0)
-                            }
-                        }label:{
-                            Image(systemName:"chevron.backward")
-                                .foregroundColor(.red)
-                        }
-                        .padding(.leading)
-                    }
-                    Spacer()
-                    if !jornada.isEmpty {
-                        Text(NSLocalizedString("matchDayText",comment:"") + jornada)
-                            .font(.headline)
-                            .foregroundColor(.red)
-                    }
-                    Spacer()
-                    if (Int(jornada) ?? 0 < maxMatchDay){
-                        Button{
-                            let newMatchday = (Int(jornada) ?? 1) + 1
-                            jornada = String(newMatchday)
-                            if jornada == String(currentMatchday){
-                                getMatchdayMatches()
-                            }else{
-                                loadMatchDay(matchday: Int(jornada) ?? 0)
-                            }
-                        }label:{
-                            Image(systemName:"chevron.right")
-                                .foregroundColor(.red)
-                        }
-                        .padding(.trailing)
-                    }
-                    
-                }
-                ZStack{
-                    
-                    Image("PD")
-                        .resizable()
-                        .frame(width: 350, height: 350)
-                        .blur(radius:8)
-                    if #available(iOS 15.0, *) {
-                        List(matches, id: \.id) { item in
-                            VStack(alignment: .leading) {
-                                HStack{
-                                    VStack(alignment: .center,spacing:4){
-                                        Image(String(item.homeTeam.id))
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
-                                        
-                                        Text(item.homeTeam.shortName)
-                                            .font(.headline)
-                                            .lineLimit(2)
-                                        
-                                    }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-                                    Spacer()
-                                    VStack{
-                                        Text(getMatchDate(stringDate: item.utcDate))
-                                            .font(.caption)
-                                        Text(getMatchTime(stringDate: item.utcDate))
-                                            .font(.caption)
-                                        Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
-                                            .font(.largeTitle)
-                                        Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
-                                            .font(.caption)
-                                        
-                                    }
-                                    Spacer()
-                                    VStack{
-                                        Image(String(item.awayTeam.id))
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
-                                        
-                                        Text(item.awayTeam.shortName)
-                                            .font(.headline)
-                                            .lineLimit(2)
-                                    }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-                                }
-                            }.onTapGesture{
-                                result = startActivity(match: item)
-                                showToast.toggle()
-                            }
-                        }.toast(isPresenting:$showToast){
-                            AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "addingMatchtoLockScreenOK":"addingMatchtoLockScreenKO")
-                        }
-                        .padding(.bottom)
-                        .refreshable{
-                            getMatchdayMatches()
-                        }.onReceive(self.observer.$enteredForeground) { _ in
-                            Task {
-                                getCurrentMatchdayDatabase()
-                                getSeasonMatches()
-                               // await loadDataSeason()
-                            }
-                        }
-                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                    } else {
-                        // Fallback on earlier versions
-                    }
-                    
-                    
-                }
-            }
-            SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
 
-        }.onReceive(firestoreManager.$currentMatchday) { matchday in
-            if(matchday != 0){
-                let now = Date.now
-                //se añade la fecha de expiración en segundos(6h)
-                let expiredTime = firestoreManager.matchdayTimestamp.addingTimeInterval(21600)
-                if now  < expiredTime {
-                    jornada = String(matchday)
-                    currentMatchday = matchday
-                    getMatchdayMatches()
-                }else{
-                    Task{
-                        await getCurrentMatchday()
+            ZStack{
+                VStack{
+                    Image("logo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                    
+                    HStack{
+                        if (Int(jornada) ?? 0 > 1){
+                            Button {
+                                let newMatchday = (Int(jornada) ?? 1) - 1
+                                jornada = String(newMatchday)
+                                if jornada == String(currentMatchday){
+                                    Task{
+                                        getMatchdayMatches()
+                                    }
+                                }else{
+                                    loadMatchDay(matchday: Int(jornada) ?? 0)
+                                }
+                            }label:{
+                                Image(systemName:"chevron.backward")
+                                    .foregroundColor(.red)
+                            }
+                            .padding(.leading)
+                        }
+                        Spacer()
+                        if !jornada.isEmpty {
+                            Text(NSLocalizedString("matchDayText",comment:"") + jornada)
+                                .font(.headline)
+                                .foregroundColor(.red)
+                        }
+                        Spacer()
+                        if (Int(jornada) ?? 0 < maxMatchDay){
+                            Button{
+                                let newMatchday = (Int(jornada) ?? 1) + 1
+                                jornada = String(newMatchday)
+                                if jornada == String(currentMatchday){
+                                    getMatchdayMatches()
+                                }else{
+                                    loadMatchDay(matchday: Int(jornada) ?? 0)
+                                }
+                            }label:{
+                                Image(systemName:"chevron.right")
+                                    .foregroundColor(.red)
+                            }
+                            .padding(.trailing)
+                        }
+                        
+                    }
+                   
+                    ZStack{
+                        Image("PD")
+                            .resizable()
+                            .frame(width: 350, height: 350)
+                            .blur(radius:8)
+                        ScrollViewReader { proxy in
+                        Button("Foco") {
+                         proxy.scrollTo(focus)
+                        }
+                        if #available(iOS 15.0, *) {
+                            List(matches, id: \.id) { item in
+                                VStack(alignment: .leading) {
+                                    HStack{
+                                        VStack(alignment: .center,spacing:4){
+                                            Image(String(item.homeTeam.id))
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                                            
+                                            Text(item.homeTeam.shortName)
+                                                .font(.headline)
+                                                .lineLimit(2)
+                                            
+                                        }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                        Spacer()
+                                        VStack{
+                                            Text(getMatchDate(stringDate: item.utcDate))
+                                                .font(.caption)
+                                            Text(getMatchTime(stringDate: item.utcDate))
+                                                .font(.caption)
+                                            Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
+                                                .font(.largeTitle)
+                                            Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
+                                                .font(.caption)
+                                                .lineLimit(/*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+                                            
+                                        }
+                                        Spacer()
+                                        VStack(alignment:.center){
+                                            Image(String(item.awayTeam.id))
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                                            
+                                            Text(item.awayTeam.shortName)
+                                                .font(.headline)
+                                                .multilineTextAlignment(.center)
+                                                .lineLimit(2)
+                                            
+                                            
+                                        }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                    }
+                                }.onTapGesture{
+                                    result = startActivity(match: item)
+                                    showToast.toggle()
+                                }
+                            }.toast(isPresenting:$showToast){
+                                AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "addingMatchtoLockScreenOK":"addingMatchtoLockScreenKO")
+                            }
+                            .padding(.bottom)
+                            .refreshable{
+                                getMatchdayMatches()
+                            }.onReceive(self.observer.$enteredForeground) { _ in
+                                Task {
+                                    getCurrentMatchdayDatabase()
+                                    getSeasonMatches()
+                                    // await loadDataSeason()
+                                }
+                            }
+                            .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                            
+                        }
+                        }
+                    }
+                }
+                SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
+                
+            }.onReceive(firestoreManager.$currentMatchday) { matchday in
+                if(matchday != 0){
+                    let now = Date.now
+                    //se añade la fecha de expiración en segundos(6h)
+                    let expiredTime = firestoreManager.matchdayTimestamp.addingTimeInterval(21600)
+                    if now  < expiredTime {
+                        jornada = String(matchday)
+                        currentMatchday = matchday
+                        getMatchdayMatches()
+                    }else{
+                        Task{
+                            await getCurrentMatchday()
+                        }
                     }
                 }
             }
-        }
-        .onReceive(firestoreManager.$seasonMatches) { matches in
-            let now = Date.now
+            .onReceive(firestoreManager.$seasonMatches) { matches in
+                let now = Date.now
                 //se añade la fecha de expiración en segundos(6h)
                 let expiredTime = firestoreManager.seasonMatchesTimestamp.addingTimeInterval(21600)
                 if now  < expiredTime {
@@ -180,23 +188,22 @@ struct Home: View {
                         await loadDataSeason()
                     }
                 }
-        }
-        .onReceive(firestoreManager.$matchdayMatches) { matchdayMatches in
-            if matchdayMatches.matches.count > 0 {
-                let now = Date.now
-                //se añade la fecha de expiración en segundos(6h)
-                let expiredTime = firestoreManager.matchdayMatchesTimestamp.addingTimeInterval(10)
-                if now  < expiredTime {
-                    print("Información de partidos cacheada")
-                    matches = matchdayMatches.matches
-                }else{
-                    Task{
-                        await loadData()
+            }
+            .onReceive(firestoreManager.$matchdayMatches) { matchdayMatches in
+                if matchdayMatches.matches.count > 0 {
+                    let now = Date.now
+                    //se añade la fecha de expiración en segundos(6h)
+                    let expiredTime = firestoreManager.matchdayMatchesTimestamp.addingTimeInterval(10)
+                    if now  < expiredTime {
+                        print("Información de partidos cacheada")
+                        matches = matchdayMatches.matches
+                    }else{
+                        Task{
+                            await loadData()
+                        }
                     }
                 }
             }
-        }
-
     }
     func placeOrder() { }
     func adjustOrder() { }
@@ -342,7 +349,7 @@ struct Home: View {
     func startActivity(match: Match)->Bool{
         if #available(iOS 16.1, *) {
             if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"){
-                let initialContentState = MatchAttributes.ContentState(status: match.status, scoreHomeFullTime: match.score.fullTime.home, scoreAwayFullTime: match.score.fullTime.away)
+                let initialContentState = MatchAttributes.ContentState(status:match.status, scoreHomeHalfTime: match.score.halfTime.home,scoreAwayHalfTime: match.score.halfTime.away,scoreHomeFullTime: match.score.fullTime.home,scoreAwayFullTime: match.score.fullTime.away)
                 let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday, idHome: match.homeTeam.id, nameHome: match.homeTeam.name, shortNameHome: match.homeTeam.shortName, tlaHome: match.homeTeam.tla, crestHome: match.homeTeam.crest, idAway: match.awayTeam.id, nameAway: match.awayTeam.name, shortNameAway: match.awayTeam.shortName, tlaAway: match.awayTeam.tla, crestAway: match.awayTeam.crest)
                 if ActivityAuthorizationInfo().areActivitiesEnabled {
                     do{
@@ -359,6 +366,8 @@ struct Home: View {
                     /*Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
                         print("Subscribed to Match: \(match.id)")
                     }*/
+                }else{
+                    return false
                 }
                 
                 return true
@@ -373,7 +382,15 @@ struct Home: View {
     
     func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:Match)->String{
         switch status {
+        case "TIMED":
+            if focus == 0 {
+                focus = match.id
+            }
+            return ""
         case "IN_PLAY":
+            if focus == 0 {
+                focus = match.id
+            }
             if halfTime.home == nil{
                 return NSLocalizedString("firstHalfKey",comment:"")
                 }else
@@ -413,6 +430,7 @@ func getPart(halfTime: childScore, fullTime: childScore,status:String)->String{
 struct Home_Previews: PreviewProvider {
     static var previews: some View {
         Home()
+            .previewDevice("iPhone 14 Pro")
             .environmentObject(FirestoreManager())
        
     }
