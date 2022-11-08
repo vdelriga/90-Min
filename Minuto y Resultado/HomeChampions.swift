@@ -12,6 +12,7 @@ import AlertToast
 import Firebase
 
 struct HomeChampions: View {
+    @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var firestoreManager: FirestoreManager
     @State private var matches = [Match]()
     @State private var matchesSeason = [Match]()
@@ -21,6 +22,7 @@ struct HomeChampions: View {
     @State var activityCounter = 0
     @State private var showToast = false
     @State private var result = false
+    @State private var focus = 0
     let maxMatchDay = 6
     var body: some View {
         VStack{
@@ -78,64 +80,80 @@ struct HomeChampions: View {
                     .resizable()
                     .frame(width: 330, height: 330)
                     .blur(radius:3)
-                if #available(iOS 15.0, *) {
-                    List(matches, id: \.id) { item in
-                        VStack(alignment: .leading) {
-                            HStack{
-                                VStack(alignment: .center,spacing:4){
-                                    Image(String(item.homeTeam.id))
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
-                                    
-                                    Text(item.homeTeam.shortName)
-                                        .font(.headline)
-                                        .lineLimit(2)
-                                    
-                                }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
-                                Spacer()
-                                VStack{
-                                    Text(getMatchDate(stringDate: item.utcDate))
-                                        .font(.caption)
-                                    Text(getMatchTime(stringDate: item.utcDate))
-                                        .font(.caption)
-                                    Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
-                                        .font(.largeTitle)
-                                    Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
-                                        .font(.caption)
-                                    
+                ScrollViewReader { proxy in
+                    if #available(iOS 15.0, *) {
+                        List(matches, id: \.id) { item in
+                            VStack(alignment: .leading) {
+                                HStack{
+                                    VStack(alignment: .center,spacing:4){
+                                        Image(String(item.homeTeam.id))
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                                        
+                                        Text(item.homeTeam.shortName)
+                                            .font(.headline)
+                                            .lineLimit(2)
+                                        
+                                    }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                    Spacer()
+                                    VStack{
+                                        Text(getMatchDate(stringDate: item.utcDate))
+                                            .font(.caption)
+                                        Text(getMatchTime(stringDate: item.utcDate))
+                                            .font(.caption)
+                                        Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
+                                            .font(.largeTitle)
+                                        Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
+                                            .font(.caption)
+                                        
+                                    }
+                                    Spacer()
+                                    VStack{
+                                        Image(String(item.awayTeam.id))
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
+                                        
+                                        Text(item.awayTeam.shortName)
+                                            .font(.headline)
+                                            .lineLimit(2)
+                                    }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
                                 }
-                                Spacer()
-                                VStack{
-                                    Image(String(item.awayTeam.id))
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
-                                    
-                                    Text(item.awayTeam.shortName)
-                                        .font(.headline)
-                                        .lineLimit(2)
-                                }.frame(width: 113.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                            }.onTapGesture{
+                                result = startActivity(match: item)
+                                showToast.toggle()
                             }
-                        }.onTapGesture{
-                            result = startActivity(match: item)
-                            showToast.toggle()
+                        }.toast(isPresenting:$showToast){
+                            AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "addingMatchtoLockScreenOK":"addingMatchtoLockScreenKO")
                         }
-                    }.toast(isPresenting:$showToast){
-                        AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "addingMatchtoLockScreenOK":"addingMatchtoLockScreenKO")
-                    }
-                    .padding(.bottom)
-                    .refreshable{
-                        getMatchdayMatchesCL()
-                    }.onReceive(self.observer.$enteredForeground) { _ in
-                        Task {
-                            getCurrentMatchdayDatabase()
-                            getSeasonCLMatches()
+                        .padding(.bottom)
+                        .refreshable{
+                            getMatchdayMatchesCL()
+                        }.onReceive(self.observer.$enteredForeground) { _ in
+                            Task {
+                                getCurrentMatchdayDatabase()
+                                getSeasonCLMatches()
+                            }
+                        }
+                        .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                        .onChange(of:scenePhase){newPhase in
+                            if newPhase == .background{
+                                focus = 0
+                            }else if newPhase == .inactive{
+                                focus = 0
+                            }else if newPhase == .active{
+                                focus = getFocus()
+                            }
+                            
+                        }
+                        .onChange(of:focus){value in
+                            withAnimation {
+                                proxy.scrollTo(value,anchor:.center)
+                            }
+                            
                         }
                     }
-                    .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
-                } else {
-                    // Fallback on earlier versions
                 }
                 SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
                 
@@ -355,10 +373,35 @@ struct HomeChampions: View {
         
     }
     
+    func getFocus()->Int{
+        if matches.isEmpty {
+            return 0
+        }else{
+            focus = matches.first!.id
+            var found = false
+            for match in matches {
+                if (match.status == "TIMED" || match.status == "IN_PLAY" ) && !found{
+                    found = true
+                    focus = match.id
+                }
+            }
+            return focus
+        }
+    }
+        
+    
     
     func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:Match)->String{
         switch status {
+        case "TIMED":
+            if focus == 0 {
+                focus = match.id
+            }
+            return ""
         case "IN_PLAY":
+            if focus == 0 {
+                focus = match.id
+            }
             if halfTime.home == nil{
                     return NSLocalizedString("firstHalfKey", comment: "")
                 }else
@@ -380,6 +423,7 @@ struct HomeChampions: View {
 struct HomeChampions_Previews: PreviewProvider {
     static var previews: some View {
             HomeChampions()
+            .environmentObject(FirestoreManager())
        
     }
 }

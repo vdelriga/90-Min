@@ -23,6 +23,7 @@ extension Date {
 
 struct Home: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
+    @Environment(\.scenePhase) var scenePhase
     @State private var matches = [Match]()
     @State private var matchesSeason = [Match]()
     @State private var jornada = ""
@@ -90,9 +91,6 @@ struct Home: View {
                             .frame(width: 350, height: 350)
                             .blur(radius:8)
                         ScrollViewReader { proxy in
-                        Button("Foco") {
-                         proxy.scrollTo(focus)
-                        }
                         if #available(iOS 15.0, *) {
                             List(matches, id: \.id) { item in
                                 VStack(alignment: .leading) {
@@ -147,15 +145,31 @@ struct Home: View {
                             .refreshable{
                                 getMatchdayMatches()
                             }.onReceive(self.observer.$enteredForeground) { _ in
-                                Task {
-                                    getCurrentMatchdayDatabase()
-                                    getSeasonMatches()
-                                    // await loadDataSeason()
-                                }
+                                    Task {
+                                        getCurrentMatchdayDatabase()
+                                        getSeasonMatches()
+                                        // await loadDataSeason()
+                                    }
                             }
                             .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                            .onChange(of:scenePhase){newPhase in
+                                if newPhase == .background{
+                                    focus = 0
+                                }else if newPhase == .inactive{
+                                    focus = 0
+                                }else if newPhase == .active{
+                                    focus = getFocus()
+                                }
+                                
+                            }
+                            .onChange(of:focus){value in
+                                withAnimation {
+                                    proxy.scrollTo(value,anchor:.center)
+                                }
+
+                                }
+                            }
                             
-                        }
                         }
                     }
                 }
@@ -379,6 +393,22 @@ struct Home: View {
         
     }
     
+    func getFocus()->Int{
+        if matches.isEmpty {
+            return 0
+        }else{
+            focus = matches.first!.id
+            var found = false
+            for match in matches {
+                if (match.status == "TIMED" || match.status == "IN_PLAY" ) && !found{
+                    found = true
+                    focus = match.id
+                }
+            }
+            return focus
+        }
+        
+    }
     
     func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:Match)->String{
         switch status {

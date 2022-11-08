@@ -17,12 +17,13 @@ class Observer: ObservableObject {
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         }
+        
     }
 
     @objc func willEnterForeground() {
         enteredForeground.toggle()
     }
-
+  
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
