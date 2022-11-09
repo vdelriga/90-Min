@@ -6,7 +6,6 @@
   
 */
 "addingMatchtoLockScreenOK" = "Match was added to your home screen.";
-"addingMatchtoLockScreenKO" = "An error has occurred.";
 "liveItem" ="Live";
 "standingsItem" = "Standings";
 "matchDayText" = "Matchday:";
@@ -19,4 +18,8 @@
 "totalKey" = "Total";
 "homeKey" = "Home Matches";
 "awayKey" = "Away Matches";
+"LANoActiveKey" = "Please, authorize the use of Live Activities";
+"LAStatusKey" = "Activity already exists or match finished";
+"LAUpgradeKey" = "Please, upgrade your device to iOS16.1";
+"LAEarlyKey" = "A little early... Available an hour before the match";
 

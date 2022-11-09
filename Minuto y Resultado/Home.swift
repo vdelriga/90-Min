@@ -11,16 +11,6 @@ import ActivityKit
 import AlertToast
 import Firebase
 
-extension Date {
-    func localDate() -> Date {
-        let nowUTC = Date()
-        let timeZoneOffset = Double(TimeZone.current.secondsFromGMT(for: nowUTC))
-        guard let localDate = Calendar.current.date(byAdding: .second, value: Int(timeZoneOffset), to: nowUTC) else {return Date()}
-
-        return localDate
-    }
-}
-
 struct Home: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Environment(\.scenePhase) var scenePhase
@@ -33,6 +23,7 @@ struct Home: View {
     @State private var showToast = false
     @State private var result = false
     @State private var focus = 0
+    @State private var  resultOpenActivity = ""
     let maxMatchDay = 38
     var body: some View {
 
@@ -139,7 +130,7 @@ struct Home: View {
                                     showToast.toggle()
                                 }
                             }.toast(isPresenting:$showToast){
-                                AlertToast(type: result ?.complete(.green):.error(.red),title:result ? "addingMatchtoLockScreenOK":"addingMatchtoLockScreenKO")
+                                AlertToast(type: result ?.complete(.green):.error(.red),title:resultOpenActivity)
                             }
                             .padding(.bottom)
                             .refreshable{
@@ -365,32 +356,43 @@ struct Home: View {
             if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"){
                 let initialContentState = MatchAttributes.ContentState(status:match.status, scoreHomeHalfTime: match.score.halfTime.home,scoreAwayHalfTime: match.score.halfTime.away,scoreHomeFullTime: match.score.fullTime.home,scoreAwayFullTime: match.score.fullTime.away)
                 let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday, idHome: match.homeTeam.id, nameHome: match.homeTeam.name, shortNameHome: match.homeTeam.shortName, tlaHome: match.homeTeam.tla, crestHome: match.homeTeam.crest, idAway: match.awayTeam.id, nameAway: match.awayTeam.name, shortNameAway: match.awayTeam.shortName, tlaAway: match.awayTeam.tla, crestAway: match.awayTeam.crest)
-                if ActivityAuthorizationInfo().areActivitiesEnabled {
-                    do{
-                        let act =  try Activity<MatchAttributes>.request(attributes:activityAttributes,contentState: initialContentState,pushType: .token)
-                        Task {
-                              for await data in act.pushTokenUpdates {
-                                 let myToken = data.map {String(format: "%02x", $0)}.joined()
-                                  firestoreManager.addMatchToken(matchId: match.id, token: Token(token: myToken))
-                              }
-                           }
-                    }catch (let error){
-                        print("Error creando la actividad en directo \(error.localizedDescription)")
-                    }
-                    /*Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
-                        print("Subscribed to Match: \(match.id)")
-                    }*/
-                }else{
+                let now = Date.now.addingTimeInterval(3600)
+                let dateFormatter = ISO8601DateFormatter()
+                let matchTime = dateFormatter.date(from:match.utcDate)!
+                if now > matchTime
+                {
+                    if ActivityAuthorizationInfo().areActivitiesEnabled {
+                        do{
+                            let act =  try Activity<MatchAttributes>.request(attributes:activityAttributes,contentState: initialContentState,pushType: .token)
+                            Task {
+                                for await data in act.pushTokenUpdates {
+                                    let myToken = data.map {String(format: "%02x", $0)}.joined()
+                                    firestoreManager.addMatchToken(matchId: match.id, token: Token(token: myToken))
+                                }
+                            }
+                        }catch (let error){
+                            print("Error creando la actividad en directo \(error.localizedDescription)")
+                        }
+                        /*Messaging.messaging().subscribe(toTopic: String(match.id)) { error in
+                         print("Subscribed to Match: \(match.id)")
+                         }*/
+                    }else{
+                        resultOpenActivity = NSLocalizedString("LANoActiveKey", comment: "")
+                        return false
+                    } //OK Actividad en directo
+                    resultOpenActivity = NSLocalizedString("addingMatchtoLockScreenOK", comment: "")
+                    return true
+                }else{ //Demasiado temprano
+                    resultOpenActivity = NSLocalizedString("LAEarlyKey", comment: "")
                     return false
                 }
-                
-                return true
-            }else{
+            }else{ //Si partido no ha finalizado o ya existe
+                resultOpenActivity = NSLocalizedString("LAStatusKey", comment: "")
                 return false
             }
-        }
-        return false
-        
+        } //Si no es IOS16.1
+            resultOpenActivity = NSLocalizedString("LAUpgradeKey", comment: "")
+            return false
     }
     
     func getFocus()->Int{

@@ -4,7 +4,6 @@
   Created by Victor Manuel Del Rio Garcia on 4/11/22
 */
 "addingMatchtoLockScreenOK" = "Partido añadido a tu pantalla de inicio.";
-"addingMatchtoLockScreenKO" = "No se ha podido añadir el partido.";
 "liveItem" = "Directo";
 "standingsItem" = "Clasificación";
 "matchDayText" = "Jornada:";
@@ -17,3 +16,7 @@
 "totalKey" = "Total";
 "homeKey" = "En casa";
 "awayKey" = "Fuera de casa";
+"LANoActiveKey" = "Autorice el uso de Actividades en directo";
+"LAStatusKey" = "Ya existe una actividad o partido finalizado";
+"LAUpgradeKey" = "Por favor actualiza el dispositivo a iOS 16.1";
+"LAEarlyKey" = "Disponible una hora antes del partido";
