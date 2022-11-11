@@ -34,9 +34,9 @@ class FirestoreManager: ObservableObject {
     @Published var matchdayMatchesCLTimestamp: Date = Date.now
     @Published var matchdayMatchesCL:Matches = Matches(matches:[])
     @Published var seasonWCMatchesTimestamp: Date = Date.now
-    @Published var seasonWCMatches:Matches = Matches(matches:[])
+    @Published var seasonWCMatches:MatchesWC = MatchesWC(matches:[])
     @Published var matchdayMatchesWCTimestamp: Date = Date.now
-    @Published var matchdayMatchesWC:Matches = Matches(matches:[])
+    @Published var matchdayMatchesWC:MatchesWC = MatchesWC(matches:[])
     
     
     //función que almacena los tokens de las Live activities
@@ -460,7 +460,7 @@ class FirestoreManager: ObservableObject {
     }
     
     //------------------------- funciones para obtener todos los partidos del Mundial ---------------------------------------------------
-    func addSeasonMatchesWC(_ matchesSeason: Matches) {
+    func addSeasonMatchesWC(_ matchesSeason: MatchesWC) {
         do {
             // 6
             _ = try store.collection(path).document("WCPARTIDOS").setData(from: matchesSeason)
@@ -491,11 +491,15 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 if let data = data{
-                    let timestamp = data["lastUpdated"] as! Timestamp
-                    self.seasonWCMatchesTimestamp = timestamp.dateValue()
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.seasonWCMatchesTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.seasonWCMatchesTimestamp = Calendar.current.date(byAdding: .second, value: -21601, to: now)!
+                    }
                 }
                 do{
-                    self.seasonWCMatches = try document.data(as: Matches.self)
+                    self.seasonWCMatches = try document.data(as: MatchesWC.self)
                 }catch{
                     print("Se ha producido un error cargando los partidos de BBDD")
                 }
@@ -505,7 +509,7 @@ class FirestoreManager: ObservableObject {
     }
     
     //------------------------- funciones para obtener todos los partidos de la jornada del mundial ---------------------------------------------------
-    func addMatchdayMatchesWC(_ matchdayMatches: Matches) {
+    func addMatchdayMatchesWC(_ matchdayMatches: MatchesWC) {
         do {
             // 6
             _ = try store.collection(path).document("WCPARTIDOSJORNADA").setData(from: matchdayMatches)
@@ -544,7 +548,7 @@ class FirestoreManager: ObservableObject {
                     }
                 }
                 do{
-                    self.matchdayMatchesWC = try document.data(as: Matches.self)
+                    self.matchdayMatchesWC = try document.data(as: MatchesWC.self)
                 }catch{
                     print("Se ha producido un error cargando los partidos de BBDD")
                 }

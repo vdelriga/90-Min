@@ -21,3 +21,7 @@
 "LAUpgradeKey" = "Por favor actualiza el dispositivo a iOS 16.1";
 "LAEarlyKey" = "Disponible una hora antes del partido";
 "qatar" = "Qatar 2022";
+"last16Key" = "Octavos de Final";
+"quarterFinalsKey" = "Cuartos de Final";
+"semiFinalsKey" = "Semi Final";
+"finalKey"= "Final";

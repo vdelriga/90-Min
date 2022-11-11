@@ -14,10 +14,11 @@ import Firebase
 struct HomeWC: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Environment(\.scenePhase) var scenePhase
-    @State private var matches = [Match]()
-    @State private var matchesSeason = [Match]()
+    @State private var matches = [MatchWC]()
+    @State private var matchesSeason = [MatchWC]()
     @State private var jornada = ""
     @State private var currentMatchday = 0
+    @State private var newMatchday = 0
     @ObservedObject var observer = Observer()
     @State var activityCounter = 0
     @State private var showToast = false
@@ -34,16 +35,16 @@ struct HomeWC: View {
                         .aspectRatio(contentMode: .fit)
                     
                     HStack{
-                        if (Int(jornada) ?? 0 > 1){
+                        if (newMatchday > 1){
                             Button {
-                                let newMatchday = (Int(jornada) ?? 1) - 1
-                                jornada = String(newMatchday)
-                                if jornada == String(currentMatchday){
+                                newMatchday = newMatchday - 1
+                                jornada = getMatchDay(newMatchDay: newMatchday)
+                                if newMatchday == currentMatchday{
                                     Task{
                                         getMatchdayMatchesWC()
                                     }
                                 }else{
-                                    loadMatchDay(matchday: Int(jornada) ?? 0)
+                                    loadMatchDay(matchday:newMatchday)
                                 }
                             }label:{
                                 Image(systemName:"chevron.backward")
@@ -58,14 +59,14 @@ struct HomeWC: View {
                                 .foregroundColor(.red)
                         }
                         Spacer()
-                        if (Int(jornada) ?? 0 < maxMatchDay){
+                        if (newMatchday < maxMatchDay){
                             Button{
-                                let newMatchday = (Int(jornada) ?? 1) + 1
-                                jornada = String(newMatchday)
-                                if jornada == String(currentMatchday){
+                                newMatchday = newMatchday + 1
+                                jornada = getMatchDay(newMatchDay: newMatchday)
+                                if newMatchday == currentMatchday{
                                     getMatchdayMatchesWC()
                                 }else{
-                                    loadMatchDay(matchday: Int(jornada) ?? 0)
+                                    loadMatchDay(matchday: newMatchday)
                                 }
                             }label:{
                                 Image(systemName:"chevron.right")
@@ -172,10 +173,11 @@ struct HomeWC: View {
                 if(matchday != 0){
                     let now = Date.now
                     //se añade la fecha de expiración en segundos(6h)
-                    let expiredTime = firestoreManager.matchdayTimestamp.addingTimeInterval(21600)
+                    let expiredTime = firestoreManager.matchdayWCTimestamp.addingTimeInterval(21600000)
                     if now  < expiredTime {
-                        jornada = String(matchday)
+                        jornada = getMatchDay(newMatchDay: matchday)
                         currentMatchday = matchday
+                        newMatchday = matchday
                         getMatchdayMatchesWC()
                     }else{
                         Task{
@@ -187,7 +189,7 @@ struct HomeWC: View {
             .onReceive(firestoreManager.$seasonWCMatches) { matches in
                 let now = Date.now
                 //se añade la fecha de expiración en segundos(6h)
-                let expiredTime = firestoreManager.seasonMatchesTimestamp.addingTimeInterval(21600)
+                let expiredTime = firestoreManager.seasonWCMatchesTimestamp.addingTimeInterval(21600)
                 if now  < expiredTime {
                     matchesSeason = matches.matches
                 }else{
@@ -200,7 +202,7 @@ struct HomeWC: View {
                 if matchdayMatches.matches.count > 0 {
                     let now = Date.now
                     //se añade la fecha de expiración en segundos(6h)
-                    let expiredTime = firestoreManager.matchdayMatchesTimestamp.addingTimeInterval(10)
+                    let expiredTime = firestoreManager.matchdayMatchesWCTimestamp.addingTimeInterval(10)
                     if now  < expiredTime {
                         print("Información de partidos cacheada")
                         matches = matchdayMatches.matches
@@ -252,6 +254,14 @@ struct HomeWC: View {
         for match in matchesSeason{
             if match.matchday == matchday{
                 matches.append(match)
+            }else if match.stage == "LAST_16" && matchday == 4{
+                matches.append(match)
+            }else if match.stage == "QUARTER_FINALS" && matchday == 5{
+                matches.append(match)
+            }else if match.stage == "SEMI_FINALS" && matchday == 6{
+                matches.append(match)
+            }else if match.stage == "FINAL" && matchday == 7{
+                matches.append(match)
             }
         }
     }
@@ -268,7 +278,7 @@ struct HomeWC: View {
             let (data, _) = try await URLSession.shared.data(for:request)
 
             if let decodedResponse =
-                try? JSONDecoder().decode(Matches.self, from: data){
+                try? JSONDecoder().decode(MatchesWC.self, from: data){
                 matchesSeason = decodedResponse.matches
                 firestoreManager.addSeasonMatchesWC(decodedResponse)
                 firestoreManager.updateSeasonMatchesWC()
@@ -279,7 +289,17 @@ struct HomeWC: View {
     }
     
     func loadDataWC() async {
-        guard let url = URL(string: "https://api.football-data.org/v4/competitions/WC/matches?matchday=" + jornada)
+        var urlString = ""
+        switch (currentMatchday){
+        case 1,2,3: urlString = "https://api.football-data.org/v4/competitions/WC/matches?matchday=" + jornada
+        case 4: urlString = "https://api.football-data.org/v4/competitions/WC/matches?stage=" + "LAST_16"
+        case 5: urlString = "https://api.football-data.org/v4/competitions/WC/matches?stage=" + "QUARTER_FINALS"
+        case 6: urlString = "https://api.football-data.org/v4/competitions/WC/matches?stage=" + "SEMI_FINALS"
+        case 7: urlString = "https://api.football-data.org/v4/competitions/WC/matches?stage=" + "FINAL"
+        default:urlString = ""
+
+        }
+        guard let url = URL(string: urlString)
         else {
             print("Invalid URL")
             return
@@ -291,7 +311,7 @@ struct HomeWC: View {
             let (data, _) = try await URLSession.shared.data(for:request)
 
             if let decodedResponse =
-                try? JSONDecoder().decode(Matches.self, from: data){
+                try? JSONDecoder().decode(MatchesWC.self, from: data){
                 matches = decodedResponse.matches
                 firestoreManager.addMatchdayMatchesWC(decodedResponse)
                 firestoreManager.updateMatchdayMatchesWC()
@@ -333,7 +353,7 @@ struct HomeWC: View {
                 firestoreManager.updateSeasonWC()
                 Task {
                     getMatchdayMatchesWC()
-                   // await loadDataWC()
+                    //await loadDataWC()
                 }
                 
             }
@@ -354,12 +374,12 @@ struct HomeWC: View {
     }
     
     
-    func startActivity(match: Match)->Bool{
+    func startActivity(match: MatchWC)->Bool{
         if #available(iOS 16.1, *) {
             if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"){
                 let initialContentState = MatchAttributes.ContentState(status:match.status, scoreHomeHalfTime: match.score.halfTime.home,scoreAwayHalfTime: match.score.halfTime.away,scoreHomeFullTime: match.score.fullTime.home,scoreAwayFullTime: match.score.fullTime.away)
                 let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday ?? 0, idHome: match.homeTeam.id ?? 0, nameHome: match.homeTeam.name ?? "_", shortNameHome: match.homeTeam.shortName ?? "-", tlaHome: match.homeTeam.tla ?? "", crestHome: match.homeTeam.crest ?? "", idAway: match.awayTeam.id ?? 0, nameAway: match.awayTeam.name ?? "_", shortNameAway: match.awayTeam.shortName ?? "-", tlaAway: match.awayTeam.tla ?? "", crestAway: match.awayTeam.crest ?? "")
-                let now = Date.now.addingTimeInterval(3600)
+                let now = Date.now.addingTimeInterval(36000000)
                 let dateFormatter = ISO8601DateFormatter()
                 let matchTime = dateFormatter.date(from:match.utcDate)!
                 if now > matchTime
@@ -398,6 +418,20 @@ struct HomeWC: View {
             return false
     }
     
+    func getMatchDay(newMatchDay:Int)->String{
+        if newMatchDay <= 3 {
+            return String(newMatchDay)
+        }else{
+            switch newMatchDay {
+            case 4: return NSLocalizedString("last16Key",comment:"")
+            case 5: return NSLocalizedString("quarterFinalsKey",comment:"")
+            case 6: return NSLocalizedString("semiFinalsKey",comment:"")
+            case 7: return NSLocalizedString("finalKey",comment:"")
+            default: return ""
+            }
+        }
+    }
+    
     func getFocus()->Int{
         if matches.isEmpty {
             return 0
@@ -415,7 +449,7 @@ struct HomeWC: View {
         
     }
     
-    func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:Match)->String{
+    func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:MatchWC)->String{
         switch status {
         case "TIMED":
             if focus == 0 {

@@ -18,6 +18,9 @@ struct Token: Codable {
 struct Matches: Codable {
     var matches: [Match]
 }
+struct MatchesWC: Codable {
+    var matches: [MatchWC]
+}
 
 struct Standing: Codable {
     var standings: [StandingType]
@@ -76,6 +79,16 @@ struct Match: Codable {
     var matchday: Int?
     var status: String
     var score: Score
+}
+struct MatchWC: Codable {
+    var id: Int
+    var utcDate: String
+    var homeTeam: Team
+    var awayTeam: Team
+    var matchday: Int?
+    var status: String
+    var score: Score
+    var stage: String
 }
 
 struct childScore:Codable{

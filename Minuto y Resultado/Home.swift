@@ -139,7 +139,8 @@ struct Home: View {
                                     Task {
                                         getCurrentMatchdayDatabase()
                                         getSeasonMatches()
-                                        // await loadDataSeason()
+                                        //await getCurrentMatchday()
+                                        //await loadDataSeason()
                                     }
                             }
                             .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
@@ -331,6 +332,7 @@ struct Home: View {
                 firestoreManager.updateSeasonLaLiga()
                 Task {
                     getMatchdayMatches()
+                    //await loadData()
                 }
                 
             }
