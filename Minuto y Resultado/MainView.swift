@@ -40,7 +40,7 @@ struct MainView: View {
                             Text(NSLocalizedString("qatar", comment:""))
                             
                         }
-                    StandingsCL()
+                    StandingsWC()
                         .tabItem {
                             Image("worldcup")
                             Text(NSLocalizedString("standingsItem",comment:""))

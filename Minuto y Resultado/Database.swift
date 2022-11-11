@@ -37,6 +37,8 @@ class FirestoreManager: ObservableObject {
     @Published var seasonWCMatches:MatchesWC = MatchesWC(matches:[])
     @Published var matchdayMatchesWCTimestamp: Date = Date.now
     @Published var matchdayMatchesWC:MatchesWC = MatchesWC(matches:[])
+    @Published var standingsWC:StandingCL = StandingCL(standings: [])
+    @Published var standingsWCTimestamp: Date = Date.now
     
     
     //función que almacena los tokens de las Live activities
@@ -549,6 +551,54 @@ class FirestoreManager: ObservableObject {
                 }
                 do{
                     self.matchdayMatchesWC = try document.data(as: MatchesWC.self)
+                }catch{
+                    print("Se ha producido un error cargando los partidos de BBDD")
+                }
+                
+            }
+        }
+    }
+    
+    
+    //------------------------- funciones para obtener clasificación del Mundial ---------------------------------------------------
+    
+    
+    func addStandingsWC(_ standings: StandingCL) {
+        do {
+            // 6
+            _ = try store.collection(path).document("CLASIFICACIONWC").setData(from: standings)
+        } catch {
+            fatalError("Unable to add card: \(error.localizedDescription).")
+        }
+    }
+    
+    func updateStandingsWC(){
+        store.collection(path).document("CLASIFICACIONWC").updateData([
+            "lastUpdated": FieldValue.serverTimestamp(),
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
+    func getStandingsWC(){
+        let docRef = store.collection(path).document("CLASIFICACIONWC")
+        docRef.getDocument { document, error in
+            guard error == nil else {
+                print("error", error ?? "")
+                return
+            }
+            if let document = document, document.exists {
+                let data = document.data()
+                if let data = data{
+                    let timestamp = data["lastUpdated"] as! Timestamp
+                    self.standingsWCTimestamp = timestamp.dateValue()
+                }
+                do{
+                    self.standingsWC = try document.data(as: StandingCL.self)
                 }catch{
                     print("Se ha producido un error cargando los partidos de BBDD")
                 }

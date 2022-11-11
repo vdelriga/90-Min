@@ -15,6 +15,7 @@
 		FA24409928D5907E0031A6C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA24409828D5907E0031A6C9 /* Assets.xcassets */; };
 		FA24409C28D5907E0031A6C9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA24409B28D5907E0031A6C9 /* Preview Assets.xcassets */; };
 		FA2440A328D591410031A6C9 /* Partidos.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2440A228D591410031A6C9 /* Partidos.swift */; };
+		FA290CBA291E9034000605D9 /* StandingsWC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA290CB9291E9034000605D9 /* StandingsWC.swift */; };
 		FA29923D28F89E31008A3DEE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FA29923C28F89E31008A3DEE /* FirebaseFirestore */; };
 		FA29923F28F8AB18008A3DEE /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29923E28F8AB12008A3DEE /* Database.swift */; };
 		FA29924428F8AF5D008A3DEE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FA29924328F8AF5D008A3DEE /* FirebaseFirestoreSwift */; };
@@ -72,6 +73,7 @@
 		FA24409828D5907E0031A6C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA24409B28D5907E0031A6C9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FA2440A228D591410031A6C9 /* Partidos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Partidos.swift; sourceTree = "<group>"; };
+		FA290CB9291E9034000605D9 /* StandingsWC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsWC.swift; sourceTree = "<group>"; };
 		FA29923E28F8AB12008A3DEE /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		FA3FD58928DD162A00E68D9D /* NoventaMinExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NoventaMinExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA3FD58D28DD162A00E68D9D /* NoventaMin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoventaMin.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				FACEFF4E28DA1E3E00912472 /* MainView.swift */,
 				FA656A9628DA4B86007E6194 /* Standings.swift */,
 				FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */,
+				FA290CB9291E9034000605D9 /* StandingsWC.swift */,
 				FAC661BB28D75E2B009CA154 /* Observer.swift */,
 				FA24409428D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift */,
 				FA24409628D5907D0031A6C9 /* Home.swift */,
@@ -312,6 +315,7 @@
 			files = (
 				FAF10FFF291C033C0091B937 /* HomeWorldCup.swift in Sources */,
 				FA19DB8028EF69B7001B63C2 /* StandingsCL.swift in Sources */,
+				FA290CBA291E9034000605D9 /* StandingsWC.swift in Sources */,
 				FA24409728D5907D0031A6C9 /* Home.swift in Sources */,
 				FA1C4DAF28ECDBFB00CB7175 /* HomeChampions.swift in Sources */,
 				FA8C183828F19D600097CC58 /* GDPRConsent.swift in Sources */,
