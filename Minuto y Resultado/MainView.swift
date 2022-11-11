@@ -34,6 +34,17 @@ struct MainView: View {
             ZStack{
                 GDPRConsent(settings: gdprSettings,reset:reset)
                 TabView {
+                    HomeWC()
+                        .tabItem {
+                            Image("logoqatar")
+                            Text(NSLocalizedString("qatar", comment:""))
+                            
+                        }
+                    StandingsCL()
+                        .tabItem {
+                            Image("worldcup")
+                            Text(NSLocalizedString("standingsItem",comment:""))
+                        }
                     Home()
                         .tabItem {
                             Image("laliga")
@@ -45,18 +56,6 @@ struct MainView: View {
                             Image(systemName: "trophy")
                             Text(NSLocalizedString("standingsItem",comment:""))
                         }
-                    HomeChampions()
-                        .tabItem {
-                            Image("UEFA")
-                            Text(NSLocalizedString("liveItem", comment:""))
-                            
-                        }
-                    StandingsCL()
-                        .tabItem {
-                            Image("CL_TROPHY")
-                            Text(NSLocalizedString("standingsItem",comment:""))
-                        }
-                    
                 }.accentColor(/*@START_MENU_TOKEN@*/.red/*@END_MENU_TOKEN@*/)
                
             }

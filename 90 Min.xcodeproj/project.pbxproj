@@ -36,6 +36,7 @@
 		FA9BDBC628F0324D008D3C0A /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BDBC328F02E29008D3C0A /* BannerView.swift */; };
 		FAC661BC28D75E2B009CA154 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC661BB28D75E2B009CA154 /* Observer.swift */; };
 		FACEFF4F28DA1E3E00912472 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACEFF4E28DA1E3E00912472 /* MainView.swift */; };
+		FAF10FFF291C033C0091B937 /* HomeWorldCup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF10FFE291C033C0091B937 /* HomeWorldCup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		FAC661BB28D75E2B009CA154 /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		FACDF5BD28DD083F0052D31D /* -0-Minutos-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "-0-Minutos-Info.plist"; sourceTree = "<group>"; };
 		FACEFF4E28DA1E3E00912472 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		FAF10FFE291C033C0091B937 /* HomeWorldCup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWorldCup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 				FAC661BB28D75E2B009CA154 /* Observer.swift */,
 				FA24409428D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift */,
 				FA24409628D5907D0031A6C9 /* Home.swift */,
+				FAF10FFE291C033C0091B937 /* HomeWorldCup.swift */,
 				FA1C4DAE28ECDBFB00CB7175 /* HomeChampions.swift */,
 				FA2440A228D591410031A6C9 /* Partidos.swift */,
 				FA24409828D5907E0031A6C9 /* Assets.xcassets */,
@@ -307,6 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAF10FFF291C033C0091B937 /* HomeWorldCup.swift in Sources */,
 				FA19DB8028EF69B7001B63C2 /* StandingsCL.swift in Sources */,
 				FA24409728D5907D0031A6C9 /* Home.swift in Sources */,
 				FA1C4DAF28ECDBFB00CB7175 /* HomeChampions.swift in Sources */,

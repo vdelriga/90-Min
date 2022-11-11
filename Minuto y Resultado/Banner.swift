@@ -16,6 +16,7 @@ import SwiftUI
     init(adUnitId: String) {
         self.adUnitId = adUnitId
     }
+     
     
     
     func makeUIViewController(context: Context) -> BannerAdVC {
@@ -27,8 +28,33 @@ import SwiftUI
     }
 }
 
-class BannerAdVC: UIViewController {
+class BannerAdVC: UIViewController,GADBannerViewDelegate {
     let adUnitId: String
+    
+    
+    func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
+      print("bannerViewDidReceiveAd")
+    }
+
+    func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
+      print("bannerView:didFailToReceiveAdWithError: \(error.localizedDescription)")
+    }
+
+    func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
+      print("bannerViewDidRecordImpression")
+    }
+
+    func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillPresentScreen")
+    }
+
+    func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewWillDIsmissScreen")
+    }
+
+    func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
+      print("bannerViewDidDismissScreen")
+    }
     
     //Initialize variable
     init(adUnitId: String) {
@@ -44,8 +70,7 @@ class BannerAdVC: UIViewController {
     override func viewDidLoad() {
         bannerView.adUnitID = adUnitId
         bannerView.rootViewController = self
-      
-        //Add our BannerView to the VC
+        bannerView.delegate = self     
         view.addSubview(bannerView)
     }
 
@@ -64,6 +89,8 @@ class BannerAdVC: UIViewController {
             self.loadBannerAd()
         }
     }
+    
+    
 
     func loadBannerAd() {
         let frame = view.frame.inset(by: view.safeAreaInsets)

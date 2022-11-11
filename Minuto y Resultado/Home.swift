@@ -87,12 +87,12 @@ struct Home: View {
                                 VStack(alignment: .leading) {
                                     HStack{
                                         VStack(alignment: .center,spacing:4){
-                                            Image(String(item.homeTeam.id))
+                                            Image(String(item.homeTeam.id ?? 0))
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
                                             
-                                            Text(item.homeTeam.shortName)
+                                            Text(item.homeTeam.shortName ?? "-")
                                                 .font(.headline)
                                                 .lineLimit(2)
                                             
@@ -112,12 +112,12 @@ struct Home: View {
                                         }
                                         Spacer()
                                         VStack(alignment:.center){
-                                            Image(String(item.awayTeam.id))
+                                            Image(String(item.awayTeam.id ?? 0))
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/50.0/*@END_MENU_TOKEN@*/)
                                             
-                                            Text(item.awayTeam.shortName)
+                                            Text(item.awayTeam.shortName ?? "-")
                                                 .font(.headline)
                                                 .multilineTextAlignment(.center)
                                                 .lineLimit(2)
@@ -355,7 +355,7 @@ struct Home: View {
         if #available(iOS 16.1, *) {
             if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"){
                 let initialContentState = MatchAttributes.ContentState(status:match.status, scoreHomeHalfTime: match.score.halfTime.home,scoreAwayHalfTime: match.score.halfTime.away,scoreHomeFullTime: match.score.fullTime.home,scoreAwayFullTime: match.score.fullTime.away)
-                let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday, idHome: match.homeTeam.id, nameHome: match.homeTeam.name, shortNameHome: match.homeTeam.shortName, tlaHome: match.homeTeam.tla, crestHome: match.homeTeam.crest, idAway: match.awayTeam.id, nameAway: match.awayTeam.name, shortNameAway: match.awayTeam.shortName, tlaAway: match.awayTeam.tla, crestAway: match.awayTeam.crest)
+                let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday ?? 0, idHome: match.homeTeam.id ?? 0, nameHome: match.homeTeam.name ?? "_", shortNameHome: match.homeTeam.shortName ?? "-", tlaHome: match.homeTeam.tla ?? "", crestHome: match.homeTeam.crest ?? "", idAway: match.awayTeam.id ?? 0, nameAway: match.awayTeam.name ?? "_", shortNameAway: match.awayTeam.shortName ?? "-", tlaAway: match.awayTeam.tla ?? "", crestAway: match.awayTeam.crest ?? "")
                 let now = Date.now.addingTimeInterval(3600)
                 let dateFormatter = ISO8601DateFormatter()
                 let matchTime = dateFormatter.date(from:match.utcDate)!

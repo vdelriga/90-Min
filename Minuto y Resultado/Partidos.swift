@@ -49,11 +49,11 @@ struct Position:Codable{
 }
 
 struct Team:Codable {
-    var id: Int
-    var name: String
-    var shortName: String
-    var tla: String
-    var crest: String
+    var id: Int?
+    var name: String?
+    var shortName: String?
+    var tla: String?
+    var crest: String?
     
 }
 
@@ -73,7 +73,7 @@ struct Match: Codable {
     var utcDate: String
     var homeTeam: Team
     var awayTeam: Team
-    var matchday: Int
+    var matchday: Int?
     var status: String
     var score: Score
 }

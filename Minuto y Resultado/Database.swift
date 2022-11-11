@@ -17,8 +17,10 @@ class FirestoreManager: ObservableObject {
     private let store = Firestore.firestore()
     @Published var currentMatchday: Int = 0
     @Published var currentCLMatchday: Int = 0
+    @Published var currentWCMatchday: Int = 0
     @Published var matchdayTimestamp: Date = Date.now
     @Published var matchdayCLTimestamp: Date = Date.now
+    @Published var matchdayWCTimestamp: Date = Date.now
     @Published var seasonMatchesTimestamp: Date = Date.now
     @Published var seasonMatches:Matches = Matches(matches:[])
     @Published var matchdayMatchesTimestamp: Date = Date.now
@@ -31,6 +33,11 @@ class FirestoreManager: ObservableObject {
     @Published var seasonCLMatches:Matches = Matches(matches:[])
     @Published var matchdayMatchesCLTimestamp: Date = Date.now
     @Published var matchdayMatchesCL:Matches = Matches(matches:[])
+    @Published var seasonWCMatchesTimestamp: Date = Date.now
+    @Published var seasonWCMatches:Matches = Matches(matches:[])
+    @Published var matchdayMatchesWCTimestamp: Date = Date.now
+    @Published var matchdayMatchesWC:Matches = Matches(matches:[])
+    
     
     //función que almacena los tokens de las Live activities
     func addMatchToken(matchId: Int, token:Token) {
@@ -49,7 +56,6 @@ class FirestoreManager: ObservableObject {
     
     func addSeasonLaLiga(_ season: CurrentSeason) {
         do {
-            // 6
             _ = try store.collection(path).document("LALIGA").setData(from: season)
         } catch {
             fatalError("Unable to add card: \(error.localizedDescription).")
@@ -397,6 +403,148 @@ class FirestoreManager: ObservableObject {
                 }
                 do{
                     self.matchdayMatchesCL = try document.data(as: Matches.self)
+                }catch{
+                    print("Se ha producido un error cargando los partidos de BBDD")
+                }
+                
+            }
+        }
+    }
+    
+    //------------------------- funciones para obtener el día de jornada del Mundial ---------------------------------------------------
+    
+    
+    func addSeasonWC(_ season: CurrentSeason) {
+        do {
+            // 6
+            _ = try store.collection(path).document("WC").setData(from: season)
+        } catch {
+            fatalError("Unable to add card: \(error.localizedDescription).")
+        }
+    }
+    
+    func updateSeasonWC(){
+        store.collection(path).document("WC").updateData([
+            "lastUpdated": FieldValue.serverTimestamp(),
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+
+    func getSeasonWC(){
+        let docRef = store.collection(path).document("WC")
+        docRef.getDocument { document, error in
+            guard error == nil else {
+                print("error", error ?? "")
+                return
+            }
+            
+            if let document = document, document.exists {
+                let data = document.data()
+                if let data = data{
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.matchdayWCTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.matchdayWCTimestamp = Calendar.current.date(byAdding: .second, value: -21601, to: now)!
+                    }
+                    self.currentWCMatchday = data["currentMatchday"] as? Int ?? 0
+                    print("La fecha de actualización es\(self.matchdayTimestamp)")
+                }
+            }
+        }
+    }
+    
+    //------------------------- funciones para obtener todos los partidos del Mundial ---------------------------------------------------
+    func addSeasonMatchesWC(_ matchesSeason: Matches) {
+        do {
+            // 6
+            _ = try store.collection(path).document("WCPARTIDOS").setData(from: matchesSeason)
+        } catch {
+            fatalError("Unable to add card: \(error.localizedDescription).")
+        }
+    }
+    
+    func updateSeasonMatchesWC(){
+        store.collection(path).document("WCPARTIDOS").updateData([
+            "lastUpdated": FieldValue.serverTimestamp(),
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
+    func getSeasonMatchesWC(){
+        let docRef = store.collection(path).document("WCPARTIDOS")
+        docRef.getDocument { document, error in
+            guard error == nil else {
+                print("error", error ?? "")
+                return
+            }
+            if let document = document, document.exists {
+                let data = document.data()
+                if let data = data{
+                    let timestamp = data["lastUpdated"] as! Timestamp
+                    self.seasonWCMatchesTimestamp = timestamp.dateValue()
+                }
+                do{
+                    self.seasonWCMatches = try document.data(as: Matches.self)
+                }catch{
+                    print("Se ha producido un error cargando los partidos de BBDD")
+                }
+                
+            }
+        }
+    }
+    
+    //------------------------- funciones para obtener todos los partidos de la jornada del mundial ---------------------------------------------------
+    func addMatchdayMatchesWC(_ matchdayMatches: Matches) {
+        do {
+            // 6
+            _ = try store.collection(path).document("WCPARTIDOSJORNADA").setData(from: matchdayMatches)
+        } catch {
+            fatalError("Unable to add card: \(error.localizedDescription).")
+        }
+    }
+    
+    func updateMatchdayMatchesWC(){
+        store.collection(path).document("WCPARTIDOSJORNADA").updateData([
+            "lastUpdated": FieldValue.serverTimestamp(),
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
+    func getMatchdayMatchesWC(){
+        let docRef = store.collection(path).document("WCPARTIDOSJORNADA")
+        docRef.getDocument { document, error in
+            guard error == nil else {
+                print("error", error ?? "")
+                return
+            }
+            if let document = document, document.exists {
+                let data = document.data()
+                if let data = data{
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.matchdayMatchesWCTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.matchdayMatchesWCTimestamp = Calendar.current.date(byAdding: .second, value: -11, to: now)!
+                    }
+                }
+                do{
+                    self.matchdayMatchesWC = try document.data(as: Matches.self)
                 }catch{
                     print("Se ha producido un error cargando los partidos de BBDD")
                 }

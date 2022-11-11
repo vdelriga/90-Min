@@ -26,6 +26,7 @@ struct SwiftUIBannerAd: View {
         case bottom
     }
     
+    
     public var body: some View {
         VStack {
             if adPosition == .bottom {
@@ -65,4 +66,5 @@ struct SwiftUIBannerAd: View {
         self.width = adSize.size.width
         self.height = adSize.size.height
     }
+    
 }
