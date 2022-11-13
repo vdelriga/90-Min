@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA021195292151E200DEE638 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02119429214DC800DEE638 /* Defaults.swift */; };
 		FA159DA328F01FF200E319BE /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = FA159DA228F01FF200E319BE /* GoogleMobileAds */; };
 		FA19DB8028EF69B7001B63C2 /* StandingsCL.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */; };
 		FA1C4DAF28ECDBFB00CB7175 /* HomeChampions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4DAE28ECDBFB00CB7175 /* HomeChampions.swift */; };
@@ -65,6 +66,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FA02119429214DC800DEE638 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsCL.swift; sourceTree = "<group>"; };
 		FA1C4DAE28ECDBFB00CB7175 /* HomeChampions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeChampions.swift; sourceTree = "<group>"; };
 		FA24409128D5907D0031A6C9 /* 90 Min.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "90 Min.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				FA84C8E92901A2A8008554A1 /* GoogleService-Info.plist */,
+				FA02119429214DC800DEE638 /* Defaults.swift */,
 				FA29923E28F8AB12008A3DEE /* Database.swift */,
 				FA9BDBC128F02C1F008D3C0A /* Banner.swift */,
 				FA8C183728F19D600097CC58 /* GDPRConsent.swift */,
@@ -314,6 +317,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FAF10FFF291C033C0091B937 /* HomeWorldCup.swift in Sources */,
+				FA021195292151E200DEE638 /* Defaults.swift in Sources */,
 				FA19DB8028EF69B7001B63C2 /* StandingsCL.swift in Sources */,
 				FA290CBA291E9034000605D9 /* StandingsWC.swift in Sources */,
 				FA24409728D5907D0031A6C9 /* Home.swift in Sources */,
@@ -501,7 +505,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -541,7 +545,7 @@
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

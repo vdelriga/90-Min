@@ -14,6 +14,7 @@ import Firebase
 struct Home: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.requestReview) var requestReview
     @State private var matches = [Match]()
     @State private var matchesSeason = [Match]()
     @State private var jornada = ""
@@ -24,6 +25,7 @@ struct Home: View {
     @State private var result = false
     @State private var focus = 0
     @State private var  resultOpenActivity = ""
+    public static var defaults:Defaults = Defaults()
     let maxMatchDay = 38
     var body: some View {
 
@@ -141,6 +143,13 @@ struct Home: View {
                                     Task {
                                         getCurrentMatchdayDatabase()
                                         getSeasonMatches()
+                                        let counter = HomeWC.defaults.getCounter()
+                                        HomeWC.defaults.setCounter(count: counter + 1)
+                                        let review = HomeWC.defaults.getReview()
+                                        if counter+1 >= 5 && !review {
+                                            HomeWC.defaults.setReview(mark:true)
+                                            requestReview()
+                                        }
                                         //await getCurrentMatchday()
                                         //await loadDataSeason()
                                     }

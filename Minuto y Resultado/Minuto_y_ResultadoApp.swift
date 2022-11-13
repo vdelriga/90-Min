@@ -11,10 +11,10 @@ import UserNotifications
 import ActivityKit
 import FirebaseFirestore
 import FirebaseCore
+import StoreKit
 
 @main
 struct Minuto_y_ResultadoApp: App {
-    
     @StateObject var firestoreManager = FirestoreManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var phase

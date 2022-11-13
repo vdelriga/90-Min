@@ -10,10 +10,12 @@ import UIKit
 import ActivityKit
 import AlertToast
 import Firebase
+import StoreKit
 
 struct HomeWC: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.requestReview) var requestReview
     @State private var matches = [MatchWC]()
     @State private var matchesSeason = [MatchWC]()
     @State private var jornada = ""
@@ -25,6 +27,7 @@ struct HomeWC: View {
     @State private var result = false
     @State private var focus = 0
     @State private var  resultOpenActivity = ""
+    public static var defaults:Defaults = Defaults()
     let maxMatchDay = 7
     var body: some View {
             ZStack{
@@ -147,6 +150,13 @@ struct HomeWC: View {
                                     Task {
                                         getCurrentMatchdayWC()
                                         getSeasonMatchesWC()
+                                        let counter = HomeWC.defaults.getCounter()
+                                        let review = HomeWC.defaults.getReview()
+                                        HomeWC.defaults.setCounter(count: counter + 1)
+                                        if counter+1 >= 5 && !review {
+                                            HomeWC.defaults.setReview(mark:true)
+                                            requestReview()
+                                        }
                                         //await getCurrentMatchdayWCDatabase()
                                         //await loadDataSeasonWC()
                                     }
