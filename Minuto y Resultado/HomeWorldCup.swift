@@ -155,6 +155,7 @@ struct HomeWC: View {
                                         HomeWC.defaults.setCounter(count: counter + 1)
                                         if counter+1 >= 5 && !review {
                                             HomeWC.defaults.setReview(mark:true)
+                                            HomeWC.defaults.setDate(date: Date.now)
                                             requestReview()
                                         }
                                         //await getCurrentMatchdayWCDatabase()

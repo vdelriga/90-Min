@@ -143,13 +143,14 @@ struct Home: View {
                                     Task {
                                         getCurrentMatchdayDatabase()
                                         getSeasonMatches()
-                                        let counter = HomeWC.defaults.getCounter()
-                                        HomeWC.defaults.setCounter(count: counter + 1)
-                                        let review = HomeWC.defaults.getReview()
+                  /*                      let counter = Home.defaults.getCounter()
+                                        Home.defaults.setCounter(count: counter + 1)
+                                        let review = Home.defaults.getReview()
                                         if counter+1 >= 5 && !review {
-                                            HomeWC.defaults.setReview(mark:true)
+                                            Home.defaults.setReview(mark:true)
+                                            Home.defaults.setDate(date: Date.now)
                                             requestReview()
-                                        }
+                                        }*/
                                         //await getCurrentMatchday()
                                         //await loadDataSeason()
                                     }

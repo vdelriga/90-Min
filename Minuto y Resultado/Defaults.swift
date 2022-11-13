@@ -30,6 +30,14 @@ struct Defaults {
         let defaults = UserDefaults.standard
         return defaults.bool(forKey: "review")
     }
+    public func setDate(date:Date){
+        let defaults = UserDefaults.standard
+        defaults.setValue(date,forKey:"reviewDate")
+    }
+    public func getDate()->Date{
+        let defaults = UserDefaults.standard
+        return defaults.object(forKey:"reviewDate") as! Date
+    }
     
 }
 
