@@ -59,7 +59,7 @@ struct MainView: View {
                 }.accentColor(/*@START_MENU_TOKEN@*/.red/*@END_MENU_TOKEN@*/)
                
             }
-        }
+        }.background(Color(UIColor.systemGray6))
     }
 }
         

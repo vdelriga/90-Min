@@ -53,8 +53,12 @@ struct HomeWC: View {
                             .padding(.leading)
                         }
                         Spacer()
-                        if !jornada.isEmpty {
+                        if !jornada.isEmpty && newMatchday<4 {
                             Text(NSLocalizedString("matchDayText",comment:"") + jornada)
+                                .font(.headline)
+                                .foregroundColor(.red)
+                        }else if newMatchday >= 4{
+                            Text(jornada)
                                 .font(.headline)
                                 .foregroundColor(.red)
                         }
@@ -127,11 +131,13 @@ struct HomeWC: View {
                                             
                                         }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
                                     }
-                                }.onTapGesture{
+                                }.listRowBackground(Color(UIColor.systemGray6))
+                                .onTapGesture{
                                     result = startActivity(match: item)
                                     showToast.toggle()
                                 }
-                            }.toast(isPresenting:$showToast){
+                            }
+                            .toast(isPresenting:$showToast){
                                 AlertToast(type: result ?.complete(.green):.error(.red),title:resultOpenActivity)
                             }
                             .padding(.bottom)
@@ -161,7 +167,7 @@ struct HomeWC: View {
                                     proxy.scrollTo(value,anchor:.center)
                                 }
 
-                                }
+                            }
                             }
                             
                         }
@@ -169,7 +175,8 @@ struct HomeWC: View {
                 }
                 SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
                 
-            }.onReceive(firestoreManager.$currentWCMatchday) { matchday in
+            }
+            .onReceive(firestoreManager.$currentWCMatchday) { matchday in
                 if(matchday != 0){
                     let now = Date.now
                     //se añade la fecha de expiración en segundos(6h)
@@ -212,7 +219,7 @@ struct HomeWC: View {
                         }
                     }
                 }
-            }
+            }.background(Color(UIColor.systemGray6))
     }
     func placeOrder() { }
     func adjustOrder() { }

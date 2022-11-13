@@ -72,7 +72,8 @@ struct StandingsWC: View {
                             .opacity(0.8)
                     }
                 }
-            }.onReceive(firestoreManager.$standingsWC) { standingsWCFirestore in
+        }.background(Color(UIColor.systemGray6))
+            .onReceive(firestoreManager.$standingsWC) { standingsWCFirestore in
                 if standingsWCFirestore.standings.count > 0 {
                     let now = Date.now
                     //se añade la fecha de expiración en segundos(30s)

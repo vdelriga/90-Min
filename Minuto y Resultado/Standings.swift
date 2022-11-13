@@ -103,7 +103,7 @@ struct Standings: View {
                     }
                 }
 
-            }
+            }.background(Color(UIColor.systemGray6))
     }
     
     func getStandings(){

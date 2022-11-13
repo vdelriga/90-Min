@@ -74,7 +74,7 @@ struct Home: View {
                             .padding(.trailing)
                         }
                         
-                    }
+                    }.background(Color(UIColor.systemGray6))
                    
                     ZStack{
                         Image("PD")
@@ -125,11 +125,13 @@ struct Home: View {
                                             
                                         }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
                                     }
-                                }.onTapGesture{
+                                }.listRowBackground(Color(UIColor.systemGray6))
+                                .onTapGesture{
                                     result = startActivity(match: item)
                                     showToast.toggle()
                                 }
-                            }.toast(isPresenting:$showToast){
+                            }
+                            .toast(isPresenting:$showToast){
                                 AlertToast(type: result ?.complete(.green):.error(.red),title:resultOpenActivity)
                             }
                             .padding(.bottom)
@@ -209,7 +211,7 @@ struct Home: View {
                         }
                     }
                 }
-            }
+            }.background(Color(UIColor.systemGray6))
     }
     func placeOrder() { }
     func adjustOrder() { }
