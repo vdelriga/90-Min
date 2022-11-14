@@ -93,14 +93,14 @@ struct StandingsWC: View {
     
     func getGroup(group:String)->String{
         switch(group){
-        case "GROUP_A": return "GRUPO A"
-        case "GROUP_B": return "GRUPO B"
-        case "GROUP_C": return "GRUPO C"
-        case "GROUP_D": return "GRUPO D"
-        case "GROUP_E": return "GRUPO E"
-        case "GROUP_F": return "GRUPO F"
-        case "GROUP_G": return "GRUPO G"
-        case "GROUP_H": return "GRUPO H"
+        case "GROUP_A": return NSLocalizedString("groupKey",comment:"") + " A"
+        case "GROUP_B": return NSLocalizedString("groupKey",comment:"") + " B"
+        case "GROUP_C": return NSLocalizedString("groupKey",comment:"") + " C"
+        case "GROUP_D": return NSLocalizedString("groupKey",comment:"") + " D"
+        case "GROUP_E": return NSLocalizedString("groupKey",comment:"") + " E"
+        case "GROUP_F": return NSLocalizedString("groupKey",comment:"") + " F"
+        case "GROUP_G": return NSLocalizedString("groupKey",comment:"") + " G"
+        case "GROUP_H": return NSLocalizedString("groupKey",comment:"") + " H"
         default: return ""
         }
     }

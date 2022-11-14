@@ -85,10 +85,10 @@ struct HomeWC: View {
                     }
                    
                     ZStack{
-                        Image("qatar")
+                        Image("backQatar")
                             .resizable()
-                            .frame(width: 350, height: 350)
-                            .blur(radius:3)
+                            .aspectRatio(contentMode: .fit)
+                            .blur(radius:2)
                         ScrollViewReader { proxy in
                         if #available(iOS 15.0, *) {
                             List(matches, id: \.id) { item in
@@ -394,7 +394,7 @@ struct HomeWC: View {
     
     func startActivity(match: MatchWC)->Bool{
         if #available(iOS 16.1, *) {
-            if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"){
+            if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"||match.status == "SCHEDULED"){
                 let initialContentState = MatchAttributes.ContentState(status:match.status, scoreHomeHalfTime: match.score.halfTime.home,scoreAwayHalfTime: match.score.halfTime.away,scoreHomeFullTime: match.score.fullTime.home,scoreAwayFullTime: match.score.fullTime.away)
                 let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday ?? 0, idHome: match.homeTeam.id ?? 0, nameHome: match.homeTeam.name ?? "_", shortNameHome: match.homeTeam.shortName ?? "-", tlaHome: match.homeTeam.tla ?? "", crestHome: match.homeTeam.crest ?? "", idAway: match.awayTeam.id ?? 0, nameAway: match.awayTeam.name ?? "_", shortNameAway: match.awayTeam.shortName ?? "-", tlaAway: match.awayTeam.tla ?? "", crestAway: match.awayTeam.crest ?? "")
                 let now = Date.now.addingTimeInterval(3600)

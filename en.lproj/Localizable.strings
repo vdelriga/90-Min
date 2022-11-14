@@ -22,10 +22,19 @@
 "LAStatusKey" = "Activity already exists or match finished";
 "LAUpgradeKey" = "Please, upgrade your device to iOS16.1";
 "LAEarlyKey" = "A little early... Available an hour before the match";
-"qatar" = "Qatar 2022";
+"qatar" = "Live Qatar";
 "last16Key" = "Last 16";
 "quarterFinalsKey" = "Quarter Finals";
 "semiFinalsKey" = "Semi Finals";
 "finalKey"= "Final";
+"groupKey" = "GROUP";
+"PTS" = "PTS";
+"PJ" = "GP";
+"PG" = "W";
+"PP" = "L";
+"PE" = "D";
+"GF" = "GF";
+"GC" = "GA";
+
 
 

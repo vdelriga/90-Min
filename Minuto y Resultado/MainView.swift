@@ -36,13 +36,13 @@ struct MainView: View {
                 TabView {
                     HomeWC()
                         .tabItem {
-                            Image("logoqatar")
+                            Image(systemName:"soccerball")
                             Text(NSLocalizedString("qatar", comment:""))
                             
                         }
                     StandingsWC()
                         .tabItem {
-                            Image("worldcup")
+                            Image(systemName:"tablecells")
                             Text(NSLocalizedString("standingsItem",comment:""))
                         }
                     Home()
