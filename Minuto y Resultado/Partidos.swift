@@ -14,7 +14,26 @@ struct Token: Codable {
     var token: String
 }
 
+struct TeamData: Codable {
+    var name: String?
+    var website: String?
+    var id: Int?
+    var coach: Coach?
+    var squad: [Player]?
+    
+}
 
+struct Coach:Codable{
+    var id:Int?
+    var name: String?
+    var nationality: String?
+}
+struct Player:Codable{
+    var id:Int
+    var name: String
+    var position: String?
+    var nationality:String?
+}
 struct Matches: Codable {
     var matches: [Match]
 }

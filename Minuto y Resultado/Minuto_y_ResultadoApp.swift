@@ -12,6 +12,7 @@ import ActivityKit
 import FirebaseFirestore
 import FirebaseCore
 import StoreKit
+import GoogleMobileAds
 
 @main
 struct Minuto_y_ResultadoApp: App {
@@ -33,6 +34,8 @@ struct Constants{
     //public static let BannerId = "ca-app-pub-3940256099942544/2934735716"
     //Banner de Prod
     public static let BannerId = "ca-app-pub-4851885141099304/9005939785"
+    
+    
 }
 
 /*

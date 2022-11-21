@@ -10,6 +10,7 @@
 		FA021195292151E200DEE638 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02119429214DC800DEE638 /* Defaults.swift */; };
 		FA159DA328F01FF200E319BE /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = FA159DA228F01FF200E319BE /* GoogleMobileAds */; };
 		FA19DB8028EF69B7001B63C2 /* StandingsCL.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */; };
+		FA1A8803292C286800172D21 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A8802292C286800172D21 /* Team.swift */; };
 		FA1C4DAF28ECDBFB00CB7175 /* HomeChampions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4DAE28ECDBFB00CB7175 /* HomeChampions.swift */; };
 		FA24409528D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA24409428D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift */; };
 		FA24409728D5907D0031A6C9 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA24409628D5907D0031A6C9 /* Home.swift */; };
@@ -68,6 +69,7 @@
 /* Begin PBXFileReference section */
 		FA02119429214DC800DEE638 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsCL.swift; sourceTree = "<group>"; };
+		FA1A8802292C286800172D21 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		FA1C4DAE28ECDBFB00CB7175 /* HomeChampions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeChampions.swift; sourceTree = "<group>"; };
 		FA24409128D5907D0031A6C9 /* 90 Min.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "90 Min.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA24409428D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Minuto_y_ResultadoApp.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			children = (
 				FA84C8E92901A2A8008554A1 /* GoogleService-Info.plist */,
 				FA02119429214DC800DEE638 /* Defaults.swift */,
+				FA1A8802292C286800172D21 /* Team.swift */,
 				FA29923E28F8AB12008A3DEE /* Database.swift */,
 				FA9BDBC128F02C1F008D3C0A /* Banner.swift */,
 				FA8C183728F19D600097CC58 /* GDPRConsent.swift */,
@@ -324,6 +327,7 @@
 				FA1C4DAF28ECDBFB00CB7175 /* HomeChampions.swift in Sources */,
 				FA8C183828F19D600097CC58 /* GDPRConsent.swift in Sources */,
 				FAC661BC28D75E2B009CA154 /* Observer.swift in Sources */,
+				FA1A8803292C286800172D21 /* Team.swift in Sources */,
 				FA2440A328D591410031A6C9 /* Partidos.swift in Sources */,
 				FA24409528D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift in Sources */,
 				FA3FD59928DD167400E68D9D /* LiveActivity.swift in Sources */,
@@ -491,7 +495,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "90 Min.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Minuto y Resultado/Preview Content\"";
 				DEVELOPMENT_TEAM = RFCT5Z4GWL;
 				ENABLE_PREVIEWS = YES;
@@ -510,7 +514,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -531,7 +535,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "90 Min.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Minuto y Resultado/Preview Content\"";
 				DEVELOPMENT_TEAM = RFCT5Z4GWL;
 				ENABLE_PREVIEWS = YES;
@@ -550,7 +554,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";

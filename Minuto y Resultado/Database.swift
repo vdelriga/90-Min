@@ -39,6 +39,8 @@ class FirestoreManager: ObservableObject {
     @Published var matchdayMatchesWC:MatchesWC = MatchesWC(matches:[])
     @Published var standingsWC:StandingCL = StandingCL(standings: [])
     @Published var standingsWCTimestamp: Date = Date.now
+    @Published var teamData:TeamData? = TeamData()
+    @Published var teamTimestamp: Date = Date.now
     
     
     //función que almacena los tokens de las Live activities
@@ -607,6 +609,56 @@ class FirestoreManager: ObservableObject {
         }
     }
     
+    
+    //------------------------- funciones para obtener información de un equipo ---------------------------------------------------
+    func getTeamData(teamId:Int){
+        let docRef = store.collection("TEAMS").document(String(teamId))
+        docRef.getDocument { document, error in
+            guard error == nil else {
+                print("error", error ?? "")
+                return
+            }
+            if let document = document, document.exists {
+                let data = document.data()
+                if let data = data{
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.teamTimestamp = timestamp.dateValue()
+                    }
+                }
+                do{
+                    self.teamData = try document.data(as: TeamData.self)
+                    print("Datos de equipo recuperados de BBDD")
+                }catch{
+                    print("Se ha producido un error cargando los partidos de BBDD")
+                }
+                
+            }else{
+                self.teamData = nil
+                self.teamTimestamp = Date.now
+            }
+        }
+    }
+    
+    func addTeamData(_ teamData: TeamData) {
+        do {
+            // 6
+            _ = try store.collection("TEAMS").document(String(teamData.id ?? 0)).setData(from: teamData)
+        } catch {
+            fatalError("Unable to add card: \(error.localizedDescription).")
+        }
+    }
+    
+    func updateTeamData(teamId:Int){
+        store.collection("TEAMS").document(String(teamId)).updateData([
+            "lastUpdated": FieldValue.serverTimestamp(),
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
     
     
     

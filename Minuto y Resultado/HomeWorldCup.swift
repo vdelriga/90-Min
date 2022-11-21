@@ -12,7 +12,11 @@ import AlertToast
 import Firebase
 import StoreKit
 
+
+
 struct HomeWC: View {
+    @State private var sheetTeamPresented = false
+    @State public var teamId: Int = 0
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.requestReview) var requestReview
@@ -96,15 +100,19 @@ struct HomeWC: View {
                                     HStack{
                                         VStack(alignment: .center,spacing:4){
                                             Image(String(item.homeTeam.id ?? 0))
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 50, height: 50)
-                                                .hoverEffect(/*@START_MENU_TOKEN@*/.automatic/*@END_MENU_TOKEN@*/)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(width: 50, height: 50)
+                                                    .hoverEffect(/*@START_MENU_TOKEN@*/.automatic/*@END_MENU_TOKEN@*/)
                                             Text(item.homeTeam.shortName ?? "-")
                                                 .font(.headline)
                                                 .lineLimit(2)
                                             
                                         }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                         .onTapGesture{
+                                             teamId = item.homeTeam.id ?? 0
+                                             sheetTeamPresented.toggle()
+                                             }
                                         Spacer()
                                         VStack{
                                             Text(getMatchDate(stringDate: item.utcDate))
@@ -117,7 +125,10 @@ struct HomeWC: View {
                                                 .font(.caption)
                                                 .lineLimit(/*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
                                             
-                                        }
+                                        }.onTapGesture{
+                                            result = startActivity(match: item)
+                                            showToast.toggle()
+                                         }
                                         Spacer()
                                         VStack(alignment:.center){
                                             Image(String(item.awayTeam.id ?? 0))
@@ -133,13 +144,44 @@ struct HomeWC: View {
                                             
                                             
                                         }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                         .onTapGesture{
+                                                teamId = item.awayTeam.id ?? 0
+                                                sheetTeamPresented.toggle()
+                                                }
                                     }
                                 }.listRowBackground(Color(UIColor.systemGray6))
-                                .onTapGesture{
+                                 /*.onTapGesture{
                                     result = startActivity(match: item)
                                     showToast.toggle()
+                                 }*/
+                                 .contextMenu {
+                                     Button(action: {
+                                         result = startActivity(match: item)
+                                         showToast.toggle()
+                                     }, label: {
+                                         Image(systemName: "plus.circle")
+                                         Text("AddLA")
+                                     })
+                                     Button(action: {
+                                         teamId = item.homeTeam.id ?? 0
+                                         sheetTeamPresented.toggle()
+                                     }, label: {
+                                         Image(systemName: "info.circle")
+                                         Text(item.homeTeam.name ?? "")
+                                     })
+                                     Button(action: {
+                                         teamId = item.awayTeam.id ?? 0
+                                         sheetTeamPresented.toggle()
+                                     }, label: {
+                                         Image(systemName: "info.circle")
+                                         Text(item.awayTeam.name ?? "")
+                                     })
+                                 }
+                            }.sheet(isPresented:$sheetTeamPresented){
+                                if sheetTeamPresented{
+                                    TeamView(teamId: $teamId)
                                 }
-                            }
+                               }
                             .toast(isPresenting:$showToast){
                                 AlertToast(type: result ?.complete(.green):.error(.red),title:resultOpenActivity)
                             }

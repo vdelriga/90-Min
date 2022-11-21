@@ -72,7 +72,7 @@ struct Standings: View {
                                         Text(String(item.goalsAgainst))
                                             .frame(width: 25.0, height: 25,alignment: .center)
                                             .font(.caption)
-                                    }
+                                    }.listRowBackground(Color(UIColor.systemGray6))
                                 }
                             }
                         }.listStyle(.plain)
@@ -150,25 +150,25 @@ struct headerTable: View {
                     .font(.caption)
                 Text("PTS")
                     .frame(width: 25.0, height: 25,alignment:.center)
-                    .font(.caption)
+                    .font(.caption.bold())
                 Text("PJ")
                     .frame(width: 25.0, height: 25,alignment: .center)
-                    .font(.caption)
+                    .font(.caption.bold())
                 Text("PG")
                     .frame(width: 25.0, height: 25,alignment: .center)
-                    .font(.caption)
+                    .font(.caption.bold())
                 Text("PP")
                     .frame(width: 25.0, height: 25,alignment: .center)
-                    .font(.caption)
+                    .font(.caption.bold())
                 Text("PE")
                     .frame(width: 25.0, height: 25,alignment: .center)
-                    .font(.caption)
+                    .font(.caption.bold())
                 Text("GF")
                     .frame(width: 25.0, height: 25,alignment: .center)
-                    .font(.caption)
+                    .font(.caption.bold())
                 Text("GC")
                     .frame(width: 25.0, height: 25,alignment: .center)
-                    .font(.caption)
+                    .font(.caption.bold())
             }
   }
 }
