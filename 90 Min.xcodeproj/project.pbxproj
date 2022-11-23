@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FA021195292151E200DEE638 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02119429214DC800DEE638 /* Defaults.swift */; };
+		FA05B2D7292EDD0E0090C8E2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA96683429152C660068BE3E /* Localizable.strings */; };
 		FA159DA328F01FF200E319BE /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = FA159DA228F01FF200E319BE /* GoogleMobileAds */; };
 		FA19DB8028EF69B7001B63C2 /* StandingsCL.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */; };
 		FA1A8803292C286800172D21 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A8802292C286800172D21 /* Team.swift */; };
@@ -309,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA3FD59028DD162B00E68D9D /* Assets.xcassets in Resources */,
+				FA05B2D7292EDD0E0090C8E2 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

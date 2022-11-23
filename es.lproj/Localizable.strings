@@ -35,3 +35,9 @@
 "GC" = "GC";
 "CoachKey" = "Entrenador";
 "AddLA" = "Ver en Pantalla de Inicio";
+"coach" = "Entrenador";
+"goalkeeper" = "Porteros";
+"defence" = "Defensas";
+"midfield" = "Medio campistas";
+"offence" = "Delanteros";
+

@@ -37,6 +37,11 @@
 "GC" = "GA";
 "CoachKey" = "Coach";
 "AddLA" = "Add Live Activity";
+"coach" = "Coach";
+"goalkeeper" = "Goalkeepers";
+"defence" = "Defences";
+"midfield" = "Midfields";
+"offence" = "Offences";
 
 
 

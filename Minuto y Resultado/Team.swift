@@ -14,44 +14,53 @@ struct TeamView: View {
     var body: some View{
             VStack(alignment: .center){
                 Spacer()
-                Image(String(teamId))
-                    .resizable()
-                    .clipShape(Circle())
-                    .frame(width:150,height: 100)
-                    .aspectRatio(contentMode: .fit)
-                    .overlay(Circle().stroke(Color.white,lineWidth:4).shadow(radius: 10))
-                    
-                    
-                Text(teamData.name ?? "")
-                    .font(.largeTitle)
-                    .padding([.leading, .trailing])
                 Image("logo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                
-                VStack(alignment: .leading){
-                    VStack (alignment: .leading){
+        
+                HStack {
+                    VStack(alignment: .leading){
+                        Text(teamData.name ?? "")
+                            .font(.system(size:30))
+                            .padding(.leading)
                         if let urlString = teamData.website {
                             Link(destination: URL(string: urlString)!) {
                                 Text("Official Website")
-                            }.padding(.leading)
-                        }
-                        if let name = teamData.coach?.name {
-                            Text( NSLocalizedString("CoachKey", comment: "") + ":\(name)" )
-                                .padding([.leading, .trailing])
-                            
+                            }
+                            .padding(.leading)
                         }
                     }
+                    Image(String(teamId))
+                            .resizable()
+                            .frame(width: 200, height: 126)
+                           // .aspectRatio(contentMode: .fit)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.white,lineWidth:4).shadow(radius: 10))
                     
+                    Spacer()
+                }
+                
+                VStack(alignment: .leading){
                     if let squad = teamData.squad {
                         List{
                             Section(header: HStack{
-                                Text("Porteros")
-                                Image("goal-keeper")
+                                Image("entrenador")
                                     .resizable()
+                                    .aspectRatio(contentMode: .fit)
                                     .frame(width: 25, height: 25)
-                            }
-                            ){
+                                Text("coach")
+                            }){
+                                if let name = teamData.coach?.name {
+                                    Text(name)
+                                }
+                            }.headerProminence(.increased)
+                            Section(header: HStack{
+                                Image("portero")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 25, height: 25)
+                                Text("goalkeeper")
+                            }){
                                 ForEach(squad, id: \.id){ item in
                                     if item.position == "Goalkeeper"{
                                         VStack(alignment: .leading) {
@@ -61,7 +70,13 @@ struct TeamView: View {
                                     }
                                 }
                             }.headerProminence(.increased)
-                            Section(header: Text("Defensas")){
+                            Section(header:  HStack{
+                                Image("defensas")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 25, height: 25)
+                                Text("defence")
+                            }){
                                 ForEach(squad, id: \.id){ item in
                                     if item.position == "Defence"{
                                         VStack(alignment: .leading) {
@@ -71,7 +86,13 @@ struct TeamView: View {
                                     }
                                 }
                             }.headerProminence(.increased)
-                            Section(header: Text("Medio Centros")){
+                            Section(header: HStack{
+                                Image("mediocampo")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 25, height: 25)
+                                Text("midfield")
+                            }){
                                 ForEach(squad, id: \.id){ item in
                                     if item.position == "Midfield"{
                                         VStack(alignment: .leading) {
@@ -81,7 +102,14 @@ struct TeamView: View {
                                     }
                                 }
                             }.headerProminence(.increased)
-                            Section(header: Text("Delanteros")){
+                            Section(header: HStack{
+                                Image("Delantero")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 25, height: 25)
+                                Text("offence")
+                            })
+                            {
                                 ForEach(squad, id: \.id){ item in
                                     if item.position == "Offence"{
                                         VStack(alignment: .leading) {
