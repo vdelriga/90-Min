@@ -41,7 +41,8 @@ class FirestoreManager: ObservableObject {
     @Published var standingsWCTimestamp: Date = Date.now
     @Published var teamData:TeamData? = TeamData()
     @Published var teamTimestamp: Date = Date.now
-    
+    //@Published var videosDict: [String: String] = [:]
+    @Published var videos:QuerySnapshot? = nil
     
     //función que almacena los tokens de las Live activities
     func addMatchToken(matchId: Int, token:Token) {
@@ -659,6 +660,23 @@ class FirestoreManager: ObservableObject {
             }
         }
     }
+    
+    
+    // Función para obtener los videos del Mundial de la BBDD
+    
+    func getVideosWC(){
+        store.collection("Videos").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.videos = querySnapshot
+                /*for document in querySnapshot!.documents {
+                    self.videosDict[document.documentID] = document["videoID"] as? String
+                }*/
+            }
+        }
+    }
+    
     
     
     

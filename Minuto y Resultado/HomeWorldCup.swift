@@ -14,13 +14,17 @@ import StoreKit
 
 
 
+
+
 struct HomeWC: View {
     @State private var sheetTeamPresented = false
+    @State private var sheetYoutubePresented = false
     @State public var teamId: Int = 0
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.requestReview) var requestReview
     @State private var matches = [MatchWC]()
+    @State private var videosDict: [String: String] = [:]
     @State private var matchesSeason = [MatchWC]()
     @State private var jornada = ""
     @State private var currentMatchday = 0
@@ -30,6 +34,7 @@ struct HomeWC: View {
     @State private var showToast = false
     @State private var result = false
     @State private var focus = 0
+    @State private var videoID: String = ""
     @State private var  resultOpenActivity = ""
     public static var defaults:Defaults = Defaults()
     let maxMatchDay = 7
@@ -115,10 +120,17 @@ struct HomeWC: View {
                                              }
                                         Spacer()
                                         VStack{
-                                            Text(getMatchDate(stringDate: item.utcDate))
-                                                .font(.caption)
-                                            Text(getMatchTime(stringDate: item.utcDate))
-                                                .font(.caption)
+                                            if let _ = videosDict[String(item.id)]{
+                                                    Image(systemName: "video")
+                                                        .foregroundColor(.black)
+                                                    Text("resumenKey")
+                                                        .foregroundColor(.black)
+                                            }else{
+                                                Text(getMatchDate(stringDate: item.utcDate))
+                                                    .font(.caption)
+                                                Text(getMatchTime(stringDate: item.utcDate))
+                                                    .font(.caption)
+                                            }
                                             Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
                                                 .font(.largeTitle)
                                             Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
@@ -126,8 +138,13 @@ struct HomeWC: View {
                                                 .lineLimit(/*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
                                             
                                         }.onTapGesture{
-                                            result = startActivity(match: item)
-                                            showToast.toggle()
+                                            if let _ = videosDict[String(item.id)]{
+                                                videoID = videosDict[String(item.id)] ?? ""
+                                                sheetYoutubePresented.toggle()
+                                            }else{
+                                                result = startActivity(match: item)
+                                                showToast.toggle()
+                                            }
                                          }
                                         Spacer()
                                         VStack(alignment:.center){
@@ -176,10 +193,28 @@ struct HomeWC: View {
                                          Image(systemName: "info.circle")
                                          Text(item.awayTeam.name ?? "")
                                      })
+                                     if let _ = videosDict[String(item.id)]{
+                                         Button(action: {
+                                             videoID = videosDict[String(item.id)] ?? ""
+                                             sheetYoutubePresented.toggle()
+                                         }, label: {
+                                             Image(systemName: "video")
+                                             Text("resumenKey")
+                                         })
+                                     }
                                  }
                             }.sheet(isPresented:$sheetTeamPresented){
                                 if sheetTeamPresented{
                                     TeamView(teamId: $teamId)
+                                        
+                                }
+                               }
+                            .sheet(isPresented:$sheetYoutubePresented){
+                                if sheetYoutubePresented{
+                                    YoutubeView(videoID: videoID)
+                                        .frame(minHeight:0,maxHeight:UIScreen.main.bounds.height * 0.3)
+                                        .cornerRadius(5)
+                                        .padding(.horizontal,5)
                                 }
                                }
                             .toast(isPresenting:$showToast){
@@ -192,6 +227,7 @@ struct HomeWC: View {
                                     Task {
                                         getCurrentMatchdayWC()
                                         getSeasonMatchesWC()
+                                        getVideosWC()
                                         let counter = HomeWC.defaults.getCounter()
                                         let review = HomeWC.defaults.getReview()
                                         HomeWC.defaults.setCounter(count: counter + 1)
@@ -228,6 +264,12 @@ struct HomeWC: View {
                 }
                 SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
                 
+            }.onReceive(firestoreManager.$videos){videos in
+                if let videosYT = videos{
+                    for document in videosYT.documents {
+                        self.videosDict[document.documentID] = document["videoID"] as? String
+                    }
+                }
             }
             .onReceive(firestoreManager.$currentWCMatchday) { matchday in
                 if(matchday != 0){
@@ -382,6 +424,11 @@ struct HomeWC: View {
     }
     func getCurrentMatchdayWC(){
         firestoreManager.getSeasonWC()
+
+    }
+    
+    func getVideosWC(){
+        firestoreManager.getVideosWC()
 
     }
     

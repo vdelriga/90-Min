@@ -38,6 +38,7 @@
 		FA96683529152C870068BE3E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA96683429152C660068BE3E /* Localizable.strings */; };
 		FA9BDBC528F0324B008D3C0A /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BDBC128F02C1F008D3C0A /* Banner.swift */; };
 		FA9BDBC628F0324D008D3C0A /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9BDBC328F02E29008D3C0A /* BannerView.swift */; };
+		FABD6DA6293A2EE200748C42 /* YTPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABD6DA5293A2EDE00748C42 /* YTPlayer.swift */; };
 		FAC661BC28D75E2B009CA154 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC661BB28D75E2B009CA154 /* Observer.swift */; };
 		FACEFF4F28DA1E3E00912472 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACEFF4E28DA1E3E00912472 /* MainView.swift */; };
 		FAF10FFF291C033C0091B937 /* HomeWorldCup.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF10FFE291C033C0091B937 /* HomeWorldCup.swift */; };
@@ -68,6 +69,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A772E15032A39CBAF838A336 /* Pods-90 Min.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-90 Min.debug.xcconfig"; path = "Target Support Files/Pods-90 Min/Pods-90 Min.debug.xcconfig"; sourceTree = "<group>"; };
+		B2472412E995113C660C5DF7 /* Pods-90 Min.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-90 Min.release.xcconfig"; path = "Target Support Files/Pods-90 Min/Pods-90 Min.release.xcconfig"; sourceTree = "<group>"; };
+		CB2A8D7B6FE2EEA827858056 /* libPods-90 Min.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-90 Min.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA02119429214DC800DEE638 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsCL.swift; sourceTree = "<group>"; };
 		FA1A8802292C286800172D21 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
@@ -89,12 +93,23 @@
 		FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		FA512D0C28E2326600EDE1A6 /* 90 Min.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "90 Min.entitlements"; sourceTree = "<group>"; };
 		FA656A9628DA4B86007E6194 /* Standings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standings.swift; sourceTree = "<group>"; };
+		FA82EE27293A3D3D0050143D /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA82EE29293A3D730050143D /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA82EE2B293A3EB20050143D /* libPods-90 Min.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-90 Min.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA82EE2D293A3EB60050143D /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA84C8E92901A2A8008554A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		FA8BDFB3293A4099001C272A /* libYouTubePlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libYouTubePlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA8C183728F19D600097CC58 /* GDPRConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPRConsent.swift; sourceTree = "<group>"; };
 		FA96683329152C660068BE3E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FA96683629152CD10068BE3E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FA9BDBC128F02C1F008D3C0A /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		FA9BDBC328F02E29008D3C0A /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
+		FABD6DA5293A2EDE00748C42 /* YTPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YTPlayer.swift; sourceTree = "<group>"; };
+		FABD6DA7293A300C00748C42 /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FABD6DA9293A303C00748C42 /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FABD6DAB293A304900748C42 /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FABDFF36293A3EE900F99BAE /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FABDFF38293A3F1100F99BAE /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAC661BB28D75E2B009CA154 /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		FACDF5BD28DD083F0052D31D /* -0-Minutos-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "-0-Minutos-Info.plist"; sourceTree = "<group>"; };
 		FACEFF4E28DA1E3E00912472 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -127,6 +142,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9F1DB27BA8BDA7D6830A0C49 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A772E15032A39CBAF838A336 /* Pods-90 Min.debug.xcconfig */,
+				B2472412E995113C660C5DF7 /* Pods-90 Min.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		FA24408828D5907D0031A6C9 = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +161,7 @@
 				FA3FD58C28DD162A00E68D9D /* NoventaMin */,
 				FA47CBA928DB5905009F1A2C /* Frameworks */,
 				FA24409228D5907D0031A6C9 /* Products */,
+				9F1DB27BA8BDA7D6830A0C49 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -153,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				FA84C8E92901A2A8008554A1 /* GoogleService-Info.plist */,
+				FABD6DA5293A2EDE00748C42 /* YTPlayer.swift */,
 				FA02119429214DC800DEE638 /* Defaults.swift */,
 				FA1A8802292C286800172D21 /* Team.swift */,
 				FA29923E28F8AB12008A3DEE /* Database.swift */,
@@ -197,8 +223,19 @@
 		FA47CBA928DB5905009F1A2C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA8BDFB3293A4099001C272A /* libYouTubePlayer.a */,
+				FABDFF38293A3F1100F99BAE /* libyoutube-ios-player-helper.a */,
+				FABDFF36293A3EE900F99BAE /* libyoutube-ios-player-helper.a */,
+				FA82EE2D293A3EB60050143D /* libyoutube-ios-player-helper.a */,
+				FA82EE2B293A3EB20050143D /* libPods-90 Min.a */,
+				FA82EE29293A3D730050143D /* libyoutube-ios-player-helper.a */,
+				FA82EE27293A3D3D0050143D /* libyoutube-ios-player-helper.a */,
+				FABD6DAB293A304900748C42 /* libyoutube-ios-player-helper.a */,
+				FABD6DA9293A303C00748C42 /* libyoutube-ios-player-helper.a */,
+				FABD6DA7293A300C00748C42 /* libyoutube-ios-player-helper.a */,
 				FA47CBAA28DB5905009F1A2C /* WidgetKit.framework */,
 				FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */,
+				CB2A8D7B6FE2EEA827858056 /* libPods-90 Min.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -210,6 +247,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA24409F28D5907E0031A6C9 /* Build configuration list for PBXNativeTarget "90 Min" */;
 			buildPhases = (
+				84D9CDFC6FE86B497330A84B /* [CP] Check Pods Manifest.lock */,
 				FA24408D28D5907D0031A6C9 /* Sources */,
 				FA24408E28D5907D0031A6C9 /* Frameworks */,
 				FA24408F28D5907D0031A6C9 /* Resources */,
@@ -316,6 +354,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		84D9CDFC6FE86B497330A84B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-90 Min-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		FA24408D28D5907D0031A6C9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -330,6 +393,7 @@
 				FA8C183828F19D600097CC58 /* GDPRConsent.swift in Sources */,
 				FAC661BC28D75E2B009CA154 /* Observer.swift in Sources */,
 				FA1A8803292C286800172D21 /* Team.swift in Sources */,
+				FABD6DA6293A2EE200748C42 /* YTPlayer.swift in Sources */,
 				FA2440A328D591410031A6C9 /* Partidos.swift in Sources */,
 				FA24409528D5907D0031A6C9 /* Minuto_y_ResultadoApp.swift in Sources */,
 				FA3FD59928DD167400E68D9D /* LiveActivity.swift in Sources */,
@@ -491,6 +555,7 @@
 		};
 		FA2440A028D5907E0031A6C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A772E15032A39CBAF838A336 /* Pods-90 Min.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -516,7 +581,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -531,6 +596,7 @@
 		};
 		FA2440A128D5907E0031A6C9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2472412E995113C660C5DF7 /* Pods-90 Min.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -556,7 +622,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
