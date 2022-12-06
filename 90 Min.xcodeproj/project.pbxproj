@@ -581,7 +581,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -622,7 +622,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";

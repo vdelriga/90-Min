@@ -122,9 +122,8 @@ struct HomeWC: View {
                                         VStack{
                                             if let _ = videosDict[String(item.id)]{
                                                     Image(systemName: "video")
-                                                        .foregroundColor(.black)
                                                     Text("resumenKey")
-                                                        .foregroundColor(.black)
+
                                             }else{
                                                 Text(getMatchDate(stringDate: item.utcDate))
                                                     .font(.caption)
@@ -212,7 +211,7 @@ struct HomeWC: View {
                             .sheet(isPresented:$sheetYoutubePresented){
                                 if sheetYoutubePresented{
                                     YoutubeView(videoID: videoID)
-                                        .frame(minHeight:0,maxHeight:UIScreen.main.bounds.height * 0.3)
+                                        .frame(minHeight:0,maxHeight:UIScreen.main.bounds.height * 0.27)
                                         .cornerRadius(5)
                                         .padding(.horizontal,5)
                                 }
