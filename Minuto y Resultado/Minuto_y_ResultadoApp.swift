@@ -97,6 +97,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     let gcmMessageIDKey = "gcm.message_id"
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
+
         FirebaseApp.configure()
         //let db = Firestore.firestore()
         Messaging.messaging().delegate = self

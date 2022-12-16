@@ -116,6 +116,7 @@ struct childScore:Codable{
 }
 
 struct Score: Codable{
+   // var duration: String
     var fullTime: childScore
     var halfTime: childScore
 }

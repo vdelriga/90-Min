@@ -69,9 +69,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A772E15032A39CBAF838A336 /* Pods-90 Min.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-90 Min.debug.xcconfig"; path = "Target Support Files/Pods-90 Min/Pods-90 Min.debug.xcconfig"; sourceTree = "<group>"; };
-		B2472412E995113C660C5DF7 /* Pods-90 Min.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-90 Min.release.xcconfig"; path = "Target Support Files/Pods-90 Min/Pods-90 Min.release.xcconfig"; sourceTree = "<group>"; };
-		CB2A8D7B6FE2EEA827858056 /* libPods-90 Min.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-90 Min.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		89A03481FF080710D9001BCC /* Pods-90 Min.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-90 Min.debug.xcconfig"; path = "Target Support Files/Pods-90 Min/Pods-90 Min.debug.xcconfig"; sourceTree = "<group>"; };
+		AA673A9740990A518371325D /* Pods-90 Min.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-90 Min.release.xcconfig"; path = "Target Support Files/Pods-90 Min/Pods-90 Min.release.xcconfig"; sourceTree = "<group>"; };
 		FA02119429214DC800DEE638 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsCL.swift; sourceTree = "<group>"; };
 		FA1A8802292C286800172D21 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
@@ -93,23 +92,13 @@
 		FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		FA512D0C28E2326600EDE1A6 /* 90 Min.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "90 Min.entitlements"; sourceTree = "<group>"; };
 		FA656A9628DA4B86007E6194 /* Standings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standings.swift; sourceTree = "<group>"; };
-		FA82EE27293A3D3D0050143D /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA82EE29293A3D730050143D /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA82EE2B293A3EB20050143D /* libPods-90 Min.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPods-90 Min.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA82EE2D293A3EB60050143D /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA84C8E92901A2A8008554A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		FA8BDFB3293A4099001C272A /* libYouTubePlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libYouTubePlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA8C183728F19D600097CC58 /* GDPRConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDPRConsent.swift; sourceTree = "<group>"; };
 		FA96683329152C660068BE3E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FA96683629152CD10068BE3E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FA9BDBC128F02C1F008D3C0A /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		FA9BDBC328F02E29008D3C0A /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		FABD6DA5293A2EDE00748C42 /* YTPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YTPlayer.swift; sourceTree = "<group>"; };
-		FABD6DA7293A300C00748C42 /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FABD6DA9293A303C00748C42 /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FABD6DAB293A304900748C42 /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FABDFF36293A3EE900F99BAE /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FABDFF38293A3F1100F99BAE /* libyoutube-ios-player-helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libyoutube-ios-player-helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAC661BB28D75E2B009CA154 /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		FACDF5BD28DD083F0052D31D /* -0-Minutos-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "-0-Minutos-Info.plist"; sourceTree = "<group>"; };
 		FACEFF4E28DA1E3E00912472 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -142,11 +131,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9F1DB27BA8BDA7D6830A0C49 /* Pods */ = {
+		8C090B853DAFAB08CFD3E94C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A772E15032A39CBAF838A336 /* Pods-90 Min.debug.xcconfig */,
-				B2472412E995113C660C5DF7 /* Pods-90 Min.release.xcconfig */,
+				89A03481FF080710D9001BCC /* Pods-90 Min.debug.xcconfig */,
+				AA673A9740990A518371325D /* Pods-90 Min.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -161,7 +150,7 @@
 				FA3FD58C28DD162A00E68D9D /* NoventaMin */,
 				FA47CBA928DB5905009F1A2C /* Frameworks */,
 				FA24409228D5907D0031A6C9 /* Products */,
-				9F1DB27BA8BDA7D6830A0C49 /* Pods */,
+				8C090B853DAFAB08CFD3E94C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -223,19 +212,8 @@
 		FA47CBA928DB5905009F1A2C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FA8BDFB3293A4099001C272A /* libYouTubePlayer.a */,
-				FABDFF38293A3F1100F99BAE /* libyoutube-ios-player-helper.a */,
-				FABDFF36293A3EE900F99BAE /* libyoutube-ios-player-helper.a */,
-				FA82EE2D293A3EB60050143D /* libyoutube-ios-player-helper.a */,
-				FA82EE2B293A3EB20050143D /* libPods-90 Min.a */,
-				FA82EE29293A3D730050143D /* libyoutube-ios-player-helper.a */,
-				FA82EE27293A3D3D0050143D /* libyoutube-ios-player-helper.a */,
-				FABD6DAB293A304900748C42 /* libyoutube-ios-player-helper.a */,
-				FABD6DA9293A303C00748C42 /* libyoutube-ios-player-helper.a */,
-				FABD6DA7293A300C00748C42 /* libyoutube-ios-player-helper.a */,
 				FA47CBAA28DB5905009F1A2C /* WidgetKit.framework */,
 				FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */,
-				CB2A8D7B6FE2EEA827858056 /* libPods-90 Min.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -555,7 +533,7 @@
 		};
 		FA2440A028D5907E0031A6C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A772E15032A39CBAF838A336 /* Pods-90 Min.debug.xcconfig */;
+			baseConfigurationReference = 89A03481FF080710D9001BCC /* Pods-90 Min.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -596,7 +574,7 @@
 		};
 		FA2440A128D5907E0031A6C9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2472412E995113C660C5DF7 /* Pods-90 Min.release.xcconfig */;
+			baseConfigurationReference = AA673A9740990A518371325D /* Pods-90 Min.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

@@ -17,6 +17,7 @@ struct Home: View {
     @Environment(\.requestReview) var requestReview
     @State private var matches = [Match]()
     @State private var matchesSeason = [Match]()
+    @State private var liveMatches = [Match]()
     @State private var jornada = ""
     @State private var currentMatchday = 0
     @ObservedObject var observer = Observer()
@@ -25,7 +26,9 @@ struct Home: View {
     @State private var result = false
     @State private var focus = 0
     @State private var  resultOpenActivity = ""
+    @State private var  backImage = ""
     public static var defaults:Defaults = Defaults()
+    @State private var selectedLeague = Home.defaults.getLeague()
     let maxMatchDay = 38
     var body: some View {
 
@@ -34,6 +37,23 @@ struct Home: View {
                     Image("logo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                    Picker("Favorite League", selection: $selectedLeague, content: {
+                        VStack {
+                            Image("laliga")
+                        }.tag(0)
+                        VStack{
+                            Image("PL")
+                        }.tag(1)
+
+                    }).pickerStyle(SegmentedPickerStyle())
+                        .onChange(of: selectedLeague) { newValue in
+                            Task{
+                                Home.defaults.setLeague(league:newValue)
+                                matches.removeAll()
+                                getCurrentMatchdayDatabase(league:selectedLeague)
+                                getSeasonMatches(league:selectedLeague)
+                            }
+                        }
                     
                     HStack{
                         if (Int(jornada) ?? 0 > 1){
@@ -42,7 +62,7 @@ struct Home: View {
                                 jornada = String(newMatchday)
                                 if jornada == String(currentMatchday){
                                     Task{
-                                        getMatchdayMatches()
+                                        getLiveMatches()
                                     }
                                 }else{
                                     loadMatchDay(matchday: Int(jornada) ?? 0)
@@ -65,7 +85,7 @@ struct Home: View {
                                 let newMatchday = (Int(jornada) ?? 1) + 1
                                 jornada = String(newMatchday)
                                 if jornada == String(currentMatchday){
-                                    getMatchdayMatches()
+                                    getLiveMatches()
                                 }else{
                                     loadMatchDay(matchday: Int(jornada) ?? 0)
                                 }
@@ -79,10 +99,18 @@ struct Home: View {
                     }.background(Color(UIColor.systemGray6))
                    
                     ZStack{
-                        Image("PD")
-                            .resizable()
-                            .frame(width: 350, height: 350)
-                            .blur(radius:8)
+                        
+                        if selectedLeague == 0 {
+                            Image("PD")
+                                .resizable()
+                                .frame(width: 350, height: 350)
+                            .blur(radius:4)
+                        } else if selectedLeague == 1 {
+                            Image("PLBACK")
+                                .resizable()
+                                .frame(width: 350, height: 350)
+                            .blur(radius:4)
+                        }
                         ScrollViewReader { proxy in
                         if #available(iOS 15.0, *) {
                             List(matches, id: \.id) { item in
@@ -138,21 +166,22 @@ struct Home: View {
                             }
                             .padding(.bottom)
                             .refreshable{
-                                getMatchdayMatches()
+                                getLiveMatches()
                             }.onReceive(self.observer.$enteredForeground) { _ in
                                     Task {
-                                        getCurrentMatchdayDatabase()
-                                        getSeasonMatches()
-                  /*                      let counter = Home.defaults.getCounter()
+                                        getCurrentMatchdayDatabase(league: selectedLeague)
+                                        getSeasonMatches(league:selectedLeague)
+                                        //Bloque para iniciar proceso de revisión
+                                        let counter = Home.defaults.getCounter()
                                         Home.defaults.setCounter(count: counter + 1)
                                         let review = Home.defaults.getReview()
                                         if counter+1 >= 5 && !review {
                                             Home.defaults.setReview(mark:true)
                                             Home.defaults.setDate(date: Date.now)
                                             requestReview()
-                                        }*/
-                                        //await getCurrentMatchday()
-                                        //await loadDataSeason()
+                                        }
+                                        //await getCurrentMatchday(league:selectedLeague)
+                                        //await loadDataSeason(league:selectedLeague)
                                     }
                             }
                             .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
@@ -187,10 +216,10 @@ struct Home: View {
                     if now  < expiredTime {
                         jornada = String(matchday)
                         currentMatchday = matchday
-                        getMatchdayMatches()
+                        getLiveMatches()
                     }else{
                         Task{
-                            await getCurrentMatchday()
+                            await getCurrentMatchday(league:selectedLeague)
                         }
                     }
                 }
@@ -203,18 +232,19 @@ struct Home: View {
                     matchesSeason = matches.matches
                 }else{
                     Task{
-                        await loadDataSeason()
+                        await loadDataSeason(league:selectedLeague)
                     }
                 }
             }
-            .onReceive(firestoreManager.$matchdayMatches) { matchdayMatches in
+            .onReceive(firestoreManager.$liveMatches) { matchdayMatches in
                 if matchdayMatches.matches.count > 0 {
                     let now = Date.now
                     //se añade la fecha de expiración en segundos(6h)
-                    let expiredTime = firestoreManager.matchdayMatchesTimestamp.addingTimeInterval(10)
+                    let expiredTime = firestoreManager.liveMatchesTimestamp.addingTimeInterval(10)
                     if now  < expiredTime {
                         print("Información de partidos cacheada")
-                        matches = matchdayMatches.matches
+                        liveMatches = matchdayMatches.matches
+                        updateMatchdayMatches(matchday:Int(jornada) ?? 0)
                     }else{
                         Task{
                             await loadData()
@@ -267,8 +297,44 @@ struct Home: View {
         }
     }
     
-    func loadDataSeason() async {
-        guard let url = URL(string: "https://api.football-data.org/v4/competitions/PD/matches")
+    func replaceMatches(matches: [Match], replacementMatches: [Match]) -> [Match] {
+        var newMatches: [Match] = []
+        for match in matches {
+            var foundMatch: Match?
+            for replacementMatch in replacementMatches {
+                if match.id == replacementMatch.id {
+                    foundMatch = replacementMatch
+                    break
+                }
+            }
+            if let foundMatch = foundMatch {
+                newMatches.append(foundMatch)
+            } else {
+                newMatches.append(match)
+            }
+        }
+        return newMatches
+    }
+    
+    
+    func updateMatchdayMatches(matchday:Int){
+        self.matches.removeAll()
+        for match in matchesSeason{
+            if match.matchday == matchday{
+                matches.append(match)
+            }
+        }
+        matches = replaceMatches(matches:matches,replacementMatches: liveMatches)
+    }
+    
+    func loadDataSeason(league:Int) async {
+        var url: String = ""
+        switch(league){
+        case 0:url = "https://api.football-data.org/v4/competitions/PD/matches"
+        case 1:url = "https://api.football-data.org/v4/competitions/PL/matches"
+        default: url = "https://api.football-data.org/v4/competitions/PD/matches"
+        }
+        guard let url = URL(string: url)
         else {
             print("Invalid URL")
             return
@@ -281,8 +347,8 @@ struct Home: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(Matches.self, from: data){
                 matchesSeason = decodedResponse.matches
-                firestoreManager.addSeasonMatches(decodedResponse)
-                firestoreManager.updateSeasonMatches()
+                firestoreManager.addSeasonMatches(decodedResponse,league:league)
+                firestoreManager.updateSeasonMatches(league:league)
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
@@ -290,7 +356,7 @@ struct Home: View {
     }
     
     func loadData() async {
-        guard let url = URL(string: "https://api.football-data.org/v4/competitions/PD/matches?matchday=" + jornada)
+        guard let url = URL(string: "https://api.football-data.org/v4/matches")
         else {
             print("Invalid URL")
             return
@@ -303,30 +369,37 @@ struct Home: View {
 
             if let decodedResponse =
                 try? JSONDecoder().decode(Matches.self, from: data){
-                matches = decodedResponse.matches
-                firestoreManager.addMatchdayMatches(decodedResponse)
-                firestoreManager.updateMatchdayMatches()
+                liveMatches = decodedResponse.matches
+                firestoreManager.addLiveMatches(decodedResponse)
+                firestoreManager.updateLiveMatches()
+                updateMatchdayMatches(matchday:Int(jornada) ?? 0)
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
         }
     }
-    func getCurrentMatchdayDatabase(){
-        firestoreManager.getSeason()
+    func getCurrentMatchdayDatabase(league:Int){
+        firestoreManager.getSeason(league:league)
 
     }
     
-    func getSeasonMatches(){
-        firestoreManager.getSeasonMatches()
+    func getSeasonMatches(league:Int){
+        firestoreManager.getSeasonMatches(league:league)
 
     }
     
-    func getMatchdayMatches(){
-        firestoreManager.getMatchdayMatches()
+    func getLiveMatches(){
+        firestoreManager.getLiveMatches()
     }
     
-    func getCurrentMatchday() async {
-        guard let url = URL(string: "https://api.football-data.org/v4/competitions/PD")
+    func getCurrentMatchday(league:Int) async {
+        var url: String = ""
+        switch(league){
+        case 0:url = "https://api.football-data.org/v4/competitions/PD"
+        case 1:url = "https://api.football-data.org/v4/competitions/PL"
+        default: url = "https://api.football-data.org/v4/competitions/PD"
+        }
+        guard let url = URL(string: url)
         else {
             print("Invalid URL")
             return
@@ -340,10 +413,10 @@ struct Home: View {
                 try? JSONDecoder().decode(Season.self, from: data){
                 jornada = String(decodedResponse.currentSeason.currentMatchday)
                 currentMatchday = decodedResponse.currentSeason.currentMatchday
-                firestoreManager.addSeasonLaLiga(decodedResponse.currentSeason)
-                firestoreManager.updateSeasonLaLiga()
+                firestoreManager.addSeasonLaLiga(decodedResponse.currentSeason,league:league)
+                firestoreManager.updateSeasonLaLiga(league:league)
                 Task {
-                    getMatchdayMatches()
+                    getLiveMatches()
                     //await loadData()
                 }
                 

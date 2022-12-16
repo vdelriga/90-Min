@@ -24,6 +24,8 @@ class FirestoreManager: ObservableObject {
     @Published var seasonMatchesTimestamp: Date = Date.now
     @Published var seasonMatches:Matches = Matches(matches:[])
     @Published var matchdayMatchesTimestamp: Date = Date.now
+    @Published var liveMatchesTimestamp: Date = Date.now
+    @Published var liveMatches:Matches = Matches(matches:[])
     @Published var matchdayMatches:Matches = Matches(matches:[])
     @Published var standingsTimestamp: Date = Date.now
     @Published var standings:Standing = Standing(standings: [])
@@ -59,16 +61,28 @@ class FirestoreManager: ObservableObject {
     //------------------------- funciones para obtener el día de jornada de la liga ---------------------------------------------------
     
     
-    func addSeasonLaLiga(_ season: CurrentSeason) {
+    func addSeasonLaLiga(_ season: CurrentSeason,league:Int) {
         do {
-            _ = try store.collection(path).document("LALIGA").setData(from: season)
+            var document: String = ""
+            switch(league){
+            case 0:document = "LALIGA"
+            case 1:document = "PREMIER"
+            default: document = "LALIGA"
+            }
+            _ = try store.collection(path).document(document).setData(from: season)
         } catch {
             fatalError("Unable to add card: \(error.localizedDescription).")
         }
     }
     
-    func updateSeasonLaLiga(){
-        store.collection(path).document("LALIGA").updateData([
+    func updateSeasonLaLiga(league:Int){
+        var document: String = ""
+        switch(league){
+        case 0:document = "LALIGA"
+        case 1:document = "PREMIER"
+        default: document = "LALIGA"
+        }
+        store.collection(path).document(document).updateData([
             "lastUpdated": FieldValue.serverTimestamp(),
         ]) { err in
             if let err = err {
@@ -79,8 +93,14 @@ class FirestoreManager: ObservableObject {
         }
     }
 
-    func getSeason(){
-        let docRef = store.collection(path).document("LALIGA")
+    func getSeason(league:Int){
+        var document: String = ""
+        switch(league){
+        case 0:document = "LALIGA"
+        case 1:document = "PREMIER"
+        default: document = "LALIGA"
+        }
+        let docRef = store.collection(path).document(document)
         docRef.getDocument { document, error in
             guard error == nil else {
                 print("error", error ?? "")
@@ -90,27 +110,42 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 if let data = data{
-                    let timestamp = data["lastUpdated"] as! Timestamp
-                    self.matchdayTimestamp = timestamp.dateValue()
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.matchdayTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.matchdayTimestamp = Calendar.current.date(byAdding: .second, value: -21601, to: now)!
+                    }
                     self.currentMatchday = data["currentMatchday"] as? Int ?? 0
-                    print("La fecha de actualización es\(self.matchdayTimestamp)")
                 }
             }
         }
     }
     
     //------------------------- funciones para obtener todos los partidos de la liga ---------------------------------------------------
-    func addSeasonMatches(_ matchesSeason: Matches) {
+    func addSeasonMatches(_ matchesSeason: Matches,league:Int) {
         do {
+            var document: String = ""
+            switch(league){
+            case 0:document = "LALIGAPARTIDOS"
+            case 1:document = "PREMIERPARTIDOS"
+            default: document = "LALIGAPARTIDOS"
+            }
             // 6
-            _ = try store.collection(path).document("LALIGAPARTIDOS").setData(from: matchesSeason)
+            _ = try store.collection(path).document(document).setData(from: matchesSeason)
         } catch {
             fatalError("Unable to add card: \(error.localizedDescription).")
         }
     }
     
-    func updateSeasonMatches(){
-        store.collection(path).document("LALIGAPARTIDOS").updateData([
+    func updateSeasonMatches(league:Int){
+        var document: String = ""
+        switch(league){
+        case 0:document = "LALIGAPARTIDOS"
+        case 1:document = "PREMIERPARTIDOS"
+        default: document = "LALIGAPARTIDOS"
+        }
+        store.collection(path).document(document).updateData([
             "lastUpdated": FieldValue.serverTimestamp(),
         ]) { err in
             if let err = err {
@@ -121,8 +156,14 @@ class FirestoreManager: ObservableObject {
         }
     }
     
-    func getSeasonMatches(){
-        let docRef = store.collection(path).document("LALIGAPARTIDOS")
+    func getSeasonMatches(league:Int){
+        var document: String = ""
+        switch(league){
+        case 0:document = "LALIGAPARTIDOS"
+        case 1:document = "PREMIERPARTIDOS"
+        default: document = "LALIGAPARTIDOS"
+        }
+        let docRef = store.collection(path).document(document)
         docRef.getDocument { document, error in
             guard error == nil else {
                 print("error", error ?? "")
@@ -162,6 +203,54 @@ class FirestoreManager: ObservableObject {
                 print("Error updating document: \(err)")
             } else {
                 print("Document successfully updated")
+            }
+        }
+    }
+    func addLiveMatches(_ liveMatches: Matches) {
+        do {
+            // 6
+            _ = try store.collection(path).document("PARTIDOSJORNADADIRECTO").setData(from: liveMatches)
+        } catch {
+            fatalError("Unable to add card: \(error.localizedDescription).")
+        }
+    }
+    
+    func updateLiveMatches(){
+        store.collection(path).document("PARTIDOSJORNADADIRECTO").updateData([
+            "lastUpdated": FieldValue.serverTimestamp(),
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
+    func getLiveMatches(){
+        let docRef = store.collection(path).document("PARTIDOSJORNADADIRECTO")
+        docRef.getDocument { document, error in
+            guard error == nil else {
+                print("error", error ?? "")
+                return
+            }
+            if let document = document, document.exists {
+                let data = document.data()
+                if let data = data{
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.liveMatchesTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.liveMatchesTimestamp = Calendar.current.date(byAdding: .second, value: -11, to: now)!
+                    }
+                }
+                do{
+                    self.liveMatches = try document.data(as: Matches.self)
+                    print("Se recupera con éxito los partidos en directo")
+                }catch{
+                    print("Se ha producido un error cargando los partidos de BBDD")
+                }
+                
             }
         }
     }
@@ -225,8 +314,12 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 if let data = data{
-                    let timestamp = data["lastUpdated"] as! Timestamp
-                    self.standingsTimestamp = timestamp.dateValue()
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.standingsTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.standingsTimestamp = Calendar.current.date(byAdding: .second, value: -31, to: now)!
+                    }
                 }
                 do{
                     self.standings = try document.data(as: Standing.self)
@@ -270,8 +363,12 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 if let data = data{
-                    let timestamp = data["lastUpdated"] as! Timestamp
-                    self.standingsCLTimestamp = timestamp.dateValue()
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.standingsCLTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.standingsCLTimestamp = Calendar.current.date(byAdding: .second, value: -31, to: now)!
+                    }
                 }
                 do{
                     self.standingsCL = try document.data(as: StandingCL.self)

@@ -10,11 +10,18 @@ struct Defaults {
         if defaults.value(forKey:"counter")==nil{
             defaults.setValue(0,forKey:"counter")
         }
+        if defaults.value(forKey:"league")==nil{
+            defaults.setValue(0,forKey:"league")
+        }
     }
     
     public func setReview(mark: Bool){
         let defaults = UserDefaults.standard
         defaults.setValue(mark,forKey:"review")
+    }
+    public func setLeague(league: Int){
+        let defaults = UserDefaults.standard
+        defaults.setValue(league,forKey:"league")
     }
     
     public func setCounter(count: Int){
@@ -37,6 +44,10 @@ struct Defaults {
     public func getDate()->Date{
         let defaults = UserDefaults.standard
         return defaults.object(forKey:"reviewDate") as! Date
+    }
+    public func getLeague()->Int{
+        let defaults = UserDefaults.standard
+        return defaults.object(forKey:"league") as! Int
     }
     
 }

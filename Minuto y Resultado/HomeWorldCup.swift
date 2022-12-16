@@ -210,10 +210,17 @@ struct HomeWC: View {
                                }
                             .sheet(isPresented:$sheetYoutubePresented){
                                 if sheetYoutubePresented{
-                                    YoutubeView(videoID: videoID)
-                                        .frame(minHeight:0,maxHeight:UIScreen.main.bounds.height * 0.27)
-                                        .cornerRadius(5)
-                                        .padding(.horizontal,5)
+                                    VStack{
+                                        Image("logo")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                        Spacer()
+                                        YoutubeView(videoID: videoID)
+                                            .frame(minHeight:0,maxHeight:UIScreen.main.bounds.height * 0.27)
+                                            .cornerRadius(5)
+                                            .padding(.horizontal,5)
+                                        Spacer()
+                                    }
                                 }
                                }
                             .toast(isPresenting:$showToast){
@@ -566,6 +573,9 @@ struct HomeWC: View {
             if focus == 0 {
                 focus = match.id
             }
+            /*if duration != "REGULAR"{
+                return NSLocalizedString("extraTimeKey",comment:"")
+            }*/
             if halfTime.home == nil{
                 return NSLocalizedString("firstHalfKey",comment:"")
                 }else
