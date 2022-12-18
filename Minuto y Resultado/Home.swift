@@ -44,6 +44,15 @@ struct Home: View {
                         VStack{
                             Image("PL")
                         }.tag(1)
+                        VStack{
+                            Image("BL1")
+                        }.tag(2)
+                        VStack{
+                            Image("SA1")
+                        }.tag(3)
+                        VStack{
+                            Text("Prueba")
+                        }.tag(4)
 
                     }).pickerStyle(SegmentedPickerStyle())
                         .onChange(of: selectedLeague) { newValue in
@@ -107,6 +116,17 @@ struct Home: View {
                             .blur(radius:4)
                         } else if selectedLeague == 1 {
                             Image("PLBACK")
+                                .resizable()
+                                .frame(width: 350, height: 350)
+                            .blur(radius:4)
+                        }else if selectedLeague == 2 {
+                            Image("BL")
+                                .resizable()
+                                .frame(width: 350, height: 350)
+                            .blur(radius:4)
+                        }
+                        else if selectedLeague == 3 {
+                            Image("SA")
                                 .resizable()
                                 .frame(width: 350, height: 350)
                             .blur(radius:4)
@@ -180,8 +200,8 @@ struct Home: View {
                                             Home.defaults.setDate(date: Date.now)
                                             requestReview()
                                         }
-                                        //await getCurrentMatchday(league:selectedLeague)
-                                        //await loadDataSeason(league:selectedLeague)
+                                         //await getCurrentMatchday(league:selectedLeague)
+                                         //await loadDataSeason(league:selectedLeague)
                                     }
                             }
                             .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
@@ -332,6 +352,9 @@ struct Home: View {
         switch(league){
         case 0:url = "https://api.football-data.org/v4/competitions/PD/matches"
         case 1:url = "https://api.football-data.org/v4/competitions/PL/matches"
+        case 2:url = "https://api.football-data.org/v4/competitions/BL1/matches"
+        case 3:url = "https://api.football-data.org/v4/competitions/SA/matches"
+        case 4:url = "https://api.football-data.org/v4/competitions/ELC/matches"
         default: url = "https://api.football-data.org/v4/competitions/PD/matches"
         }
         guard let url = URL(string: url)
@@ -397,6 +420,9 @@ struct Home: View {
         switch(league){
         case 0:url = "https://api.football-data.org/v4/competitions/PD"
         case 1:url = "https://api.football-data.org/v4/competitions/PL"
+        case 2:url = "https://api.football-data.org/v4/competitions/BL1"
+        case 3:url = "https://api.football-data.org/v4/competitions/SA"
+        case 4:url = "https://api.football-data.org/v4/competitions/ELC"
         default: url = "https://api.football-data.org/v4/competitions/PD"
         }
         guard let url = URL(string: url)
@@ -443,7 +469,7 @@ struct Home: View {
             if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"||match.status == "SCHEDULED"){
                 let initialContentState = MatchAttributes.ContentState(status:match.status, scoreHomeHalfTime: match.score.halfTime.home,scoreAwayHalfTime: match.score.halfTime.away,scoreHomeFullTime: match.score.fullTime.home,scoreAwayFullTime: match.score.fullTime.away)
                 let activityAttributes = MatchAttributes(id: match.id, utcDate: match.utcDate, matchday: match.matchday ?? 0, idHome: match.homeTeam.id ?? 0, nameHome: match.homeTeam.name ?? "_", shortNameHome: match.homeTeam.shortName ?? "-", tlaHome: match.homeTeam.tla ?? "", crestHome: match.homeTeam.crest ?? "", idAway: match.awayTeam.id ?? 0, nameAway: match.awayTeam.name ?? "_", shortNameAway: match.awayTeam.shortName ?? "-", tlaAway: match.awayTeam.tla ?? "", crestAway: match.awayTeam.crest ?? "")
-                let now = Date.now.addingTimeInterval(3600)
+                let now = Date.now.addingTimeInterval(3600000)
                 let dateFormatter = ISO8601DateFormatter()
                 let matchTime = dateFormatter.date(from:match.utcDate)!
                 if now > matchTime

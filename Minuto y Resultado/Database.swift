@@ -67,6 +67,9 @@ class FirestoreManager: ObservableObject {
             switch(league){
             case 0:document = "LALIGA"
             case 1:document = "PREMIER"
+            case 2:document = "BUNDESLIGA"
+            case 3:document = "SERIEA"
+            case 4:document = "PRUEBA"
             default: document = "LALIGA"
             }
             _ = try store.collection(path).document(document).setData(from: season)
@@ -80,6 +83,9 @@ class FirestoreManager: ObservableObject {
         switch(league){
         case 0:document = "LALIGA"
         case 1:document = "PREMIER"
+        case 2:document = "BUNDESLIGA"
+        case 3:document = "SERIEA"
+        case 4:document = "PRUEBA"
         default: document = "LALIGA"
         }
         store.collection(path).document(document).updateData([
@@ -98,6 +104,9 @@ class FirestoreManager: ObservableObject {
         switch(league){
         case 0:document = "LALIGA"
         case 1:document = "PREMIER"
+        case 2:document = "BUNDESLIGA"
+        case 3:document = "SERIEA"
+        case 4:document = "PRUEBA"
         default: document = "LALIGA"
         }
         let docRef = store.collection(path).document(document)
@@ -129,6 +138,9 @@ class FirestoreManager: ObservableObject {
             switch(league){
             case 0:document = "LALIGAPARTIDOS"
             case 1:document = "PREMIERPARTIDOS"
+            case 2:document = "BUNDESLIGAPARTIDOS"
+            case 3:document = "SERIEAPARTIDOS"
+            case 4:document = "PRUEBAPARTIDOS"
             default: document = "LALIGAPARTIDOS"
             }
             // 6
@@ -143,6 +155,9 @@ class FirestoreManager: ObservableObject {
         switch(league){
         case 0:document = "LALIGAPARTIDOS"
         case 1:document = "PREMIERPARTIDOS"
+        case 2:document = "BUNDESLIGAPARTIDOS"
+        case 3:document = "SERIEAPARTIDOS"
+        case 4:document = "PRUEBAPARTIDOS"
         default: document = "LALIGAPARTIDOS"
         }
         store.collection(path).document(document).updateData([
@@ -161,6 +176,9 @@ class FirestoreManager: ObservableObject {
         switch(league){
         case 0:document = "LALIGAPARTIDOS"
         case 1:document = "PREMIERPARTIDOS"
+        case 2:document = "BUNDESLIGAPARTIDOS"
+        case 3:document = "SERIEAPARTIDOS"
+        case 4:document = "PRUEBAPARTIDOS"
         default: document = "LALIGAPARTIDOS"
         }
         let docRef = store.collection(path).document(document)
