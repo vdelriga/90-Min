@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings
+  90 Min
+
+  Created by Victor Manuel Del Rio Garcia on 4/11/22.
+  
+*/
+"addingMatchtoLockScreenOK" = "Füge Spiel zu deinem Startbildschirm hinzu.";
+"liveItem" ="Live";
+"standingsItem" =  "Wertung";
+"matchDayText" ="Spieltag:";
+"pausedKey" = "PAUSE";
+"finishedKey" = "BEENDET";
+"firstHalfKey" = "1. HALBZEIT";
+"secondHalfKey" =  "2. HALBZEIT";
+"privacyPolicyKey" = "Datenschutzbestimmungen";
+"privacySettingsKey" =  "Datenschutzeinstellungen";
+"totalKey" =  "Gesamt";
+"homeKey" =  "Zuhause";
+"awayKey" = "Auswärts";
+"LANoActiveKey" =  "Berechtigungen für Live-Aktivitäten erteilen";
+"LAStatusKey" =  "Es gibt bereits eine abgelaufene oder laufende Aktivität";
+"LAUpgradeKey" = "Bitte aktualisiere dein Gerät auf iOS 16.1";
+"LAEarlyKey" =  "Eine Stunde vor dem Spiel verfügbar";
+"qatar" = "Live Qatar";
+"last16Key" = "Achtelfinale";
+"quarterFinalsKey" = "Viertelfinale";
+"semiFinalsKey" = "Halbfinale";
+"finalKey"= "Finale";
+"groupKey" = "GRUPPE";
+"PTS" = "PKT";
+"PJ" = "SP";
+"PG" = "S";
+"PP" = "N";
+"PE" = "U";
+"GF" = "T";
+"GC" = "G";
+"CoachKey" =  "Trainer";
+"AddLA" = "Auf Startbildschirm anzeigen";
+"coach" = "Trainer";
+"goalkeeper" = "Torhüter";
+"defence" = "Verteidiger";
+"midfield" =  "Mittelfeld";
+"offence" = "Stürmer";
+"resumenKey" = "Zusammenfassung";
+"extraTimeKey" =  "VERLÄNGERUNG";
+
+
+
+
+
