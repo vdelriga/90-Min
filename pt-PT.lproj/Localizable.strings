@@ -1,0 +1,47 @@
+/* 
+  Localizable.strings
+  90 Min
+
+  Created by Victor Manuel Del Rio Garcia on 4/11/22.
+  
+*/
+"addingMatchtoLockScreenOK" = "Partida foi adicionada a sua tela inicial.";
+"liveItem" ="Ao Vivo";
+"standingsItem" = "Classificação";
+"matchDayText" = "Jornada:";
+"pausedKey" = "PAUSADO";
+"finishedKey" = "FINALIZADO";
+"firstHalfKey" = "1º TEMPO";
+"secondHalfKey" = "2º TEMPO";
+"privacyPolicyKey" = "Política de Privacidade";
+"privacySettingsKey" = "Configurações de Privacidade";
+"totalKey" = "Total";
+"homeKey" = "Partidas em Casa";
+"awayKey" = "Partidas Fora de Casa";
+"LANoActiveKey" = "Por favor, autorize o uso de Atividades Ao Vivo";
+"LAStatusKey" = "Atividade já existe ou partida finalizada";
+"LAUpgradeKey" = "Por favor, atualize seu dispositivo para iOS16.1";
+"LAEarlyKey" = "Um pouco cedo... Disponível uma hora antes da partida";
+"qatar" = "Ao Vivo Qatar";
+"last16Key" = "Últimos 16";
+"quarterFinalsKey" = "Quartas de Final";
+"semiFinalsKey" = "Semi Finais";
+"finalKey"= "Final";
+"groupKey" = "GRUPO";
+"PTS" = "PTS";
+"PJ" = "PJ";
+"PG" = "V";
+"PP" = "D";
+"PE" = "E";
+"GF" = "GF";
+"GC" = "GC";
+"CoachKey" = "Treinador";
+"AddLA" = "Adicione Atividade Ao Vivo";
+"coach" = "Treinador";
+"goalkeeper" = "Goleiros";
+"defence" = "Defesas";
+"midfield" = "Meio-Campo";
+"offence" = "Atacantes";
+"resumenKey" = "Highlights";
+"extraTimeKey" = "TEMPO EXTRA";
+"penaltiesKey" = "PÊNALTIS";

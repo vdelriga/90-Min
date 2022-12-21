@@ -36,7 +36,7 @@ struct MainView: View {
                 TabView {
                     Home()
                         .tabItem {
-                            Image("laliga")
+                            Image(systemName:"soccerball.inverse")
                             Text(NSLocalizedString("liveItem", comment:""))
                             
                         }

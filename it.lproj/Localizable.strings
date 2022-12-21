@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings
+  90 Min
+
+  Created by Victor Manuel Del Rio Garcia on 4/11/22.
+  
+*/
+"addingMatchtoLockScreenOK" = "Partita aggiunta alla schermata iniziale.";
+"liveItem" ="Live";
+"standingsItem" = "Classifica";
+"matchDayText" = "Giornata:";
+"pausedKey" = "PAUSA";
+"finishedKey" = "FINITO";
+"firstHalfKey" = "1° TEMPO";
+"secondHalfKey" = "2° TEMPO";
+"privacyPolicyKey" = "Politica sulla privacy";
+"privacySettingsKey" = "Impostazioni privacy";
+"totalKey" = "Totale";
+"homeKey" = "Partite in casa";
+"awayKey" = "Partite in trasferta";
+"LANoActiveKey" = "Autorizza l'utilizzo delle Attività in Diretta";
+"LAStatusKey" = "Attività già esistente o partita finita";
+"LAUpgradeKey" = "Aggiorna il tuo dispositivo a iOS 16.1";
+"LAEarlyKey" = "Un po' presto... Disponibile un'ora prima della partita";
+"qatar" = "Qatar Live";
+"last16Key" = "Ultimi 16";
+"quarterFinalsKey" = "Quarti di finale";
+"semiFinalsKey" = "Semifinali";
+"finalKey"= "Finale";
+"groupKey" = "GRUPPO";
+"PTS" = "PTS";
+"PJ" = "G";
+"PG" = "V";
+"PP" = "P";
+"PE" = "N";
+"GF" = "GF";
+"GC" = "GS";
+"CoachKey" = "Allenatore";
+"AddLA" = "Aggiungi Attività in Diretta";
+"coach" = "Allenatore";
+"goalkeeper" = "Portieri";
+"defence" = "Difensori";
+"midfield" = "Centrocampisti";
+"offence" = "Attaccanti";
+"resumenKey" = "Riepilogo";
+"extraTimeKey" = "TEMPO SUPPLEMENTARE";
+
+
+
+
+

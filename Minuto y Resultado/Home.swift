@@ -12,6 +12,16 @@ import AlertToast
 import Firebase
 
 struct Home: View {
+    init() {
+        UISegmentedControl.appearance().selectedSegmentTintColor = .white
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.gray], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.red], for: .selected)
+        }
+    @State private var sheetYoutubePresented = false
+    @State public var teamId: Int = 0
+    @State private var videoID: String = ""
+    @State private var videosDict: [String: String] = [:]
+    @State private var sheetTeamPresented = false
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.requestReview) var requestReview
@@ -31,7 +41,7 @@ struct Home: View {
     @State private var selectedLeague = Home.defaults.getLeague()
     let maxMatchDay = 38
     var body: some View {
-
+       
             ZStack{
                 VStack{
                     Image("logo")
@@ -51,7 +61,7 @@ struct Home: View {
                             Image("SA1")
                         }.tag(3)
                         VStack{
-                            Text("Prueba")
+                            Image("PPLI")
                         }.tag(4)
 
                     }).pickerStyle(SegmentedPickerStyle())
@@ -63,6 +73,7 @@ struct Home: View {
                                 getSeasonMatches(league:selectedLeague)
                             }
                         }
+                       
                     
                     HStack{
                         if (Int(jornada) ?? 0 > 1){
@@ -130,6 +141,11 @@ struct Home: View {
                                 .resizable()
                                 .frame(width: 350, height: 350)
                             .blur(radius:4)
+                        }else if selectedLeague == 4 {
+                            Image("PPL")
+                                .resizable()
+                                .frame(width: 350, height: 350)
+                            .blur(radius:4)
                         }
                         ScrollViewReader { proxy in
                         if #available(iOS 15.0, *) {
@@ -147,6 +163,10 @@ struct Home: View {
                                                 .lineLimit(2)
                                             
                                         }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                         .onTapGesture{
+                                                teamId = item.homeTeam.id ?? 0
+                                                sheetTeamPresented.toggle()
+                                                }
                                         Spacer()
                                         VStack{
                                             Text(getMatchDate(stringDate: item.utcDate))
@@ -159,7 +179,15 @@ struct Home: View {
                                                 .font(.caption)
                                                 .lineLimit(/*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
                                             
-                                        }
+                                        }.onTapGesture{
+                                            if let _ = videosDict[String(item.id)]{
+                                                videoID = videosDict[String(item.id)] ?? ""
+                                                sheetYoutubePresented.toggle()
+                                            }else{
+                                                result = startActivity(match: item)
+                                                showToast.toggle()
+                                            }
+                                         }
                                         Spacer()
                                         VStack(alignment:.center){
                                             Image(String(item.awayTeam.id ?? 0))
@@ -174,13 +202,65 @@ struct Home: View {
                                             
                                             
                                         }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                         .onTapGesture{
+                                                   teamId = item.awayTeam.id ?? 0
+                                                   sheetTeamPresented.toggle()
+                                                   }
                                     }
                                 }.listRowBackground(Color(UIColor.systemGray6))
-                                .onTapGesture{
-                                    result = startActivity(match: item)
-                                    showToast.toggle()
-                                }
-                            }
+                                    .contextMenu {
+                                        Button(action: {
+                                            result = startActivity(match: item)
+                                            showToast.toggle()
+                                        }, label: {
+                                            Image(systemName: "plus.circle")
+                                            Text("AddLA")
+                                        })
+                                        Button(action: {
+                                            teamId = item.homeTeam.id ?? 0
+                                            sheetTeamPresented.toggle()
+                                        }, label: {
+                                            Image(systemName: "info.circle")
+                                            Text(item.homeTeam.name ?? "")
+                                        })
+                                        Button(action: {
+                                            teamId = item.awayTeam.id ?? 0
+                                            sheetTeamPresented.toggle()
+                                        }, label: {
+                                            Image(systemName: "info.circle")
+                                            Text(item.awayTeam.name ?? "")
+                                        })
+                                        if let _ = videosDict[String(item.id)]{
+                                            Button(action: {
+                                                videoID = videosDict[String(item.id)] ?? ""
+                                                sheetYoutubePresented.toggle()
+                                            }, label: {
+                                                Image(systemName: "video")
+                                                Text("resumenKey")
+                                            })
+                                        }
+                                    }
+                               }.sheet(isPresented:$sheetTeamPresented){
+                                   if sheetTeamPresented{
+                                       TeamView(teamId: $teamId)
+                                           
+                                   }
+                                  }
+                               .sheet(isPresented:$sheetYoutubePresented){
+                                   if sheetYoutubePresented{
+                                       VStack{
+                                           Image("logo")
+                                               .resizable()
+                                               .aspectRatio(contentMode: .fit)
+                                           Spacer()
+                                           YoutubeView(videoID: videoID)
+                                               .frame(minHeight:0,maxHeight:UIScreen.main.bounds.height * 0.27)
+                                               .cornerRadius(5)
+                                               .padding(.horizontal,5)
+                                           Spacer()
+                                       }
+                                   }
+                                  }
                             .toast(isPresenting:$showToast){
                                 AlertToast(type: result ?.complete(.green):.error(.red),title:resultOpenActivity)
                             }
@@ -236,7 +316,6 @@ struct Home: View {
                     if now  < expiredTime {
                         jornada = String(matchday)
                         currentMatchday = matchday
-                        getLiveMatches()
                     }else{
                         Task{
                             await getCurrentMatchday(league:selectedLeague)
@@ -245,14 +324,17 @@ struct Home: View {
                 }
             }
             .onReceive(firestoreManager.$seasonMatches) { matches in
-                let now = Date.now
-                //se añade la fecha de expiración en segundos(6h)
-                let expiredTime = firestoreManager.seasonMatchesTimestamp.addingTimeInterval(21600)
-                if now  < expiredTime {
-                    matchesSeason = matches.matches
-                }else{
-                    Task{
-                        await loadDataSeason(league:selectedLeague)
+                if(matches.matches.count > 0){
+                    let now = Date.now
+                    //se añade la fecha de expiración en segundos(6h)
+                    let expiredTime = firestoreManager.seasonMatchesTimestamp.addingTimeInterval(21600)
+                    if now  < expiredTime {
+                        matchesSeason = matches.matches
+                        getLiveMatches()
+                    }else{
+                        Task{
+                            await loadDataSeason(league:selectedLeague)
+                        }
                     }
                 }
             }
@@ -270,6 +352,8 @@ struct Home: View {
                             await loadData()
                         }
                     }
+                }else{
+                    updateMatchdayMatches(matchday:Int(jornada) ?? 0)
                 }
             }.background(Color(UIColor.systemGray6))
     }
@@ -354,7 +438,7 @@ struct Home: View {
         case 1:url = "https://api.football-data.org/v4/competitions/PL/matches"
         case 2:url = "https://api.football-data.org/v4/competitions/BL1/matches"
         case 3:url = "https://api.football-data.org/v4/competitions/SA/matches"
-        case 4:url = "https://api.football-data.org/v4/competitions/ELC/matches"
+        case 4:url = "https://api.football-data.org/v4/competitions/PPL/matches"
         default: url = "https://api.football-data.org/v4/competitions/PD/matches"
         }
         guard let url = URL(string: url)
@@ -372,6 +456,10 @@ struct Home: View {
                 matchesSeason = decodedResponse.matches
                 firestoreManager.addSeasonMatches(decodedResponse,league:league)
                 firestoreManager.updateSeasonMatches(league:league)
+                Task {
+                    getLiveMatches()
+                }
+                
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
@@ -422,7 +510,7 @@ struct Home: View {
         case 1:url = "https://api.football-data.org/v4/competitions/PL"
         case 2:url = "https://api.football-data.org/v4/competitions/BL1"
         case 3:url = "https://api.football-data.org/v4/competitions/SA"
-        case 4:url = "https://api.football-data.org/v4/competitions/ELC"
+        case 4:url = "https://api.football-data.org/v4/competitions/PPL"
         default: url = "https://api.football-data.org/v4/competitions/PD"
         }
         guard let url = URL(string: url)
@@ -441,11 +529,6 @@ struct Home: View {
                 currentMatchday = decodedResponse.currentSeason.currentMatchday
                 firestoreManager.addSeasonLaLiga(decodedResponse.currentSeason,league:league)
                 firestoreManager.updateSeasonLaLiga(league:league)
-                Task {
-                    getLiveMatches()
-                    //await loadData()
-                }
-                
             }
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")

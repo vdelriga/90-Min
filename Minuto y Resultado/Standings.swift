@@ -13,6 +13,7 @@ struct Standings: View {
     @State private var table = [Position]()
     @State private var selectedStandingType = 0
     @ObservedObject var observer = Observer()
+    @State private var selectedLeagueS = Home.defaults.getLeagueS()
     
     
     var body: some View {
@@ -20,6 +21,31 @@ struct Standings: View {
             Image("logo")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
+            Picker("Favorite League", selection: $selectedLeagueS, content: {
+                VStack {
+                    Image("laliga")
+                }.tag(0)
+                VStack{
+                    Image("PL")
+                }.tag(1)
+                VStack{
+                    Image("BL1")
+                }.tag(2)
+                VStack{
+                    Image("SA1")
+                }.tag(3)
+                VStack{
+                    Image("PPLI")
+                }.tag(4)
+
+            }).pickerStyle(SegmentedPickerStyle())
+                .onChange(of: selectedLeagueS) { newValue in
+                    Task{
+                        Home.defaults.setLeagueS(league:newValue)
+                        //await loadDataStandings(type: newValue,league:selectedLeagueS)
+                        getStandings(league:selectedLeagueS)
+                    }
+                }
                 VStack(alignment: .leading){
                     if #available(iOS 15.0, *) {
                         Picker("Favorite Color", selection: $selectedStandingType, content: {
@@ -29,8 +55,8 @@ struct Standings: View {
                         }).pickerStyle(SegmentedPickerStyle())
                             .onChange(of: selectedStandingType) { newValue in
                                 Task{
-                                    //await loadDataStandings(type: newValue)
-                                    getStandings()
+                                    //await loadDataStandings(type: newValue,league:selectedLeagueS)
+                                    getStandings(league:selectedLeagueS)
                                 }
                             }
                         
@@ -77,12 +103,12 @@ struct Standings: View {
                             }
                         }.listStyle(.plain)
                         .refreshable{
-                            getStandings()
+                            getStandings(league:selectedLeagueS)
                         }
                         .onReceive(self.observer.$enteredForeground) { _ in
                             Task {
-                                //await loadDataStandings(type: selectedStandingType)
-                                getStandings()
+                                await loadDataStandings(type: selectedStandingType, league:selectedLeagueS)
+                                getStandings(league:selectedLeagueS)
                             }
                         }.opacity(0.8)
                     }
@@ -97,7 +123,7 @@ struct Standings: View {
                             table = standings[selectedStandingType].table
                         }else{
                             Task{
-                                await loadDataStandings(type: selectedStandingType)
+                                await loadDataStandings(type: selectedStandingType,league:selectedLeagueS)
                             }
                         }
                     }
@@ -106,13 +132,22 @@ struct Standings: View {
             }.background(Color(UIColor.systemGray6))
     }
     
-    func getStandings(){
-        firestoreManager.getStandings()
+    func getStandings(league:Int){
+        firestoreManager.getStandings(league)
     }
     
     
-    func loadDataStandings(type:Int) async {
-        guard let url = URL(string: "https://api.football-data.org/v4/competitions/PD/standings")
+    func loadDataStandings(type:Int,league:Int) async {
+        var url: String = ""
+        switch(league){
+        case 0:url = "https://api.football-data.org/v4/competitions/PD/standings"
+        case 1:url = "https://api.football-data.org/v4/competitions/PL/standings"
+        case 2:url = "https://api.football-data.org/v4/competitions/BL1/standings"
+        case 3:url = "https://api.football-data.org/v4/competitions/SA/standings"
+        case 4:url = "https://api.football-data.org/v4/competitions/PPL/standings"
+        default: url = "https://api.football-data.org/v4/competitions/PD/standings"
+        }
+        guard let url = URL(string: url)
         else {
             print("Invalid URL")
             return
@@ -126,8 +161,8 @@ struct Standings: View {
                 try? JSONDecoder().decode(Standing.self, from: data){
                 standings = decodedResponse.standings
                 table = standings[type].table
-                firestoreManager.addStandings(decodedResponse)
-                firestoreManager.updateStandings()
+                firestoreManager.addStandings(decodedResponse,league)
+                firestoreManager.updateStandings(league)
                 
             }
         } catch let jsonError as NSError {

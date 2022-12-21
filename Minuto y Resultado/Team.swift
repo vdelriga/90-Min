@@ -30,14 +30,15 @@ struct TeamView: View {
                             .padding(.leading)
                         }
                     }
+                    Spacer()
                     Image(String(teamId))
                             .resizable()
-                            .frame(width: 200, height: 126)
-                           // .aspectRatio(contentMode: .fit)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.white,lineWidth:4).shadow(radius: 10))
-                    
+                            .frame(width: 70, height: 70)
+                            .aspectRatio(contentMode: .fit)
+                            //.clipShape(Circle())
+                            //.overlay(Circle().stroke(Color.white,lineWidth:4).shadow(radius: 10))
                     Spacer()
+                    
                 }
                 
                 VStack(alignment: .leading){

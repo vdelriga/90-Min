@@ -32,9 +32,9 @@ class FirestoreManager: ObservableObject {
     @Published var standingsCLTimestamp: Date = Date.now
     @Published var standingsCL:StandingCL = StandingCL(standings: [])
     @Published var seasonCLMatchesTimestamp: Date = Date.now
-    @Published var seasonCLMatches:Matches = Matches(matches:[])
+    @Published var seasonCLMatches:MatchesWC = MatchesWC(matches:[])
     @Published var matchdayMatchesCLTimestamp: Date = Date.now
-    @Published var matchdayMatchesCL:Matches = Matches(matches:[])
+    @Published var matchdayMatchesCL:MatchesWC = MatchesWC(matches:[])
     @Published var seasonWCMatchesTimestamp: Date = Date.now
     @Published var seasonWCMatches:MatchesWC = MatchesWC(matches:[])
     @Published var matchdayMatchesWCTimestamp: Date = Date.now
@@ -69,7 +69,7 @@ class FirestoreManager: ObservableObject {
             case 1:document = "PREMIER"
             case 2:document = "BUNDESLIGA"
             case 3:document = "SERIEA"
-            case 4:document = "PRUEBA"
+            case 4:document = "LIGANOS"
             default: document = "LALIGA"
             }
             _ = try store.collection(path).document(document).setData(from: season)
@@ -85,7 +85,7 @@ class FirestoreManager: ObservableObject {
         case 1:document = "PREMIER"
         case 2:document = "BUNDESLIGA"
         case 3:document = "SERIEA"
-        case 4:document = "PRUEBA"
+        case 4:document = "LIGANOS"
         default: document = "LALIGA"
         }
         store.collection(path).document(document).updateData([
@@ -106,7 +106,7 @@ class FirestoreManager: ObservableObject {
         case 1:document = "PREMIER"
         case 2:document = "BUNDESLIGA"
         case 3:document = "SERIEA"
-        case 4:document = "PRUEBA"
+        case 4:document = "LIGANOS"
         default: document = "LALIGA"
         }
         let docRef = store.collection(path).document(document)
@@ -140,7 +140,7 @@ class FirestoreManager: ObservableObject {
             case 1:document = "PREMIERPARTIDOS"
             case 2:document = "BUNDESLIGAPARTIDOS"
             case 3:document = "SERIEAPARTIDOS"
-            case 4:document = "PRUEBAPARTIDOS"
+            case 4:document = "LIGANOSPARTIDOS"
             default: document = "LALIGAPARTIDOS"
             }
             // 6
@@ -157,7 +157,7 @@ class FirestoreManager: ObservableObject {
         case 1:document = "PREMIERPARTIDOS"
         case 2:document = "BUNDESLIGAPARTIDOS"
         case 3:document = "SERIEAPARTIDOS"
-        case 4:document = "PRUEBAPARTIDOS"
+        case 4:document = "LIGANOSPARTIDOS"
         default: document = "LALIGAPARTIDOS"
         }
         store.collection(path).document(document).updateData([
@@ -178,7 +178,7 @@ class FirestoreManager: ObservableObject {
         case 1:document = "PREMIERPARTIDOS"
         case 2:document = "BUNDESLIGAPARTIDOS"
         case 3:document = "SERIEAPARTIDOS"
-        case 4:document = "PRUEBAPARTIDOS"
+        case 4:document = "LIGANOSPARTIDOS"
         default: document = "LALIGAPARTIDOS"
         }
         let docRef = store.collection(path).document(document)
@@ -190,8 +190,12 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 if let data = data{
-                    let timestamp = data["lastUpdated"] as! Timestamp
-                    self.seasonMatchesTimestamp = timestamp.dateValue()
+                    if let timestamp = data["lastUpdated"] as? Timestamp {
+                        self.seasonMatchesTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.seasonMatchesTimestamp = Calendar.current.date(byAdding: .second, value: -21601, to: now)!
+                    }
                 }
                 do{
                     self.seasonMatches = try document.data(as: Matches.self)
@@ -301,17 +305,35 @@ class FirestoreManager: ObservableObject {
     }
     
     //------------------------- funciones para obtener clasificación de la Liga ---------------------------------------------------
-    func addStandings(_ standings: Standing) {
+    func addStandings(_ standings: Standing, _ league:Int) {
         do {
+            var document: String = ""
+            switch(league){
+            case 0:document = "CLASIFICACIONLIGA"
+            case 1:document = "CLASIFICACIONPREMIER"
+            case 2:document = "CLASIFICACIONBUNDESLIGA"
+            case 3:document = "CLASIFICACIONSERIEA"
+            case 4:document = "CLASIFICACIONLIGANOS"
+            default: document = "CLASIFICACIONLALIGA"
+            }
             // 6
-            _ = try store.collection(path).document("CLASIFICACIONLIGA").setData(from: standings)
+            _ = try store.collection(path).document(document).setData(from: standings)
         } catch {
             fatalError("Unable to add card: \(error.localizedDescription).")
         }
     }
     
-    func updateStandings(){
-        store.collection(path).document("CLASIFICACIONLIGA").updateData([
+    func updateStandings(_ league:Int){
+        var document: String = ""
+        switch(league){
+        case 0:document = "CLASIFICACIONLIGA"
+        case 1:document = "CLASIFICACIONPREMIER"
+        case 2:document = "CLASIFICACIONBUNDESLIGA"
+        case 3:document = "CLASIFICACIONSERIEA"
+        case 4:document = "CLASIFICACIONLIGANOS"
+        default: document = "CLASIFICACIONLALIGA"
+        }
+        store.collection(path).document(document).updateData([
             "lastUpdated": FieldValue.serverTimestamp(),
         ]) { err in
             if let err = err {
@@ -322,8 +344,17 @@ class FirestoreManager: ObservableObject {
         }
     }
     
-    func getStandings(){
-        let docRef = store.collection(path).document("CLASIFICACIONLIGA")
+    func getStandings(_ league:Int){
+        var document: String = ""
+        switch(league){
+        case 0:document = "CLASIFICACIONLIGA"
+        case 1:document = "CLASIFICACIONPREMIER"
+        case 2:document = "CLASIFICACIONBUNDESLIGA"
+        case 3:document = "CLASIFICACIONSERIEA"
+        case 4:document = "CLASIFICACIONLIGANOS"
+        default: document = "CLASIFICACIONLALIGA"
+        }
+        let docRef = store.collection(path).document(document)
         docRef.getDocument { document, error in
             guard error == nil else {
                 print("error", error ?? "")
@@ -433,17 +464,20 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 if let data = data{
-                    let timestamp = data["lastUpdated"] as! Timestamp
-                    self.matchdayCLTimestamp = timestamp.dateValue()
+                    if let timestamp = data["lastUpdated"] as? Timestamp {
+                        self.matchdayCLTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.matchdayCLTimestamp = Calendar.current.date(byAdding: .second, value: -21601, to: now)!
+                    }
                     self.currentCLMatchday = data["currentMatchday"] as? Int ?? 0
-                    print("La fecha de actualización es\(self.matchdayTimestamp)")
                 }
             }
         }
     }
     
     //------------------------- funciones para obtener todos los partidos de la champions ---------------------------------------------------
-    func addSeasonCLMatches(_ matchesSeason: Matches) {
+    func addSeasonCLMatches(_ matchesSeason: MatchesWC) {
         do {
             // 6
             _ = try store.collection(path).document("CLPARTIDOS").setData(from: matchesSeason)
@@ -474,11 +508,15 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 if let data = data{
-                    let timestamp = data["lastUpdated"] as! Timestamp
-                    self.seasonCLMatchesTimestamp = timestamp.dateValue()
+                    if let timestamp = data["lastUpdated"] as? Timestamp {
+                        self.seasonCLMatchesTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.seasonCLMatchesTimestamp = Calendar.current.date(byAdding: .second, value: -21601, to: now)!
+                    }
                 }
                 do{
-                    self.seasonCLMatches = try document.data(as: Matches.self)
+                    self.seasonCLMatches = try document.data(as: MatchesWC.self)
                 }catch{
                     print("Se ha producido un error cargando los partidos de BBDD")
                 }
@@ -487,7 +525,7 @@ class FirestoreManager: ObservableObject {
         }
     }
     //------------------------- funciones para obtener todos los partidos de la jornadaCL ---------------------------------------------------
-    func addMatchdayMatchesCL(_ matchdayMatches: Matches) {
+    func addMatchdayMatchesCL(_ matchdayMatches: MatchesWC) {
         do {
             // 6
             _ = try store.collection(path).document("PARTIDOSJORNADACL").setData(from: matchdayMatches)
@@ -518,11 +556,15 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 if let data = data{
-                    let timestamp = data["lastUpdated"] as! Timestamp
-                    self.matchdayMatchesCLTimestamp = timestamp.dateValue()
+                    if let timestamp = data["lastUpdated"] as? Timestamp{
+                        self.matchdayMatchesCLTimestamp = timestamp.dateValue()
+                    }else{
+                        let now = Date()
+                        self.matchdayMatchesCLTimestamp = Calendar.current.date(byAdding: .second, value: -11, to: now)!
+                    }
                 }
                 do{
-                    self.matchdayMatchesCL = try document.data(as: Matches.self)
+                    self.matchdayMatchesCL = try document.data(as: MatchesWC.self)
                 }catch{
                     print("Se ha producido un error cargando los partidos de BBDD")
                 }

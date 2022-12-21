@@ -12,10 +12,15 @@ import AlertToast
 import Firebase
 
 struct HomeChampions: View {
+    @State private var sheetYoutubePresented = false
+    @State private var sheetTeamPresented = false
+    @State public var teamId: Int = 0
+    @State private var videoID: String = ""
+    @State private var videosDict: [String: String] = [:]
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var firestoreManager: FirestoreManager
-    @State private var matches = [Match]()
-    @State private var matchesSeason = [Match]()
+    @State private var matches = [MatchWC]()
+    @State private var matchesSeason = [MatchWC]()
     @State private var jornada = ""
     @State private var currentMatchday = 0
     @ObservedObject var observer = Observer()
@@ -23,8 +28,9 @@ struct HomeChampions: View {
     @State private var showToast = false
     @State private var result = false
     @State private var focus = 0
-    let maxMatchDay = 6
+    let maxMatchDay = 10
     @State private var  resultOpenActivity = ""
+    @State private var newMatchday = 0
     
     
     var body: some View {
@@ -33,17 +39,17 @@ struct HomeChampions: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
             HStack{
-                if (Int(jornada) ?? 0 > 1){
+                if (newMatchday > 1){
                     Button {
-                        let newMatchday = (Int(jornada) ?? 1) - 1
-                        jornada = String(newMatchday)
-                        if jornada == String(currentMatchday){
+                        newMatchday = newMatchday - 1
+                        jornada = getMatchDay(newMatchDay: newMatchday)
+                        if newMatchday == currentMatchday{
                             Task{
                                 //await loadData()
                                 getMatchdayMatchesCL()
                             }
                         }else{
-                            loadMatchDay(matchday: Int(jornada) ?? 0)
+                            loadMatchDay(matchday: newMatchday)
                         }
                     }label:{
                         Image(systemName:"chevron.backward")
@@ -52,23 +58,27 @@ struct HomeChampions: View {
                     .padding(.leading)
                 }
                 Spacer()
-                if !jornada.isEmpty {
+                if !jornada.isEmpty && newMatchday<7{
                     
                     Text(NSLocalizedString("matchDayText",comment:"") + jornada)
                         .font(.headline)
                         .foregroundColor(.red)
+                }else if newMatchday >= 7{
+                    Text(jornada)
+                        .font(.headline)
+                        .foregroundColor(.red)
                 }
                 Spacer()
-                if (Int(jornada) ?? 0 < maxMatchDay){
+                if (newMatchday < maxMatchDay){
                     Button{
-                        let newMatchday = (Int(jornada) ?? 1) + 1
-                        jornada = String(newMatchday)
-                        if jornada == String(currentMatchday){
+                        newMatchday = newMatchday + 1
+                        jornada = getMatchDay(newMatchDay: newMatchday)
+                        if newMatchday == currentMatchday{
                             Task{
                                 getMatchdayMatchesCL()
                             }
                         }else{
-                            loadMatchDay(matchday: Int(jornada) ?? 0)
+                            loadMatchDay(matchday: newMatchday)
                         }
                     }label:{
                         Image(systemName:"chevron.right")
@@ -99,6 +109,10 @@ struct HomeChampions: View {
                                             .lineLimit(2)
                                         
                                     }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                     .onTapGesture{
+                                               teamId = item.homeTeam.id ?? 0
+                                               sheetTeamPresented.toggle()
+                                               }
                                     Spacer()
                                     VStack{
                                         Text(getMatchDate(stringDate: item.utcDate))
@@ -109,8 +123,16 @@ struct HomeChampions: View {
                                             .font(.largeTitle)
                                         Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
                                             .font(.caption)
-                                        
                                     }
+                                    .onTapGesture{
+                                        if let _ = videosDict[String(item.id)]{
+                                            videoID = videosDict[String(item.id)] ?? ""
+                                            sheetYoutubePresented.toggle()
+                                        }else{
+                                            result = startActivity(match: item)
+                                            showToast.toggle()
+                                        }
+                                     }
                                     Spacer()
                                     VStack{
                                         Image(String(item.awayTeam.id ?? 0))
@@ -122,21 +144,77 @@ struct HomeChampions: View {
                                             .font(.headline)
                                             .lineLimit(2)
                                     }.frame(width: 111.0, height: /*@START_MENU_TOKEN@*/100.0/*@END_MENU_TOKEN@*/)
+                                     .onTapGesture{
+                                                  teamId = item.awayTeam.id ?? 0
+                                                  sheetTeamPresented.toggle()
+                                                  }
                                 }
-                            }.onTapGesture{
-                                result = startActivity(match: item)
-                                showToast.toggle()
-                            }
+                            }.listRowBackground(Color(UIColor.systemGray6))
+                                .contextMenu {
+                                    Button(action: {
+                                        result = startActivity(match: item)
+                                        showToast.toggle()
+                                    }, label: {
+                                        Image(systemName: "plus.circle")
+                                        Text("AddLA")
+                                    })
+                                    Button(action: {
+                                        teamId = item.homeTeam.id ?? 0
+                                        sheetTeamPresented.toggle()
+                                    }, label: {
+                                        Image(systemName: "info.circle")
+                                        Text(item.homeTeam.name ?? "")
+                                    })
+                                    Button(action: {
+                                        teamId = item.awayTeam.id ?? 0
+                                        sheetTeamPresented.toggle()
+                                    }, label: {
+                                        Image(systemName: "info.circle")
+                                        Text(item.awayTeam.name ?? "")
+                                    })
+                                    if let _ = videosDict[String(item.id)]{
+                                        Button(action: {
+                                            videoID = videosDict[String(item.id)] ?? ""
+                                            sheetYoutubePresented.toggle()
+                                        }, label: {
+                                            Image(systemName: "video")
+                                            Text("resumenKey")
+                                        })
+                                    }
+                                }
+                           }.sheet(isPresented:$sheetTeamPresented){
+                               if sheetTeamPresented{
+                                   TeamView(teamId: $teamId)
+                                       
+                               }
+                              }
+                           .sheet(isPresented:$sheetYoutubePresented){
+                               if sheetYoutubePresented{
+                                   VStack{
+                                       Image("logo")
+                                           .resizable()
+                                           .aspectRatio(contentMode: .fit)
+                                       Spacer()
+                                       YoutubeView(videoID: videoID)
+                                           .frame(minHeight:0,maxHeight:UIScreen.main.bounds.height * 0.27)
+                                           .cornerRadius(5)
+                                           .padding(.horizontal,5)
+                                       Spacer()
+                                   }
+                               }
                         }.toast(isPresenting:$showToast){
                             AlertToast(type: result ?.complete(.green):.error(.red),title:resultOpenActivity)
                         }
                         .padding(.bottom)
                         .refreshable{
+                            getCurrentMatchdayDatabase()
                             getMatchdayMatchesCL()
                         }.onReceive(self.observer.$enteredForeground) { _ in
                             Task {
                                 getCurrentMatchdayDatabase()
                                 getSeasonCLMatches()
+                                //await loadDataSeason()
+                                //await loadData()
                             }
                         }
                         .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
@@ -162,18 +240,19 @@ struct HomeChampions: View {
                 
             }.onReceive(firestoreManager.$currentCLMatchday) { matchday in
                 if(matchday != 0){
-                    let now = Date.now
+                    //let now = Date.now
                     //se añade la fecha de expiración en segundos(6h)
-                    let expiredTime = firestoreManager.matchdayCLTimestamp.addingTimeInterval(21600)
-                    if now  < expiredTime {
-                        jornada = String(matchday)
+                    //let expiredTime = firestoreManager.matchdayCLTimestamp.addingTimeInterval(21600)
+                    //if now  < expiredTime {
+                        jornada = getMatchDay(newMatchDay: matchday)
                         currentMatchday = matchday
-                        getMatchdayMatchesCL()
-                    }else{
-                        Task{
-                            await getCurrentMatchday()
-                        }
-                    }
+                        newMatchday = matchday
+                        getSeasonCLMatches()
+                    //}else{
+                      //  Task{
+                      //      await getCurrentMatchday()
+                      //  }
+                   // }
                 }
             }.onReceive(firestoreManager.$seasonCLMatches) { matches in
                 let now = Date.now
@@ -181,6 +260,8 @@ struct HomeChampions: View {
                     let expiredTime = firestoreManager.seasonCLMatchesTimestamp.addingTimeInterval(21600)
                     if now  < expiredTime {
                         matchesSeason = matches.matches
+                        getMatchdayMatchesCL()
+                        
                     }else{
                         Task{
                             await loadDataSeason()
@@ -200,9 +281,9 @@ struct HomeChampions: View {
                         }
                     }
                 }
-            }
+            }.background(Color(UIColor.systemGray6))
             
-        }
+        }.background(Color(UIColor.systemGray6))
 
     }
     func getMatchdayMatchesCL(){
@@ -252,7 +333,17 @@ struct HomeChampions: View {
     
     
     func loadData() async {
-        guard let url = URL(string: "https://api.football-data.org/v4/competitions/CL/matches?matchday=" + jornada + "&stage=GROUP_STAGE")
+        var urlString = ""
+        switch (currentMatchday){
+        case 1,2,3,4,5,6: urlString = "https://api.football-data.org/v4/competitions/CL/matches?matchday=" + jornada
+        case 7: urlString = "https://api.football-data.org/v4/competitions/CL/matches?stage=" + "LAST_16"
+        case 8: urlString = "https://api.football-data.org/v4/competitions/CL/matches?stage=" + "QUARTER_FINALS"
+        case 9: urlString = "https://api.football-data.org/v4/competitions/CL/matches?stage=" + "SEMI_FINALS"
+        case 10: urlString = "https://api.football-data.org/v4/competitions/CL/matches?stage=" + "FINAL"
+        default:urlString = ""
+
+        }
+        guard let url = URL(string: urlString)
         else {
             print("Invalid URL")
             return
@@ -263,7 +354,7 @@ struct HomeChampions: View {
             let (data, _) = try await URLSession.shared.data(for:request)
 
             if let decodedResponse =
-                try? JSONDecoder().decode(Matches.self, from: data){
+                try? JSONDecoder().decode(MatchesWC.self, from: data){
                 matches = decodedResponse.matches
                 firestoreManager.addMatchdayMatchesCL(decodedResponse)
                 firestoreManager.updateMatchdayMatchesCL()
@@ -273,7 +364,7 @@ struct HomeChampions: View {
         }
     }
     func loadDataSeason() async {
-        guard let url = URL(string: "https://api.football-data.org/v4/competitions/CL/matches?stage=GROUP_STAGE")
+        guard let url = URL(string: "https://api.football-data.org/v4/competitions/CL/matches?stage=LAST_16,GROUP_STAGE,QUARTER_FINALS,SEMI_FINALS,FINAL")
         else {
             print("Invalid URL")
             return
@@ -284,7 +375,7 @@ struct HomeChampions: View {
             let (data, _) = try await URLSession.shared.data(for:request)
 
             if let decodedResponse =
-                try? JSONDecoder().decode(Matches.self, from: data){
+                try? JSONDecoder().decode(MatchesWC.self, from: data){
                 matchesSeason = decodedResponse.matches
                 firestoreManager.addSeasonCLMatches(decodedResponse)
                 firestoreManager.updateSeasonCLMatches()
@@ -299,6 +390,14 @@ struct HomeChampions: View {
         self.matches.removeAll()
         for match in matchesSeason{
             if match.matchday == matchday{
+                matches.append(match)
+            }else if match.stage == "LAST_16" && matchday == 7{
+                matches.append(match)
+            }else if match.stage == "QUARTER_FINALS" && matchday == 8{
+                matches.append(match)
+            }else if match.stage == "SEMI_FINALS" && matchday == 9{
+                matches.append(match)
+            }else if match.stage == "FINAL" && matchday == 10{
                 matches.append(match)
             }
         }
@@ -344,7 +443,7 @@ struct HomeChampions: View {
     }
     
     
-    func startActivity(match: Match)->Bool{
+    func startActivity(match: MatchWC)->Bool{
         if #available(iOS 16.1, *) {
             if !existActivity(id:match.id) && (match.status == "IN_PLAY" || match.status=="PAUSED"||match.status == "TIMED"||match.status == "SCHEDULED"){
                 let initialContentState = MatchAttributes.ContentState(status:match.status, scoreHomeHalfTime: match.score.halfTime.home,scoreAwayHalfTime: match.score.halfTime.away,scoreHomeFullTime: match.score.fullTime.home,scoreAwayFullTime: match.score.fullTime.away)
@@ -403,10 +502,24 @@ struct HomeChampions: View {
             return focus
         }
     }
+    
+    func getMatchDay(newMatchDay:Int)->String{
+        if newMatchDay <= 6 {
+            return String(newMatchDay)
+        }else{
+            switch newMatchDay {
+            case 7: return NSLocalizedString("last16Key",comment:"")
+            case 8: return NSLocalizedString("quarterFinalsKey",comment:"")
+            case 9: return NSLocalizedString("semiFinalsKey",comment:"")
+            case 10: return NSLocalizedString("finalKey",comment:"")
+            default: return ""
+            }
+        }
+    }
         
     
     
-    func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:Match)->String{
+    func getStatus(halfTime: childScore, fullTime: childScore,status:String,match:MatchWC)->String{
         switch status {
         case "TIMED":
             if focus == 0 {

@@ -54,7 +54,7 @@ struct StandingsCL: View {
                                             Text(String(item.goalsAgainst))
                                                 .frame(width: 25.0, height: 25,alignment: .center)
                                                 .font(.caption)
-                                        }
+                                        }.listRowBackground(Color(UIColor.systemGray6))
                                     }
                                 }
                             }
@@ -85,7 +85,7 @@ struct StandingsCL: View {
                         }
                     }
                 }
-            }
+            }.background(Color(UIColor.systemGray6))
             
     }
     
