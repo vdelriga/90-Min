@@ -326,11 +326,12 @@ struct Home: View {
             .onReceive(firestoreManager.$seasonMatches) { matches in
                 if(matches.matches.count > 0){
                     let now = Date.now
-                    //se añade la fecha de expiración en segundos(6h)
-                    let expiredTime = firestoreManager.seasonMatchesTimestamp.addingTimeInterval(21600)
-                    if now  < expiredTime {
+                    //se añade la fecha de expiración en segundos(12h)
+                    let expiredTime = firestoreManager.seasonMatchesTimestamp.addingTimeInterval(43200)
+                    if now  < expiredTime && !isDayChange(from: now, to: expiredTime) {
                         matchesSeason = matches.matches
                         getLiveMatches()
+                        print("Sin cambio de día")
                     }else{
                         Task{
                             await loadDataSeason(league:selectedLeague)
@@ -464,6 +465,14 @@ struct Home: View {
         } catch let jsonError as NSError {
             print("JSON decode failed: \(jsonError.localizedDescription)")
         }
+    }
+    
+    func isDayChange(from firstDate: Date, to secondDate: Date) -> Bool {
+        let calendar = Calendar.current
+        let firstDay = calendar.component(.day, from: firstDate)
+        let secondDay = calendar.component(.day, from: secondDate)
+        
+        return firstDay != secondDay
     }
     
     func loadData() async {

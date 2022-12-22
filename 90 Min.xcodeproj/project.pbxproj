@@ -10,6 +10,8 @@
 		FA021195292151E200DEE638 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA02119429214DC800DEE638 /* Defaults.swift */; };
 		FA05B2D7292EDD0E0090C8E2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA96683429152C660068BE3E /* Localizable.strings */; };
 		FA159DA328F01FF200E319BE /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = FA159DA228F01FF200E319BE /* GoogleMobileAds */; };
+		FA18CB0D2954CBB700E79E4F /* AdColony.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA18CB032954CA6800E79E4F /* AdColony.xcframework */; };
+		FA18CB0F2954CBB700E79E4F /* AdColonyAdapter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA18CB052954CA6800E79E4F /* AdColonyAdapter.xcframework */; };
 		FA19DB8028EF69B7001B63C2 /* StandingsCL.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */; };
 		FA1A8803292C286800172D21 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1A8802292C286800172D21 /* Team.swift */; };
 		FA1C4DAF28ECDBFB00CB7175 /* HomeChampions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1C4DAE28ECDBFB00CB7175 /* HomeChampions.swift */; };
@@ -69,9 +71,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6472EE2D56878918B8004623 /* libPods-90 Min.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-90 Min.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89A03481FF080710D9001BCC /* Pods-90 Min.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-90 Min.debug.xcconfig"; path = "Target Support Files/Pods-90 Min/Pods-90 Min.debug.xcconfig"; sourceTree = "<group>"; };
 		AA673A9740990A518371325D /* Pods-90 Min.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-90 Min.release.xcconfig"; path = "Target Support Files/Pods-90 Min/Pods-90 Min.release.xcconfig"; sourceTree = "<group>"; };
 		FA02119429214DC800DEE638 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		FA18CB032954CA6800E79E4F /* AdColony.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AdColony.xcframework; path = Pods/AdColony/AdColony.xcframework; sourceTree = "<group>"; };
+		FA18CB052954CA6800E79E4F /* AdColonyAdapter.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AdColonyAdapter.xcframework; path = "Pods/GoogleMobileAdsMediationAdColony/AdColonyAdapter-4.9.0.0/AdColonyAdapter.xcframework"; sourceTree = "<group>"; };
+		FA18CB072954CA6800E79E4F /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurement.xcframework; path = Pods/GoogleAppMeasurement/Frameworks/GoogleAppMeasurement.xcframework; sourceTree = "<group>"; };
+		FA18CB092954CA6800E79E4F /* GoogleAppMeasurementIdentitySupport.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurementIdentitySupport.xcframework; path = Pods/GoogleAppMeasurement/Frameworks/GoogleAppMeasurementIdentitySupport.xcframework; sourceTree = "<group>"; };
+		FA18CB0B2954CA6800E79E4F /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = "Pods/Google-Mobile-Ads-SDK/Frameworks/GoogleMobileAdsFramework/GoogleMobileAds.xcframework"; sourceTree = "<group>"; };
 		FA19DB7F28EF69B7001B63C2 /* StandingsCL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandingsCL.swift; sourceTree = "<group>"; };
 		FA1A8802292C286800172D21 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		FA1C4DAE28ECDBFB00CB7175 /* HomeChampions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeChampions.swift; sourceTree = "<group>"; };
@@ -115,7 +123,9 @@
 			files = (
 				FA159DA328F01FF200E319BE /* GoogleMobileAds in Frameworks */,
 				FA90171228E838CA0028597F /* AlertToast in Frameworks */,
+				FA18CB0D2954CBB700E79E4F /* AdColony.xcframework in Frameworks */,
 				FA512D0528E22EAC00EDE1A6 /* FirebaseMessaging in Frameworks */,
+				FA18CB0F2954CBB700E79E4F /* AdColonyAdapter.xcframework in Frameworks */,
 				FA29923D28F89E31008A3DEE /* FirebaseFirestore in Frameworks */,
 				FA512D0328E22EAC00EDE1A6 /* FirebaseAnalytics in Frameworks */,
 				FA29924428F8AF5D008A3DEE /* FirebaseFirestoreSwift in Frameworks */,
@@ -215,8 +225,14 @@
 		FA47CBA928DB5905009F1A2C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA18CB032954CA6800E79E4F /* AdColony.xcframework */,
+				FA18CB052954CA6800E79E4F /* AdColonyAdapter.xcframework */,
+				FA18CB072954CA6800E79E4F /* GoogleAppMeasurement.xcframework */,
+				FA18CB092954CA6800E79E4F /* GoogleAppMeasurementIdentitySupport.xcframework */,
+				FA18CB0B2954CA6800E79E4F /* GoogleMobileAds.xcframework */,
 				FA47CBAA28DB5905009F1A2C /* WidgetKit.framework */,
 				FA47CBAC28DB5905009F1A2C /* SwiftUI.framework */,
+				6472EE2D56878918B8004623 /* libPods-90 Min.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -568,7 +584,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.5;
+				MARKETING_VERSION = 3.0;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -609,7 +625,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.5;
+				MARKETING_VERSION = 3.0;
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.viti.Minuto-y-Resultado";
 				PRODUCT_NAME = "$(TARGET_NAME)";
