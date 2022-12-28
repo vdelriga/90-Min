@@ -115,10 +115,16 @@ struct HomeChampions: View {
                                                }
                                     Spacer()
                                     VStack{
-                                        Text(getMatchDate(stringDate: item.utcDate))
-                                            .font(.caption)
-                                        Text(getMatchTime(stringDate: item.utcDate))
-                                            .font(.caption)
+                                        if let _ = videosDict[String(item.id)]{
+                                                Image(systemName: "video")
+                                                Text("resumenKey")
+
+                                        }else{
+                                            Text(getMatchDate(stringDate: item.utcDate))
+                                                .font(.caption)
+                                            Text(getMatchTime(stringDate: item.utcDate))
+                                                .font(.caption)
+                                        }
                                         Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
                                             .font(.largeTitle)
                                         Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
@@ -127,7 +133,13 @@ struct HomeChampions: View {
                                     .onTapGesture{
                                         if let _ = videosDict[String(item.id)]{
                                             videoID = videosDict[String(item.id)] ?? ""
-                                            sheetYoutubePresented.toggle()
+                                            if let url = URL(string: videoID) {
+                                                if UIApplication.shared.canOpenURL(url){
+                                                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                                                }else{
+                                                    sheetYoutubePresented.toggle()
+                                                }
+                                            }
                                         }else{
                                             result = startActivity(match: item)
                                             showToast.toggle()
@@ -211,6 +223,7 @@ struct HomeChampions: View {
                             getMatchdayMatchesCL()
                         }.onReceive(self.observer.$enteredForeground) { _ in
                             Task {
+                                getVideosWC()
                                 getCurrentMatchdayDatabase()
                                 getSeasonCLMatches()
                                 //await loadDataSeason()
@@ -238,7 +251,14 @@ struct HomeChampions: View {
                 }
                 SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
                 
-            }.onReceive(firestoreManager.$currentCLMatchday) { matchday in
+            }.onReceive(firestoreManager.$videos){videos in
+                if let videosYT = videos{
+                    for document in videosYT.documents {
+                        self.videosDict[document.documentID] = document["videoID"] as? String
+                    }
+                }
+            }
+            .onReceive(firestoreManager.$currentCLMatchday) { matchday in
                 if(matchday != 0){
                     //let now = Date.now
                     //se añade la fecha de expiración en segundos(6h)
@@ -401,6 +421,11 @@ struct HomeChampions: View {
                 matches.append(match)
             }
         }
+    }
+    
+    func getVideosWC(){
+        firestoreManager.getVideosWC()
+
     }
     
     func getCurrentMatchday() async {

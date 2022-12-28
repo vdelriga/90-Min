@@ -169,10 +169,16 @@ struct Home: View {
                                                 }
                                         Spacer()
                                         VStack{
-                                            Text(getMatchDate(stringDate: item.utcDate))
-                                                .font(.caption)
-                                            Text(getMatchTime(stringDate: item.utcDate))
-                                                .font(.caption)
+                                            if let _ = videosDict[String(item.id)]{
+                                                    Image(systemName: "video")
+                                                    Text("resumenKey")
+
+                                            }else{
+                                                Text(getMatchDate(stringDate: item.utcDate))
+                                                    .font(.caption)
+                                                Text(getMatchTime(stringDate: item.utcDate))
+                                                    .font(.caption)
+                                            }
                                             Text(getScore(halfTime:item.score.halfTime, fullTime:item.score.fullTime))
                                                 .font(.largeTitle)
                                             Text(getStatus(halfTime:item.score.halfTime,fullTime:item.score.fullTime,status:item.status,match:item))
@@ -182,7 +188,14 @@ struct Home: View {
                                         }.onTapGesture{
                                             if let _ = videosDict[String(item.id)]{
                                                 videoID = videosDict[String(item.id)] ?? ""
-                                                sheetYoutubePresented.toggle()
+                                                if let url = URL(string: videoID) {
+                                                    if UIApplication.shared.canOpenURL(url){
+                                                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                                                    }else{
+                                                        sheetYoutubePresented.toggle()
+                                                    }
+                                                }
+                                                
                                             }else{
                                                 result = startActivity(match: item)
                                                 showToast.toggle()
@@ -269,6 +282,7 @@ struct Home: View {
                                 getLiveMatches()
                             }.onReceive(self.observer.$enteredForeground) { _ in
                                     Task {
+                                        getVideosWC()
                                         getCurrentMatchdayDatabase(league: selectedLeague)
                                         getSeasonMatches(league:selectedLeague)
                                         //Bloque para iniciar proceso de revisión
@@ -308,7 +322,14 @@ struct Home: View {
                 }
                 SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
                 
-            }.onReceive(firestoreManager.$currentMatchday) { matchday in
+            }.onReceive(firestoreManager.$videos){videos in
+                if let videosYT = videos{
+                    for document in videosYT.documents {
+                        self.videosDict[document.documentID] = document["videoID"] as? String
+                    }
+                }
+            }
+            .onReceive(firestoreManager.$currentMatchday) { matchday in
                 if(matchday != 0){
                     let now = Date.now
                     //se añade la fecha de expiración en segundos(6h)
@@ -328,7 +349,7 @@ struct Home: View {
                     let now = Date.now
                     //se añade la fecha de expiración en segundos(12h)
                     let expiredTime = firestoreManager.seasonMatchesTimestamp.addingTimeInterval(43200)
-                    if now  < expiredTime && !isDayChange(from: now, to: expiredTime) {
+                    if now  < expiredTime && !isDayChange(from: now, to: firestoreManager.seasonMatchesTimestamp) {
                         matchesSeason = matches.matches
                         getLiveMatches()
                         print("Sin cambio de día")
@@ -354,6 +375,9 @@ struct Home: View {
                         }
                     }
                 }else{
+                    /*Task{
+                        await loadData()
+                    }*/
                     updateMatchdayMatches(matchday:Int(jornada) ?? 0)
                 }
             }.background(Color(UIColor.systemGray6))
@@ -490,8 +514,10 @@ struct Home: View {
             if let decodedResponse =
                 try? JSONDecoder().decode(Matches.self, from: data){
                 liveMatches = decodedResponse.matches
-                firestoreManager.addLiveMatches(decodedResponse)
-                firestoreManager.updateLiveMatches()
+                if liveMatches.count>0 {
+                    firestoreManager.addLiveMatches(decodedResponse)
+                    firestoreManager.updateLiveMatches()
+                }
                 updateMatchdayMatches(matchday:Int(jornada) ?? 0)
             }
         } catch let jsonError as NSError {
@@ -510,6 +536,11 @@ struct Home: View {
     
     func getLiveMatches(){
         firestoreManager.getLiveMatches()
+    }
+    
+    func getVideosWC(){
+        firestoreManager.getVideosWC()
+
     }
     
     func getCurrentMatchday(league:Int) async {
