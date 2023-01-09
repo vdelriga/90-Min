@@ -42,5 +42,7 @@
 "offence" = "Delanteros";
 "resumenKey" = "Resumen";
 "extraTimeKey" = "PRÓRROGA";
-
+"alertVersionTitle" = "Actualización Disponible";
+"alertVersionMessage" = "Por favor, actualiza la aplicación para conseguir la mejor experiencia de usuario.";
+"alertVersionAction" = "Ir a App Store";
 

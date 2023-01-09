@@ -45,3 +45,6 @@
 "resumenKey" = "Highlights";
 "extraTimeKey" = "TEMPO EXTRA";
 "penaltiesKey" = "PÊNALTIS";
+"alertVersionTitle" = "Atualização Disponível";
+"alertVersionMessage" = "Por favor, atualize o aplicativo para obter a melhor experiência de usuário.";
+"alertVersionAction" = "Ir para a App Store";

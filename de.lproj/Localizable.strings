@@ -44,6 +44,9 @@
 "offence" = "Stürmer";
 "resumenKey" = "Zusammenfassung";
 "extraTimeKey" =  "VERLÄNGERUNG";
+"alertVersionTitle" = "Aktualisierung verfügbar";
+"alertVersionMessage" = "Bitte aktualisieren Sie die App, um die beste Benutzererfahrung zu erhalten.";
+"alertVersionAction" = "Zum App Store gehen";
 
 
 

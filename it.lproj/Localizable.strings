@@ -44,6 +44,9 @@
 "offence" = "Attaccanti";
 "resumenKey" = "Riepilogo";
 "extraTimeKey" = "TEMPO SUPPLEMENTARE";
+"alertVersionTitle" = "Aggiornamento Disponibile";
+"alertVersionMessage" = "Si prega di aggiornare l'applicazione per ottenere la migliore esperienza utente.";
+"alertVersionAction" = "Vai all'App Store";
 
 
 

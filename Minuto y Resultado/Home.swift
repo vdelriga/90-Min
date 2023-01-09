@@ -21,6 +21,7 @@ struct Home: View {
     @State public var teamId: Int = 0
     @State private var videoID: String = ""
     @State private var videosDict: [String: String] = [:]
+    @State private var minutes: [String: Int] = [:]
     @State private var sheetTeamPresented = false
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Environment(\.scenePhase) var scenePhase
@@ -39,10 +40,10 @@ struct Home: View {
     @State private var  backImage = ""
     public static var defaults:Defaults = Defaults()
     @State private var selectedLeague = Home.defaults.getLeague()
+    @State private var showAlertVersion = false
     let maxMatchDay = 38
     var body: some View {
-       
-            ZStack{
+         ZStack{
                 VStack{
                     Image("logo")
                         .resizable()
@@ -169,7 +170,10 @@ struct Home: View {
                                                 }
                                         Spacer()
                                         VStack{
-                                            if let _ = videosDict[String(item.id)]{
+                                            if let sec = minutes[String(item.id)],item.status == "IN_PLAY"{
+                                                Text(String(sec/60) + "'")
+                                            }
+                                            else if let _ = videosDict[String(item.id)]{
                                                     Image(systemName: "video")
                                                     Text("resumenKey")
 
@@ -280,9 +284,13 @@ struct Home: View {
                             .padding(.bottom)
                             .refreshable{
                                 getLiveMatches()
+                                getMinOfMatch()
+                                getVideosWC()
                             }.onReceive(self.observer.$enteredForeground) { _ in
                                     Task {
+                                        getMinVersion()
                                         getVideosWC()
+                                        getMinOfMatch()
                                         getCurrentMatchdayDatabase(league: selectedLeague)
                                         getSeasonMatches(league:selectedLeague)
                                         //Bloque para iniciar proceso de revisión
@@ -322,10 +330,20 @@ struct Home: View {
                 }
                 SwiftUIBannerAd(adPosition: .bottom, adUnitId:Constants.BannerId)
                 
-            }.onReceive(firestoreManager.$videos){videos in
+            }.onReceive(firestoreManager.$minVersion) { minV in
+                validateAppVersion(minVersion:minV)
+            }
+            .onReceive(firestoreManager.$videos){videos in
                 if let videosYT = videos{
                     for document in videosYT.documents {
                         self.videosDict[document.documentID] = document["videoID"] as? String
+                    }
+                }
+            }
+            .onReceive(firestoreManager.$minutes){minutes in
+                if let minuteOfMatch  = minutes{
+                    for document in minuteOfMatch.documents {
+                        self.minutes[document.documentID] = document["sec"] as? Int
                     }
                 }
             }
@@ -381,6 +399,13 @@ struct Home: View {
                     updateMatchdayMatches(matchday:Int(jornada) ?? 0)
                 }
             }.background(Color(UIColor.systemGray6))
+            .alert(isPresented: $showAlertVersion) {
+                Alert(title: Text("alertVersionTitle"), message: Text("alertVersionMessage"), primaryButton: .default(Text("alertVersionAction"), action: {
+                    if let url = URL(string: "https://apps.apple.com/app/id6443517665"){
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                }), secondaryButton: .cancel())
+            }
     }
     func placeOrder() { }
     func adjustOrder() { }
@@ -415,6 +440,18 @@ struct Home: View {
             }
         }
     }
+    func getMinVersion(){
+            firestoreManager.getMinVersion()
+        }
+
+    func validateAppVersion(minVersion: String) {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            if version < minVersion && minVersion != "" {
+                showAlertVersion = true
+            }
+        }
+    }
+
     
     
     func loadMatchDay(matchday: Int){
@@ -540,6 +577,10 @@ struct Home: View {
     
     func getVideosWC(){
         firestoreManager.getVideosWC()
+
+    }
+    func getMinOfMatch(){
+        firestoreManager.getMinofMatch()
 
     }
     

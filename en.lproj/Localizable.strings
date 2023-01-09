@@ -44,6 +44,9 @@
 "offence" = "Strikers";
 "resumenKey" = "Highlights";
 "extraTimeKey" = "EXTRA TIME";
+"alertVersionTitle" = "Update Available";
+"alertVersionMessage" = "Please update the app to get the best user experience.";
+"alertVersionAction" = "Go to App Store";
 
 
 

@@ -45,6 +45,9 @@ class FirestoreManager: ObservableObject {
     @Published var teamTimestamp: Date = Date.now
     //@Published var videosDict: [String: String] = [:]
     @Published var videos:QuerySnapshot? = nil
+    @Published var minutes:QuerySnapshot? = nil
+    
+    @Published var minVersion:String = ""
     
     //función que almacena los tokens de las Live activities
     func addMatchToken(matchId: Int, token:Token) {
@@ -827,6 +830,38 @@ class FirestoreManager: ObservableObject {
                 print("Error getting documents: \(err)")
             } else {
                 self.videos = querySnapshot
+                /*for document in querySnapshot!.documents {
+                    self.videosDict[document.documentID] = document["videoID"] as? String
+                }*/
+            }
+        }
+    }
+    
+    //Función que obtiene la versión mínima obligatoria de la app
+        
+        func getMinVersion(){
+            let docRef = store.collection(path).document("MINVERSION")
+            docRef.getDocument { document, error in
+                guard error == nil else {
+                    print("error", error ?? "")
+                    return
+                }
+                if let document = document, document.exists {
+                        self.minVersion = document.get("minVersion") as! String
+                    } else {
+                        print("Document does not exist")
+                    }
+            }
+        }
+    
+    // Función para obtener el minuto de partido
+    
+    func getMinofMatch(){
+        store.collection("MINUTES").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                self.minutes = querySnapshot
                 /*for document in querySnapshot!.documents {
                     self.videosDict[document.documentID] = document["videoID"] as? String
                 }*/

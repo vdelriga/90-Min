@@ -31,6 +31,7 @@ struct HomeChampions: View {
     let maxMatchDay = 10
     @State private var  resultOpenActivity = ""
     @State private var newMatchday = 0
+    @State private var minutes: [String: Int] = [:]
     
     
     var body: some View {
@@ -115,7 +116,10 @@ struct HomeChampions: View {
                                                }
                                     Spacer()
                                     VStack{
-                                        if let _ = videosDict[String(item.id)]{
+                                        if let sec = minutes[String(item.id)],item.status == "IN_PLAY"{
+                                            Text(String(sec/60) + "'")
+                                        }
+                                        else if let _ = videosDict[String(item.id)]{
                                                 Image(systemName: "video")
                                                 Text("resumenKey")
 
@@ -221,11 +225,14 @@ struct HomeChampions: View {
                         .refreshable{
                             getCurrentMatchdayDatabase()
                             getMatchdayMatchesCL()
+                            getMinOfMatch()
+                            getVideosWC()
                         }.onReceive(self.observer.$enteredForeground) { _ in
                             Task {
                                 getVideosWC()
                                 getCurrentMatchdayDatabase()
                                 getSeasonCLMatches()
+                                getMinOfMatch()
                                 //await loadDataSeason()
                                 //await loadData()
                             }
@@ -255,6 +262,13 @@ struct HomeChampions: View {
                 if let videosYT = videos{
                     for document in videosYT.documents {
                         self.videosDict[document.documentID] = document["videoID"] as? String
+                    }
+                }
+            }
+            .onReceive(firestoreManager.$minutes){minutes in
+                if let minuteOfMatch  = minutes{
+                    for document in minuteOfMatch.documents {
+                        self.minutes[document.documentID] = document["sec"] as? Int
                     }
                 }
             }
@@ -425,6 +439,10 @@ struct HomeChampions: View {
     
     func getVideosWC(){
         firestoreManager.getVideosWC()
+
+    }
+    func getMinOfMatch(){
+        firestoreManager.getMinofMatch()
 
     }
     
